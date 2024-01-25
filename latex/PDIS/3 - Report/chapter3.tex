@@ -1,0 +1,159 @@
+\chapter{Capítulo Exemplo}\label{chap:chap3}
+
+Neste capítulo apresentam-se exemplos de formatação de figuras e
+tabelas, equações e referências cruzadas.
+
+Maecenas eleifend facilisis leo. Vestibulum et
+mi. Aliquam posuere, ante non tristique consectetuer, dui elit
+scelerisque augue, eu vehicula nibh nisi ac est. 
+Suspendisse elementum sodales felis. Nullam laoreet fermentum urna. 
+
+\section{Introdução}
+
+Apresenta-se de seguida um exemplo de
+equação\footnote{\url{https://en.wikipedia.org/wiki/Equation}},
+completamente fora do contexto\footnote{\url{https://www.overleaf.com/learn/latex/Mathematical_expressions}}:
+
+\begin{eqnarray}
+CIF_1: \hspace*{5mm}F_0^j(a) &=& \frac{1}{2\pi \iota} \oint_{\gamma} \frac{F_0^j(z)}{z - a} dz\\
+CIF_2: \hspace*{5mm}F_1^j(a) &=& \frac{1}{2\pi \iota} \oint_{\gamma} \frac{F_0^j(x)}{x - a} dx \label{eq:cif}
+\end{eqnarray}
+
+Na Equação~\ref{eq:cif} lorem ipsum dolor sit amet, consectetuer
+adipiscing elit. Suspendisse tincidunt viverra elit. Donec tempus
+vulputate mauris. Donec arcu. Vestibulum condimentum porta
+justo. Curabitur ornare tincidunt lacus. Curabitur ac massa vel ante
+tincidunt placerat. Cras vehicula semper elit. Curabitur gravida, est
+a elementum suscipit, est eros ullamcorper quam, sed cursus velit
+velit tempor neque. Duis tempor condimentum ante. Nam
+sollicitudin. Vestibulum adipiscing, orci eu tempor dapibus, risus
+sapien porta metus, et cursus leo metus eget nibh. 
+
+Pellentesque rutrum, sapien at viverra facilisis, metus eros blandit
+sem, quis dictum erat metus eget erat. Vivamus malesuada dapibus
+nulla. Maecenas nec purus. Suspendisse auctor mattis augue. Phasellus
+enim nisi, iaculis sit amet, pellentesque a, iaculis in, dui. Integer
+risus. 
+
+\section{Secção Exemplo}
+
+A arquitectura do visualizador assenta sobre os seguintes conceitos
+base~\citep{kn:ZPMD97}: 
+
+\begin{itemize}
+\item \textbf{Componentes} --- Suspendisse auctor mattis augue \emph{push};
+\item \textbf{Praesent} --- Sit amet sem maecenas eleifend facilisis leo;
+\item \textbf{Pellentesque} --- Habitant morbi tristique senectus et netus.
+\end{itemize}
+
+\subsection{Exemplo de Figura}
+
+É apresentado na Figura~\ref{fig:arch} da página~\pageref{fig:arch} um
+exemplo de figura flutuante que deverá ficar no topo da página.
+
+\begin{figure}[t]
+    \includegraphics[width=0.86\textwidth]{puzzle}
+    \caption{Arquitectura da Solução Proposta}
+    \label{fig:arch}
+\end{figure}
+
+Loren ipsum dolor sit amet, consectetuer adipiscing elit. 
+Praesent sit amet sem. Maecenas eleifend facilisis leo. Vestibulum et
+mi. Aliquam posuere, ante non tristique consectetuer, dui elit
+scelerisque augue, eu vehicula nibh nisi ac est. Suspendisse elementum
+sodales felis. Nullam laoreet fermentum urna.
+
+Duis eget diam. In est justo, tristique in, lacinia vel, feugiat eget,
+quam. Pellentesque habitant morbi tristique senectus et netus et
+malesuada fames ac turpis egestas. Fusce feugiat, elit ac placerat
+fermentum, augue nisl ultricies eros, id fringilla enim sapien eu
+felis. Vestibulum ante ipsum primis in faucibus orci luctus et
+ultrices posuere cubilia Curae; Sed dolor mi, porttitor quis,
+condimentum sed, luctus in. 
+
+\subsection{Exemplo de Tabela}
+
+É apresentado na Tabela~\ref{tab:exemplo} um exemplo de tabela
+flutuante que deverá ficar no topo da página.
+
+\begin{table}[t]
+  \caption{Tabela Exemplo}
+\begin{tabular}{|c|r@{.}lr@{.}lr@{.}l||r|}
+	\hline
+\multicolumn{8}{|c|}
+	{\rule[-3mm]{0mm}{8mm}Iteração $k$ de $f(x_n)$} \\
+\textbf{\em k}
+	& \multicolumn{2}{c}{$x_1^k$}
+	& \multicolumn{2}{c}{$x_2^k$}
+	& \multicolumn{2}{c||}{$x_3^k$}
+	& comentários \\ \hline \hline
+0   & -0&3                 & 0&6                 &  0&7   & - \\
+1   &  0&47102965 & 0&04883157 & -0&53345964  & $\delta<\epsilon$ \\
+2   &  0&49988691 & 0&00228830 & -0&52246185  & $\delta < \varepsilon$ \\
+3   &  0&49999976 & 0&00005380 & -0&523656   &   $N$ \\
+4   &  0&5                 & 0&00000307 & -0&52359743  & \\
+\vdots	& \multicolumn{2}{c}{\vdots}
+	& \multicolumn{2}{c}{$\ddots$}
+	& \multicolumn{2}{c||}{\vdots}  & \\
+7   &  0&5   & 0&0    & \textbf{-0}&\textbf{52359878}
+		 & $\delta<10^{-8}$ \\ \hline
+\end{tabular}
+  \label{tab:exemplo}
+\end{table}
+
+Loren ipsum dolor sit amet, consectetuer adipiscing elit. 
+Praesent sit amet sem. Maecenas eleifend facilisis leo. Vestibulum et
+mi. Aliquam posuere, ante non tristique consectetuer, dui elit
+scelerisque augue, eu vehicula nibh nisi ac est. Suspendisse elementum
+sodales felis. Nullam laoreet fermentum urna. 
+
+Duis eget diam. In est justo, tristique in, lacinia vel, feugiat eget,
+quam. Pellentesque habitant morbi tristique senectus et netus et
+malesuada fames ac turpis egestas. Fusce feugiat, elit ac placerat
+fermentum, augue nisl ultricies eros, id fringilla enim sapien eu
+felis. Vestibulum ante ipsum primis in faucibus orci luctus et
+ultrices posuere cubilia Curae; Sed dolor mi, porttitor quis,
+condimentum sed, luctus in. 
+
+\section{Secção Exemplo}
+
+Loren ipsum dolor sit amet, consectetuer adipiscing elit. 
+Praesent sit amet sem. Maecenas eleifend facilisis leo. Vestibulum et
+mi. Aliquam posuere, ante non tristique consectetuer, dui elit
+scelerisque augue, eu vehicula nibh nisi ac est. Suspendisse elementum
+sodales felis. Nullam laoreet fermentum urna. 
+
+\begin{lstlisting}[language=Python, caption=Python example]
+# take the users input
+words = input("Enter the text to translate to pig latin: ")
+print(f"You entered: {words}")
+
+# now, break apart the words into a list
+words = words.split(' ')
+
+# let's use the list to translate words greater than 3 characteres
+for i in words:
+    if len(i) >= 3:
+        i = i + "%say" % (i[0])
+        i = i[1:]
+        print(i)
+    else:
+        pass
+\end{lstlisting}
+
+Duis eget diam. In est justo, tristique in, lacinia vel, feugiat eget,
+quam. Pellentesque habitant morbi tristique senectus et netus et
+malesuada fames ac turpis egestas. Fusce feugiat, elit ac placerat
+fermentum, augue nisl ultricies eros, id fringilla enim sapien eu
+felis. Vestibulum ante ipsum primis in faucibus orci luctus et
+ultrices posuere cubilia Curae; Sed dolor mi, porttitor quis,
+condimentum sed, luctus in.
+
+\section{Resumo}
+
+Pellentesque habitant morbi tristique senectus et netus et
+malesuada fames ac turpis egestas. Fusce feugiat, elit ac placerat
+fermentum, augue nisl ultricies eros, id fringilla enim sapien eu
+felis. Vestibulum ante ipsum primis in faucibus orci luctus et
+ultrices posuere cubilia Curae; Sed dolor mi, porttitor quis,
+condimentum sed, luctus in. 

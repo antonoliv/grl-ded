@@ -1,4 +1,17 @@
-Stanford\ CS224W\ -\ Machine\ Learning\ with\ Graphs/*
-Stanford\ CS234\ -\ Reinforcement\ Learning/*
-Bibliography/*
-code/venv/*
+bibliography/*
+zotero/*
+.zotero*
+
+# Latex
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.toc
+*.lof
+*.lot
+*.brf
+
+# Python
+src/.venv/*

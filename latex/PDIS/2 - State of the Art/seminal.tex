@@ -1,0 +1,89 @@
+\documentclass[11pt,a4paper]{article}
+
+%\usepackage[portuguese]{babel}  % if you want Portuguese
+\usepackage[utf8]{inputenc}           % 8 bits UTF8
+%\usepackage[latin1]{inputenc}     %  OR 8 bits latin1
+\usepackage{parskip}            % no indentation on paragraphs
+\usepackage{url}    
+
+\usepackage{array}% URLs
+
+
+%% margins
+\RequirePackage[outer=25mm,inner=30mm,vmargin=16mm,includehead,includefoot,headheight=15pt]{geometry}
+
+%% headers and footers
+\usepackage{fancyhdr}           % page headers
+\pagestyle{fancy}
+%\lfoot{}\cfoot{}\rfoot{Page \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\pagenumbering{gobble}
+
+%% some more macros
+%% LaTeX exceptions
+%\hyphenation{In-fra-struc-ture}
+
+\begin{document}
+
+
+
+
+\begin{table}[h!]
+\centering
+\caption{Graph Neural Network Algorithms}
+\begin{tabular}{|P{2cm}|p{8cm}|P{2cm}|  } 
+ \hline
+ \textbf{Reference} & \textbf{Technology} & \textbf{Acronym} \\
+ \hline
+ \cite{kipfSemiSupervisedClassificationGraph2017} & Graph Convolutional Networks & GCN\\ \hline
+ \cite{velickovicGraphAttentionNetworks2018} & Graph Attention Networks & GAT\\ \hline
+\cite{gaoGraphUNets2019} & Graph U-Nets & G-U-NET \\ \hline
+\cite{liGatedGraphSequence2016} & Gated Graph Neural Networks & GGNN \\ \hline
+\cite{xuHowPowerfulAre2019} & Graph Isomorphism Network & GIN \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Reinforcement Learning Algorithms}
+\begin{tabular}{|P{2cm}|p{8cm}|P{2cm}|  }
+ \hline
+ \textbf{Reference} & \textbf{Technology} & \textbf{Acronym} \\
+ \hline
+ \cite{haarnojaSoftActorCriticOffPolicy2018} & Soft Actor-Critic & SAC \\ \hline
+\cite{mnihAsynchronousMethodsDeep2016a} & Advantage Actor-Critic / Asynchronous Advantage Actor-Critic & A2C / A3C \\ \hline
+\cite{hesselRainbowCombiningImprovements2018} & Rainbow & - \\ \hline
+\cite{mnihHumanlevelControlDeep2015} & Deep Q-Network & DQN \\ \hline
+\cite{schulmanProximalPolicyOptimization2017} & Proximal Policy Optimization & PPO \\ \hline
+\cite{silverDeterministicPolicyGradient} & Deterministic Policy Gradient & DPG \\ \hline
+\cite{lillicrapContinuousControlDeep2019} & Deep Deterministic Policy Gradient & DDPG \\ \hline
+\cite{silverMasteringChessShogi2017} & AlphaZero & - \\ \hline
+
+ \hline
+
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Other Technologies}
+\begin{tabular}{|P{2cm}|p{8cm}|P{2cm}|  }
+ \hline
+ \textbf{Reference} & \textbf{Technology} & \textbf{Acronym} \\
+ \hline
+\cite{choLearningPhraseRepresentations2014} & Gated Recurrence Unit & GRU \\ \hline
+
+\end{tabular}
+\end{table}
+
+
+
+\nocite{*}  % to include references which were not cited
+
+%% the references using BibTeX
+\bibliographystyle{unsrt}
+\bibliography{sota}
+
+\end{document}

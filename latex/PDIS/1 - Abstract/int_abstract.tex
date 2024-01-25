@@ -1,0 +1,55 @@
+\documentclass[11pt,a4paper]{article}
+
+%\usepackage[portuguese]{babel}  % if you want Portuguese
+\usepackage[utf8]{inputenc}           % 8 bits UTF8
+%\usepackage[latin1]{inputenc}     %  OR 8 bits latin1
+\usepackage{parskip}            % no indentation on paragraphs
+\usepackage{url}                % URLs
+
+
+%% margins
+\RequirePackage[outer=25mm,inner=30mm,vmargin=16mm,includehead,includefoot,headheight=15pt]{geometry}
+
+%% headers and footers
+\usepackage{fancyhdr}           % page headers
+\pagestyle{fancy}
+\lhead{}\chead{}\rhead{PD 2023/2024 Sem 1}
+%\lfoot{}\cfoot{}\rfoot{Page \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\pagenumbering{gobble}
+
+%% some more macros
+\newcommand{\dummy}[1]{$<$#1$>$}
+\newcommand{\titles}[2]{\noindent\textbf{#1:} #2\\[2mm]}
+
+%% LaTeX exceptions
+%\hyphenation{In-fra-struc-ture}
+
+\begin{document}
+
+\titles{Title}{Combining Graph Neural Networks with Deep Reinforcement Learning Agents for Improving Smart Grid Services}
+\titles{Author}{António Oliveira}
+\titles{Supervision}{António Costa}
+\titles{Co-Supervision}{Rosaldo Rossetti}
+\titles{Date}{\today}
+
+\section*{Abstract}
+
+Graph Reinforcement Learning is a topic that has earned significant attention and research in the last few years. Combining Deep Reinforcement Learning techniques with an underlying graph-based representation of data enables intelligent agents to learn, optimize and take actions in various scenarios where the data is network-oriented. Although a lot of work has been done on the topic in more recent years, research is still considered to be in an early stage. \par
+Considering the current global challenges associated with sustainability and energy systems, there is an increasing need for advancements in energy-focused intelligent systems to modernize power distribution grids. In the present, renewable energy sources play a major role in reducing the reliance on fossil fuels, which changes the topology of energy distribution systems as consumers gain the capability to generate renewable power. Furthermore, with the improvements in Artificial Intelligence and Machine Learning, systems can be designed to adapt to the decentralization of energy production and efficiently manage energy monitoring and distribution. This translates into the transition to the \textit{smart grid}. Graph Reinforcement Learning can improve these systems, enabling the development of decision-making agents that understand the energy distribution network topology and use it to learn optimal policies for its adjacent control problems. \par
+This dissertation aims to advance the existing research on Graph Reinforcement Learning techniques by proposing a model with concrete improvements to the current ones by better integrating the capabilities of Deep Reinforcement Learning Agents with Graph Neural Networks, which encompass the state-of-the-art techniques regarding Machine Learning on Graphs. \par
+In this context, theoretical and empirical research on these topics is performed, as well as a thorough review of the recent literature that studies and proposes Graph Reinforcement Learning models,  gaining an overall perspective of the recent state-of-the-art techniques. Ultimately, this culminates in a proposed implementation of a deep reinforcement learning agent that uses and improves a graph neural network layer. \par
+Lastly, the model is applied to a case study scenario inside the context of smart grid services to evaluate its capabilities and performance. It's expected to design a novel model that intelligently combines Graph Neural Networks with Reinforcement Learning and shows similar or better performance than the other models proposed until the present.
+
+\titles{Keywords}{Graph Reinforcement Learning, Graph Neural Networks, Deep Reinforcement Learning, Smart Grid}
+\titles{ACM Classification}{Computing Methodologies $\to$ Machine Learning $\to$ Learning Paradigms $\to$ Reinforcement Learning}
+
+\nocite{*}  % to include references which were not cited
+
+%% the references using BibTeX
+\bibliographystyle{unsrt}
+\bibliography{int_abstract}
+
+\end{document}
