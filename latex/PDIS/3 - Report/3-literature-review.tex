@@ -1,0 +1,81 @@
+\chapter{Literature Review} \label{chap:literature-review}
+
+\ac{GRL} or Reinforcement Learning on Graphs is a relatively new area in the broader field of machine learning. \ac{GRL} techniques have shown significant progress in solving problems with underlying graph-based representations such as power grid management \cite{liNovelGraphReinforcement2022, chenGraphRepresentationLearningbased2023}, smart transport \cite{xingBilevelGraphReinforcement2023, almasanDeepReinforcementLearning2022} or task offloading \cite{gaoFastAdaptiveTask2023, liGraphReinforcementLearningbased2022}. In this work, the main focus lies on studying the development of \ac{GRL} techniques and subsequent application to smart grid services such as dynamic economic energy dispatch systems \cite{chenScalableGraphReinforcement2023, xingRealtimeOptimalScheduling2023}, residential electricity behavior identification and energy management \cite{chenGraphRepresentationLearningbased2023}, or Volt-VAR regulation \cite{huMultiagentGraphReinforcement2024}.  \par
+Research on this topic has significantly increased in the last few years with the improvements of \ac{DRL} techniques and the developments in \acp{GNN} in the mid-2010s \cite{kipfSemiSupervisedClassificationGraph2017, velickovicGraphAttentionNetworks2018, liGatedGraphSequence2016, gaoGraphUNets2019}. \acp{GNN} became the state-of-the-art for solving numerous data mining tasks involving graph-structured data, excelling at classification, link prediction and representation learning \cite{xuHowPowerfulAre2019, nieReinforcementLearningGraphs2023}. This advancement brought more sophisticated \ac{RL} applications on graphs and the surge of a new field studying how to combine the improvements of graph mining and reinforcement learning techniques. \par
+In this context, this literature review is divided into the two main approaches in \ac{GRL}, which compromise the popular \ac{GCN} architecture that has been widely researched or leveraging the rising and promising \ac{GAT} architecture. Lastly, other relevant approaches that use different architectures are also listed.
+
+
+\subsection{Plain GCN-Based GRL Techniques}
+
+A common approach in Graph Reinforcement Learning model implementation is the use of graph convolutions with the \acp{GCN} architecture for leveraging graph-based structures to extract and aggregate the essential features of data in hand and improve the performance of \ac{RL} agents in those environments. The techniques listed in this subsection constitute approaches that integrate a \ac{GCN} with \ac{RL} algorithms.\par
+\cite{liNovelGraphReinforcement2022} implements a \ac{GRL} system to improve the decision quality of economic dispatch under high penetration of distributed energy generations. To accomplish this, a \ac{SAC} system is employed with the main objective of finding the optimal action policy for minimizing generation cost with the appropriate reliability concerns. This problem is represented by an undirected graph with nodes describing the power grid elements with their respective attributes and edges describing the underlying energy connections between those units. To extract the structural features of the graph, this work implements a full connected layer to perform feature transformation with a two-layer \ac{GCN} followed by three full connected layers for the non-linear mapping of state-to-action policy in both actor and critic modules. \cite{chenScalableGraphReinforcement2023} develops a similar approach, with both concluding that it significantly reduces learning time for achieving better training results in comparison to plain \ac{SAC} and showing significant improvement on economy and flexibility of the system on more complex and sparse state graphs. The use of \acp{GCN} enables the system to adapt to changes in the state space by leveraging the network's generalization ability.\par
+In \cite{xingGraphReinforcementLearningBased2023} a three-layer \ac{GCN} is used to extract node feature and graph topology information and is integrated into a Rainbow-based \cite{hesselRainbowCombiningImprovements2018} \ac{DRL} algorithm for electric vehicle charging guidance. In this article, the testing results show promising performance in reducing operation costs for electric vehicle users, portraying a model with good generalization ability in untrained scenarios. \par
+Another interesting implementation of this approach is \cite{chenAutonomousExplorationUncertainty2020}, which studies and compares different solutions for optimizing autonomous exploration under uncertain environments. It analyzes combinations of a single agent Deep Q-Network (DQN) and Advantageous Actor-Critic (A2C) with Graph Convolutional Networks, Gated Graph Recurrent Networks and Graph U-Nets. The paper reports that the GCN-DQN was the model that achieved the highest reward during policy training, followed by the GGNN-A2C model, although in the end, it concludes that the second showed improved scalability in relation to the first model. In \cite{chenGraphRepresentationLearningbased2023} a DQN with a GCN is also used for residential electricity behaviour identification and energy management.
+
+\begin{table}[h!]
+	\centering
+	\caption{GCN-Based GRL Techniques}
+	\begin{tabular}{|P{2cm}|P{2cm}|p{5cm}|  }
+		\hline
+		\textbf{Reference} & \textbf{DRL Algorithm} & \textbf{Application Domain} \\
+		\hline
+		\cite{liNovelGraphReinforcement2022}, \cite{chenScalableGraphReinforcement2023} & GCN-SAC & Dynamic economic energy dispatch \\ \hline
+		\cite{lengGraphConvolutionalNetworkbased2021} & GCN-SAC & Multi-access Edge Computing \\ \hline
+		\cite{yanAutomaticVirtualNetwork2020} & GCN-A3C & Automatic Virtual Network Embeddings \\ \hline
+		\cite{wangGCNRLCircuitDesigner2020} & GCN-DDPG & Automatic transistor sizing \\ \hline
+		\cite{chenAutonomousExplorationUncertainty2020} & GCN-DQN  & Autonomous Exploration under uncertainty \\  \hline
+		\cite{chenGraphRepresentationLearningbased2023} & GCN-DQN & Residential electricity behavior identification and energy management \\ \hline
+		\cite{xingGraphReinforcementLearningBased2023} & GCN - Modified Rainbow & Electrical Vehicle Charging Guidance \\ \hline
+		\cite{yuanXGNNModelLevelExplanations2020} & GCN-MDP & Interpret GNNs at model-level \\ \hline
+		\cite{tangDependentTaskOffloading2020} & GCN-DQ & Task Offloading in Edge Computing \\ \hline
+	\end{tabular}
+\end{table}
+
+
+
+
+\subsection{Attention-based GRL Techniques}
+Another effective approach in extracting relevant topology and graph features relies on using attention mechanisms to weigh different nodes' contributions dynamically. While this encompasses techniques that use the \ac{GAT} architecture, which is a \ac{GNN} design with the attention mechanism at its core, various scholars propose \ac{GCN} approaches integrated with attention mechanisms such as \cite{zhaoLearningSequentialDistribution2022} and \cite{fanAttentionBasedMultiAgentGraph2023}.
+\cite{xingRealtimeOptimalScheduling2023} proposes a \ac{DDPG}-based algorithm improved with a \ac{GAT} block with three graph Attention Layers for extracting and learning the topology information for achieve real-time optimal scheduling for \acp{ADN}. This paper compares the obtained test results against a \ac{GCN}-\ac{DDPG} model and shows increased performance over the \ac{GCN} method in reducing cost and power loss. Beyond this, the work demonstrates that the \ac{GAT}'s attention mechanism enables the algorithm to focus on more important nodes and improve the signal-to-noise ratio compared to its \ac{GCN} counterpart. \cite{chenPhysicalassistedMultiagentGraph2023} and propose a multi-agent approach to the same domain but more focused on voltage regulation with a multi-agent \ac{SAC} instead of a single-agent \ac{DDPG} algorithm. \par
+In \cite{xingBilevelGraphReinforcement2023}, another model for the electric vehicle charging guidance is proposed, consisting of a bi-level approach of a Rainbow-based algorithm with a \ac{GAT} block. The upper level focuses on the decision-making process regarding charging, while the lower level handles routing. The proposed model proved to be more effective than a shortest distance path-based \cite{xingModellingDrivingCharging2021} and a \ac{DRL}-based \cite{qianDeepReinforcementLearning2020} approach. It suggests that in a future direction, developing \acp{GNN} directly embedded into the \ac{RL} framework might further improve the model's robustness and scalability. \cite{xuRealtimeFastCharging2022} develops a similar approach with a Double-prioritized DQN for the same application domain.
+In \cite{zhaoLearningSequentialDistribution2022} and \cite{fanAttentionBasedMultiAgentGraph2023}, the sequential distribution system restoration problem is addressed with a multi-agent \ac{RL} algorithm equipped with a \ac{GCN} with an attention mechanism. In the first case, multi-head attention is used as the convolution kernel for the \ac{GCN} with a \ac{DQN} algorithm. In the second, self-attention is used for improving the centralized training of the used multi-agent actor-critic algorithm, more concretely, by embedding it in the critic networks. At the same time, the \ac{GCN} is integrated into the actor networks for extracting the graph features. Both solutions proved more efficient than traditional \ac{RL} techniques, with the first highlighting its solution generalizability and the second showing increased scalability facing the non-GRL techniques.
+
+
+\begin{table}[h!]
+	\centering
+	\caption{Attention-Based GRL Techniques}
+	\begin{tabular}{|P{2cm}|P{4cm}|p{6cm}|  }
+		\hline
+		\textbf{Reference} & \textbf{DRL Algorithm} & \textbf{Application Domain} \\
+		\hline
+		\cite{xingRealtimeOptimalScheduling2023} & GAT-DDPG & Optimal Scheduling for ADNs  \\ \hline
+		\cite{chenPhysicalassistedMultiagentGraph2023}  &  GAT-MASAC  & Multi-agent Voltage Regulation \\ \hline 
+		\cite{xingBilevelGraphReinforcement2023} & GAT-Modified Rainbow & Electric Vehicle Charging Guidance \\ \hline
+		\cite{xuRealtimeFastCharging2022} & GAT-DQN & Electric Vehicle Charging Guidance \\ \hline 
+		\cite{zhaoLearningSequentialDistribution2022} & GCN-DQN & Multi-agent Sequential Distribution System Restoration \\ \hline
+		\cite{fanAttentionBasedMultiAgentGraph2023} & GCN-MAAC & Multi-agent Service Restoration \\ \hline
+	\end{tabular}
+\end{table}
+
+
+\subsection{Other Approaches}
+
+This subsection includes \ac{GRL} approaches that combine of other \acp{GNN} architectures with \ac{RL} algorithms. In \cite{peiEmergencyControlStrategy2023}, a GraphSAGE network is used with a Deep Dueling Double Q-Network (D3QN) for emergency control of Undervoltage load shedding for power systems with various topologies. The author presents promising results for the GraphSAGE-D3QN model compared to a GCN-D3QN, achieving higher cumulative reward and faster voltage recovery speed, although it required longer decision times. The proposed model performed excellently in the application domain and successfully generalised the learned knowledge to new topology variation scenarios. \par
+\cite{zhangLearningDispatchJob2020} focused on solving the Job shop scheduling problem through a priority dispatching rule with a Graph Isomorphism Network \cite{xuHowPowerfulAre2019} and an actor-critic \ac{PPO} algorithm where the GIN is shared between actor and critic networks. The method showed superior performance against other traditional manually designed priority dispatching rule baselines, outperforming them by a large margin.
+
+\begin{comment}
+	GCN
+	
+	\cite{yanGraphCooperationDeep2023} & GCN-DQN & GRU, Multi-agent and Multi-head Attention & Ecological Traffic Signal Control \\ \hline
+	
+	\cite{luoMultiAgentCollaborativeExploration2019} & GCN-DQN & & Autonomous Exploration under uncertainty \\ \hline
+	
+	Attention
+	\cite{huMultiagentGraphReinforcement2024} & HRGN-MASAC & Multi-agent Vol-VAR Regulation \\ \hline
+	
+\end{comment}
+
+\section{Conclusion}
+
+In conclusion, \ac{GRL} is very promising field, where several different applications and techniques were already studied. \acp{GNN} architectures such as \ac{GCN} have been extensively applied with DRL algorithms for enabling feature extracting from graph-based state representations \cite{chenScalableGraphReinforcement2023, chenAutonomousExplorationUncertainty2020}. Architectures such as the GraphSAGE and other attention-based have also been successfully applied with very promising results \cite{peiEmergencyControlStrategy2023, xingRealtimeOptimalScheduling2023} in comparison with \acp{GCN}. However, less research regarding their integration with DRL algorithms was discovered. This suggests that a possible improvement and research direction in the development of \ac{GRL} techniques might be connected with exploring the use of different \acp{GNN} architectures and using the rising attention-based techniques.
+

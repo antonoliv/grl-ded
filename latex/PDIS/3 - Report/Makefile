@@ -6,7 +6,7 @@
 #
 
 ## Basename for result
-TARGET=meic_thesis
+TARGET=thesis
 
 ## programs
 LATEX=latex
@@ -36,7 +36,7 @@ EXTS=aux toc idx ind ilg log out lof lot lol bbl blg brf tdo fls nav snm fdb_lat
 ## clean
 clean:
 	for EXT in ${EXTS}; do \
-	  find `pwd` -name \*\.$${EXT} -exec rm -v \{\} \; ; done
+	  find "`pwd`" -name \*\.$${EXT} -exec rm -v \{\} \; ; done
 
 ## misc
 .SUFFIXES: .tex .aux .toc .lof .lot .log .dvi .pdf .bib .bbl
