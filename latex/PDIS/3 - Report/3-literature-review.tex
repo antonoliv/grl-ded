@@ -4,6 +4,7 @@
 Research on this topic has significantly increased in the last few years with the improvements of \ac{DRL} techniques and the developments in \acp{GNN} in the mid-2010s \cite{kipfSemiSupervisedClassificationGraph2017, velickovicGraphAttentionNetworks2018, liGatedGraphSequence2016, gaoGraphUNets2019}. \acp{GNN} became the state-of-the-art for solving numerous data mining tasks involving graph-structured data, excelling at classification, link prediction and representation learning \cite{xuHowPowerfulAre2019, nieReinforcementLearningGraphs2023}. This advancement brought more sophisticated \ac{RL} applications on graphs and the surge of a new field studying how to combine the improvements of graph mining and reinforcement learning techniques. \par
 In this context, this literature review is divided into the two main approaches in \ac{GRL}, which compromise the popular \ac{GCN} architecture that has been widely researched or leveraging the rising and promising \ac{GAT} architecture. Lastly, other relevant approaches that use different architectures are also listed.
 
+\section{Graph Reinforcement Learning Approaches}
 
 \subsection{Plain GCN-Based GRL Techniques}
 
@@ -63,17 +64,35 @@ In \cite{zhaoLearningSequentialDistribution2022} and \cite{fanAttentionBasedMult
 This subsection includes \ac{GRL} approaches that combine of other \acp{GNN} architectures with \ac{RL} algorithms. In \cite{peiEmergencyControlStrategy2023}, a GraphSAGE network is used with a Deep Dueling Double Q-Network (D3QN) for emergency control of Undervoltage load shedding for power systems with various topologies. The author presents promising results for the GraphSAGE-D3QN model compared to a GCN-D3QN, achieving higher cumulative reward and faster voltage recovery speed, although it required longer decision times. The proposed model performed excellently in the application domain and successfully generalised the learned knowledge to new topology variation scenarios. \par
 \cite{zhangLearningDispatchJob2020} focused on solving the Job shop scheduling problem through a priority dispatching rule with a Graph Isomorphism Network \cite{xuHowPowerfulAre2019} and an actor-critic \ac{PPO} algorithm where the GIN is shared between actor and critic networks. The method showed superior performance against other traditional manually designed priority dispatching rule baselines, outperforming them by a large margin.
 
-\begin{comment}
-	GCN
-	
-	\cite{yanGraphCooperationDeep2023} & GCN-DQN & GRU, Multi-agent and Multi-head Attention & Ecological Traffic Signal Control \\ \hline
-	
-	\cite{luoMultiAgentCollaborativeExploration2019} & GCN-DQN & & Autonomous Exploration under uncertainty \\ \hline
-	
-	Attention
-	\cite{huMultiagentGraphReinforcement2024} & HRGN-MASAC & Multi-agent Vol-VAR Regulation \\ \hline
-	
-\end{comment}
+
+\section{Dynamic Economic Dispatch Systems}
+
+* \cite{pereraApplicationsReinforcementLearning2021}, RL is a well established potential solution for solving the dispatch problem
+
+
+\begin{table}[h!]
+	\centering
+	\caption{Dynamic Economic Dispatch \ac{RL} Systems}
+	\begin{tabular}{|P{2cm}|P{4cm}|p{6cm}|  }
+		\hline
+		\textbf{Reference} & \textbf{Approach} & \textbf{Application} \\
+		\hline
+		
+ 		\cite{liuDistributedEconomicDispatch2018b} & Multi-Agent \ac{RL} with Function Approximation and Diffusion Mechanism & Utility (Single-Price), Thermal Power (Diesel) and \ac{ESS} (Considering Health)\\
+ 		\hline
+ 		\cite{leiDynamicEnergyDispatch2021} & DDPG & Thermal Power (Diesel), Renewable Energy Sources (Photovoltaic) and \ac{ESS} \\
+ 		\hline 
+ 		\cite{yangDynamicEnergyDispatch2021} & DDPG with Prioritized Experience Replay Mechanism and L2 Regularization& Integrated Energy Systems, Utility (Selling, Purchasing and Gas) and \ac{ESS} \\
+ 		\hline
+ 		\cite{hanAutonomousControlTechnology2023} & SAC with Imitation learning & Thermal Power, Renewable Energy Sources \\
+ 		\hline
+ 		\cite{chenScalableGraphReinforcement2023} & GCN-SAC with Replay Buffer & Thermal Power, Renewable Energy Sources, \ac{ESS} and Voltage Deviation \\
+ 		\hline
+ 		\cite{liNovelGraphReinforcement2022} & GCN-SAC & Utility (Selling and Purchasing) Thermal Power (Coal), Renewable Energy Sources (Wind and Photovoltaic) and \ac{ESS} \\
+ 		\hline
+	\end{tabular}
+\end{table}
+
 
 \section{Conclusion}
 
