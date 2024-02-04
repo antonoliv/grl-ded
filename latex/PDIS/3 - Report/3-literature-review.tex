@@ -1,8 +1,6 @@
 \chapter{Literature Review} \label{chap:literature-review}
 
-\ac{GRL} or Reinforcement Learning on Graphs is a relatively new area in the broader field of machine learning. \ac{GRL} techniques have shown significant progress in solving problems with underlying graph-based representations such as power grid management \cite{liNovelGraphReinforcement2022, chenGraphRepresentationLearningbased2023}, smart transport \cite{xingBilevelGraphReinforcement2023, almasanDeepReinforcementLearning2022} or task offloading \cite{gaoFastAdaptiveTask2023, liGraphReinforcementLearningbased2022}. In this work, the main focus lies on studying the development of \ac{GRL} techniques and subsequent application to smart grid services such as dynamic economic energy dispatch systems \cite{chenScalableGraphReinforcement2023, xingRealtimeOptimalScheduling2023}, residential electricity behavior identification and energy management \cite{chenGraphRepresentationLearningbased2023}, or Volt-VAR regulation \cite{huMultiagentGraphReinforcement2024}.  \par
-Research on this topic has significantly increased in the last few years with the improvements of \ac{DRL} techniques and the developments in \acp{GNN} in the mid-2010s \cite{kipfSemiSupervisedClassificationGraph2017, velickovicGraphAttentionNetworks2018, liGatedGraphSequence2016, gaoGraphUNets2019}. \acp{GNN} became the state-of-the-art for solving numerous data mining tasks involving graph-structured data, excelling at classification, link prediction and representation learning \cite{xuHowPowerfulAre2019, nieReinforcementLearningGraphs2023}. This advancement brought more sophisticated \ac{RL} applications on graphs and the surge of a new field studying how to combine the improvements of graph mining and reinforcement learning techniques. \par
-In this chapter, the literature review process regarding \ac{GRL} approaches and \ac{DED} systems is documented. This unit is divided into three sections with the first exposing the research methodology and the others reviewing \ac{GRL} approaches and the \ac{DED Systems}, the second is further subdived into plain \ac{GCN}, attention-based and other approaches.
+In this chapter, the literature review process regarding \ac{GRL} approaches and \ac{DED} systems is documented. This unit is divided into three sections with the first exposing the research methodology and the others reviewing \ac{GRL} approaches and the \ac{DED} Systems, the second is further subdived into plain \ac{GCN}, attention-based and other approaches.
 
 \section{Research Methodology}
 
@@ -20,9 +18,8 @@ This literature review focuses on analysing the existent literature around the m
 	\end{itemize}
 \end{itemize}
 
-These interrogations aggregate the relevant topics we aim to address in this review. 
-
-The main requirement on the analyzed literature was to only consider research from the past five years, with the exception of seminal works. In this manner, the initial exploratory research was conducted, primarily using \textit{Scopus} and \textit{Web of Science} for searching the published literature and alternatively using \textit{Google Scholar} for finding cross-references when necessary. 
+These interrogations aggregate the relevant topics we aim to address in this review. The main requirement on the analyzed literature was to only consider research from the past five years, with the exception of seminal works. We also exclusively considered literature published in scientific conferences and top-tier journals. \par
+In this manner, the initial exploratory research was conducted, primarily using \textit{Scopus} and \textit{Web of Science} for searching the published literature and alternatively using \textit{Google Scholar} for finding cross-references when necessary. 
 The research questions were translated into fundamental search queries where the research process was based.
 
 
@@ -35,11 +32,16 @@ The research questions were translated into fundamental search queries where the
  The gathered literature was screened and the relevant works were thoroughly reviewed, the following sections present the main findings.
 
 
-
+\begin{comment}
+	* Add literature histogram chart
+\end{comment}
 
 
 
 \section{Graph Reinforcement Learning Approaches}
+
+\ac{GRL} or Reinforcement Learning on Graphs is a relatively new area in the broader field of machine learning. \ac{GRL} techniques have shown significant progress in solving problems with underlying graph-based representations such as power grid management \cite{liNovelGraphReinforcement2022, chenGraphRepresentationLearningbased2023}, smart transport \cite{xingBilevelGraphReinforcement2023, almasanDeepReinforcementLearning2022} or task offloading \cite{gaoFastAdaptiveTask2023, liGraphReinforcementLearningbased2022}. In this work, the main focus lies on studying the development of \ac{GRL} techniques and subsequent application to smart grid services such as dynamic economic energy dispatch systems \cite{chenScalableGraphReinforcement2023, xingRealtimeOptimalScheduling2023}, residential electricity behavior identification and energy management \cite{chenGraphRepresentationLearningbased2023}, or Volt-VAR regulation \cite{huMultiagentGraphReinforcement2024}.  \par
+Research on this topic has significantly increased in the last few years with the improvements of \ac{DRL} techniques and the developments in \acp{GNN} in the mid-2010s \cite{kipfSemiSupervisedClassificationGraph2017, velickovicGraphAttentionNetworks2018, liGatedGraphSequence2016, gaoGraphUNets2019}. \acp{GNN} became the state-of-the-art for solving numerous data mining tasks involving graph-structured data, excelling at classification, link prediction and representation learning \cite{xuHowPowerfulAre2019, nieReinforcementLearningGraphs2023}. This advancement brought more sophisticated \ac{RL} applications on graphs and the surge of a new field studying how to combine the improvements of graph mining and reinforcement learning techniques. \par
 
 \subsection{Plain GCN-Based GRL}
 
@@ -100,7 +102,7 @@ This subsection includes \ac{GRL} approaches that combine of other \acp{GNN} arc
 	\cite{zhangLearningDispatchJob2020} focused on solving the Job shop scheduling problem through a priority dispatching rule with a \ac{GIN} \cite{xuHowPowerfulAre2019} and an actor-critic \ac{PPO} algorithm where the \ac{GIN} is shared between actor and critic networks. The method showed superior performance against other traditional manually designed priority dispatching rule baselines, outperforming them by a large margin.
 
 
-\section{Dynamic Economic Dispatch Systems}
+\section{Dynamic Economic Dispatch Systems} \label{sec:ded}
 
 * \cite{pereraApplicationsReinforcementLearning2021}, RL is a well established potential solution for solving the dispatch problem
 
@@ -129,7 +131,24 @@ This subsection includes \ac{GRL} approaches that combine of other \acp{GNN} arc
 \end{table}
 
 
-\section{Conclusion}
+\section{Conclusions}
 
-In conclusion, \ac{GRL} is very promising field, where several different applications and techniques were already studied. \acp{GNN} architectures such as \ac{GCN} have been extensively applied with DRL algorithms for enabling feature extracting from graph-based state representations \cite{chenScalableGraphReinforcement2023, chenAutonomousExplorationUncertainty2020}. Architectures such as the GraphSAGE and other attention-based have also been successfully applied with very promising results \cite{peiEmergencyControlStrategy2023, xingRealtimeOptimalScheduling2023} in comparison with \acp{GCN}. However, less research regarding their integration with DRL algorithms was discovered. This suggests that a possible improvement and research direction in the development of \ac{GRL} techniques might be connected with exploring the use of different \acp{GNN} architectures and using the rising attention-based techniques.
+In this chapter, we reviewed relevant literature for this dissertation's main research topic, \ac{GRL} algorithms. \ac{GRL} is very promising field, where several different applications and techniques were already studied. \acp{GNN} architectures such as \ac{GCN} have been extensively applied with DRL algorithms for enabling feature extracting from graph-based state representations \cite{chenScalableGraphReinforcement2023, chenAutonomousExplorationUncertainty2020}. Architectures such as the GraphSAGE and other attention-based have also been successfully applied with very promising results \cite{peiEmergencyControlStrategy2023, xingRealtimeOptimalScheduling2023} in comparison with \acp{GCN}. However, less research regarding their integration with DRL algorithms was discovered. This suggests that a possible improvement and research direction in the development of \ac{GRL} techniques might be connected with exploring the use of different \acp{GNN} architectures and using the rising attention-based techniques.
+
+\begin{itemize}
+	\item RQ1 - \textbf{How can \ac{RL} algorithms be adapted to effectively solve sequential decision-making problems on graph-based environments?} 
+	\begin{itemize}
+		\item RQ1.1 - \textbf{What are the existent \ac{GRL} approaches?}
+		 Existent aproaches ubiquotously use \acp{GNN} for efficiently extract graph features. They can be divided into plain \ac{GCN} approaches, Attention-based approaches and others. \\
+		\item RQ1.2 - \textbf{What are their limitations?}
+		 We failed to find current research highlighting the architectural limitations of present \ac{GRL} algorithms. There is a research gap calling for works with a thorough and well-documented scientific process aswell as comparative and systematic studies between the different approaches. \\
+	\end{itemize}
+	\item RQ2 - \textbf{How can \ac{GRL} algorithms improve smart grid services?}
+	\begin{itemize}
+		\item RQ2.1 - \textbf{How can \ac{GRL} algorithms improve \acf{DED} in power distribution grids?}  We were able to find evidence of \ac{GRL} being successfully implemented in \ac{DED} systems such as \cite{chenScalableGraphReinforcement2023} and \cite{liNovelGraphReinforcement2022} in a power grid simulation context. This systems showed efficient performance and scalability in comparison with plain \ac{DRL} models in the same issue. However, as was the case with \ac{GRL} algorithms, the sparseness of different considerations and formalizations of the \ac{DED} problem, highlighted in section \ref{sec:ded}, showed a 
+	\end{itemize}
+\end{itemize}
+
+
+
 

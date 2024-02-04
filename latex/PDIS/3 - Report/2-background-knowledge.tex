@@ -1,6 +1,9 @@
 \chapter{Background Knowledge} \label{chap:background-knowledge}
 
-\section{Artificial Neural Networks}
+In this chapter, we will present the underlying concepts related to this dissertation. This knowledge consists in important context for the rest of this work by explaining the its background concepts. \par
+This chapter is divided into section \ref{sec:ann} addressing Artificial Neural Networks, section \ref{sec:rl} regarding Reinforcement Learning problem and algorithms, \ref{sec:g-rep-l} explaining Graph Representation Learning, \ref{sec:gnn} exposing the current \ac{GNN} approaches and \ref{sec:smart-grid-services} addressing Smart Grid Services.
+
+\section{Artificial Neural Networks} \label{sec:ann}
 
 \textbf{\acp{ANN}} are a class of machine learning algorithms based on the neural process of biological learning. The simplest form of an \ac{ANN} is a \ac{MLP}, also called a feedforward network, whose main objective is to approximate to function $f$ that models relationships between input data $x$ and output data $y$ of considerate complexity \cite{charniakIntroductionDeepLearning2018, goodfellowDeepLearning2016}. It defines a mapping $y=f(x;\theta)$ and learns the best composition of parameters $\theta$ to approximate it to the unknown model. The \ac{MLP} serves as a fundamental part of developing the other more complex types of neural networks \cite{charniakIntroductionDeepLearning2018}. \par
 
@@ -40,7 +43,7 @@ On its own, the model amounts only to a complex function. Still, with real-world
 \end{figure}
 
 
-\section{Reinforcement Learning}
+\section{Reinforcement Learning} \label{sec:rl}
 
 \begin{comment}
 	* SAC
@@ -164,7 +167,7 @@ Regarding \ac{RL} algorithms, they can be divided into model-free and model-base
 Furthermore, algorithms can also be subdivided into on-policy and off-policy methods. \cite{moralesGrokkingDeepReinforcement2020} On-policy algorithms evaluate and improve a single policy used to determine the agent's behaviour \cite{moralesGrokkingDeepReinforcement2020}. The methods under the policy optimization category such as A2C and A3C \cite{mnihAsynchronousMethodsDeep2016} or the \ac{PPO} \cite{schulmanProximalPolicyOptimization2017} almost always fall into this label. In contrast, off-policy algorithms learn how to improve a different target policy based on the results that arise from the policy used to determine the system behaviour initially \cite{moralesGrokkingDeepReinforcement2020}. Such approaches include Q-Learning algorithms such as \acp{DQN} \cite{mnihHumanlevelControlDeep2015, openaiSpinningDocumentation}. \ac{DDPG} \cite{lillicrapContinuousControlDeep2019} combines policy optimization with q-learning, consisting of an off-policy method that learns both a q-function and a policy. \ac{DDPG} constitutes the adaption of q-learning methods to continuous action spaces \cite{openaiSpinningDocumentation}. Another example of an off-policy algorithm is the \ac{SAC} \cite{haarnojaSoftActorCriticOffPolicy2018} method, which bridges stochastic policy optimization with the \ac{DDPG} approach and has entropy regularization as one of its central features, which translates into training a policy that maximizes the expected return and entropy, a measure of randomness in the policy \cite{openaiSpinningDocumentation}. \par
 Lastly, with the advent of deep learning becoming one of the most ubiquitous techniques in machine learning, \ac{RL} algorithms have evolved beyond the traditional tabular methods \cite{moralesGrokkingDeepReinforcement2020}. Traditional \ac{RL} has evolved to \ac{DRL}, which studies how to use deep neural networks in \ac{RL} problems to leverage their generalization abilities for solving more complex problems.
 
-\section{Graph Representation Learning}
+\section{Graph Representation Learning} \label{sec:g-rep-l}
 
 Several objects and problems can be naturally expressed in the real world using graphs, such as social networks, power grids, transportation networks, recommendation systems or drug discovery. The usefulness of such representations is tied to how they instinctively represent the complex relationships between objects. However, graph data is often very sparse and complex, and their sophisticated structure is difficult to deal with \cite{liuIntroductionGraphNeural2020, zhaoRepresentationLearning2022}. \par
 
@@ -172,8 +175,8 @@ Furthermore, the performance of machine learning models strongly relies not only
 
 In this context, \textbf{Graph Representation Learning} studies how to learn the underlying features of graphs to extract a minimal but sufficient representation of the graph attributes and structure \cite{hamiltonGraphRepresentationLearning, zhaoRepresentationLearning2022, cuiGraphRepresentationLearning2022}. Currently, the improvements in deep learning allow representation learning techniques consisting of the composition of multiple non-linear transformations that yield more abstract and, ultimately, more useful representations of graph data \cite{cuiGraphRepresentationLearning2022}. 
 
-\section{Graph Neural Networks}
-
+\section{Graph Neural Networks} \label{sec:gnn}
+ 
 \begin{comment}
 	* GraphSAGE
 	\cite{scarselliGraphNeuralNetwork2009}
@@ -328,7 +331,7 @@ Lastly, the author also mentions that other pooling techniques can be used in th
 \end{equation}
 
 
-\section{Smart Grid Services}
+\section{Smart Grid Services} \label{sec:smart-grid-services}
 
 Given the global ecological emergency and the increasing energetic crisis, there is a necessity for advancements in energy distribution and transmission systems now more than ever. To fulfil the need for energy sustainability, traditional centralized distribution grids must be adapted to, on the one hand, accommodate the rise of distributed renewable energy sources in corporate and domestic consumers and, on the other, to make more efficient and reliable distribution of energy resources \cite{farhangiPathSmartGrid2010, vijayapriyaSmartGridOverview2011}. \par
 
