@@ -1,0 +1,1 @@
+In \ac{RL} an agent's main objective is described by the numeric reward symbol received from the environment. The agent's main goal is to maximize the total amount of reward it receives,

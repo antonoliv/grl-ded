@@ -1,0 +1,3 @@
+> ChatGPT
+
+This is a technique used in machine learning and statistics to enforce smoothness or similarity in a model's predictions across related inputs. In the context of graphs, it typically involves the graph [[Laplacian Matrix]], which encodes the structure of the graph. Regularization often involves adding a term to the loss function of a model that penalizes the difference between the features of connected nodes, effectively encouraging the model to produce similar outputs for nodes that are connected or close within the graph structure.

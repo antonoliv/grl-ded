@@ -1,0 +1,198 @@
+{
+  "main": {
+    "id": "1cbf79f5d581d0b5",
+    "type": "split",
+    "children": [
+      {
+        "id": "db31999b76ec5c8d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "367652c2e68dd607",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Implementation/Deactivate Opponent.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "078e44f98618ce4d",
+    "type": "split",
+    "children": [
+      {
+        "id": "8fe1d6142b69a274",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1710093846464a17",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "13c489c68961e201",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "6dc3b6b921ae369d",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "cc517760972dfade",
+    "type": "split",
+    "children": [
+      {
+        "id": "373c0a45d87722ca",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8409595f9d5c08e0",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Implementation/Deactivate Opponent.md",
+                "collapseAll": true,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "071b16974ffb05c8",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Implementation/Deactivate Opponent.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "af95677b3292c548",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "cc93312327a4e285",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Implementation/Deactivate Opponent.md"
+              }
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "367652c2e68dd607",
+  "lastOpenFiles": [
+    "Implementation/Elements Modeled.md",
+    "Implementation/Deactivate Opponent.md",
+    "Implementation/Action Space.md",
+    "Implementation/Grid2Op.md",
+    "Implementation/Environment.md",
+    "Implementation/Observation Space.md",
+    "Untitled.md",
+    "Implementation",
+    "Reinforcement Learning/Soft Actor-Critic.md",
+    "PDIS/Proposal.md",
+    "2024-01-29.md",
+    "PDIS/Meetings/Meeting (?).md",
+    "PDIS/Meetings/Meeting 2023-01-02.md",
+    "PDIS/Meetings/Meeting 2023-12-19.md",
+    "PDIS/Meetings/Meeting 2024-01-23.md",
+    "PDIS/Meetings/Meeting 2024-01-09.md",
+    "PDIS/Research/Research.md",
+    "High Penetration of Distributed Generations.md",
+    "DED Formulation.md",
+    "PDIS/ACM Computing Classification System.md",
+    "PDIS/Dissertation Structure.md",
+    "PDIS/PD Report Structure.md",
+    "PDIS/Problem Formalization.md",
+    "PDIS/TODO.md",
+    "Volt-VAR System.md",
+    "PDIS/Research/Research Directions.md",
+    "PDIS/Meetings/Meeting 2023-12-26.md",
+    "PDIS/Meetings",
+    "PDIS/Research",
+    "PDIS",
+    "Graph Neural Networks/Untitled.canvas",
+    "Pictures/mdp.png",
+    "Untitled.canvas",
+    "Graph Theory",
+    "Pictures/gcn_math_plus.png",
+    "Pictures/gcn_math.png",
+    "Graph Reinforcement Learning",
+    "Pictures/gf_gnn_math.png",
+    "Pictures/perceptron_eq.png",
+    "Reinforcement Learning",
+    "Graph Neural Networks",
+    "Neural Networks",
+    "Pictures",
+    "Pictures/perceptron.png",
+    "Untitled 1.canvas"
+  ]
+}

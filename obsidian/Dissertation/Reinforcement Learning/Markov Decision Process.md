@@ -1,0 +1,13 @@
+Markov Decision Processes or MPDs are a classical formalization of a sequential decision-making process, constituting the mathematical definition of the [[Reinforcement Learning]] problem. Beyond estimating potential rewards for the available actions, the problem defined by MPDs involves learning which actions are optimal in specific situations, i.e. learning a mapping between states of the environment and actions. 
+
+The central component of MPD's is the agent, which acts as a decision maker and learns from interactions with the environment its inserted. In a continuous process, the agent takes actions that affect the environment's state which changes in an unpredictable way to maximize the received reward.
+
+![[mdp.png]]
+
+Formally, the agent-environment interactions, as figure x entails, occur in a sequence of discrete time steps $t$, where at each step the agent receives a representation of the state of the environment $S_t \in \mathcal{S}$ which is used to select an appropriate action $A_t \in \mathcal{A}(s)$. In the next step, the agent receives, as a consequence of its decision, a numerical reward signal $R_{t+1} \in \mathcal{R} \subset \mathbb{R}$ and is faced with a new state $S_{t +1}$. Ultimately, the MDP agent follows a logical sequence that occurs as:
+$$ S_0, A_0, R_1, S_1, A_2, R_2, S_2, A_2, R_3, \dots$$
+
+In addition, when the set of possible actions, states and rewards ($\mathcal{A}$, $\mathcal{S}$ and $\mathcal{R}$) are finite, the MPD is said to be **finite**. This results on $S_t$ and $R_t$ having well defined discrete probability distributions in relation to the preceeding state and chossen action. Therefore, the probability of receiving a particular reward and state given the previous state and selected action, which characterizes a finite MPD's dynamics, may be defined as follows:
+$$ p(s',r|s,a) \doteq Pr\{S_t = s', R_t = r | S_{t-1} = s, A_{t-1} = a\}$$
+
+For all $s, s' \in \mathcal{S}$, $r \in \mathcal{R}$ and $a \in \mathcal{A}(s)$. This encompasses the assumption that the probability of each possible state, $S_t$, and reward, $R_t$, pair is only dependent on the preeceding state, $S_{t-1}$, and action taken, $A_{t-1}$. Instead of observing this as a restriction on the decision process it's more convenient to view it as a constraint on the state variable, considering that it must contain all the necessary information from past experience to make a valuable decision in the immediate step. If this condition is satisfied the state is declared to have the *Markov Property*.

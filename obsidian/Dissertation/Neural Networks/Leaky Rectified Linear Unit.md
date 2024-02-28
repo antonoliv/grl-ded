@@ -1,0 +1,3 @@
+Leaky Rectified Linear Unit, or LeakyReLU, is a type of activation function for [[Artificial Neural Network|ANNs]] that was created to prevent situations where standard [[Rectified Linear Unit]] caused problems due to its zero slope for negative values. This function achieves this by allowing a small non-zero gradient $\alpha$ when the value is negative:
+
+$$ \text{LeakyReLU}(x) = max(x, \alpha x) $$ 

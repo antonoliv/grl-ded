@@ -1,0 +1,6 @@
+In the real world, several objects and problems can be naturally expressed using graphs, such as social networks, power grids, transportation networks, recommendation systems or drug discovery. The usefulness of using such representations is tied to the way they instinctively represent the complex relationships between objects. However, graph data is often very sparse and complex, their sophisticated structure is difficult to be dealt with. 
+
+Furthermore, the performance of machine learning models strongly relies not only on their design but also on good representations of the underlying information.  Ineffective representations, on one hand, can lack important features of the graph and on the other, can carry huge amounts of redundant information affecting the algorithms performance in leveraging the data for different analytical tasks.
+
+In this context, **Graph Representation Learning** studies how to learn the underlying features of graphs to extract a minimal but sufficient representation of the graph attributes and structure. Currently, the improvements in deep learning allows for representation learning techniques consisting in the composition of multiple non-linear transformations that yield more abstract and ultimately more useful representations of graph data.
+
