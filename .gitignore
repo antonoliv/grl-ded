@@ -1,7 +1,7 @@
 bibliography/*
 zotero/*
 .zotero*
-src/grl/Grid2Op/
+src/Grid2Op/
 src/grl/data_grid2op/
 src/grl/.venv/
 src/grl/.idea/

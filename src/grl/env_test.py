@@ -42,8 +42,9 @@ for i in range(episode_count):
         plt.show()  # Show the plot after each iteration
         action = agent.act(obs, reward, done)
         obs, reward, done, info = env.step(action)
-        print("Cost per MW:" + str(env.gen_cost_per_MW))
-        print("Storage chargeW:" + str(env.storage_charge))
+
+        print("Storage charge:" + str(env.storage_charge))
+
         total_reward += reward
         if done:
             # in this case the episode is over
