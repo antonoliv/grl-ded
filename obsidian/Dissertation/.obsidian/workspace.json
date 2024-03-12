@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Implementation/A2C.md",
+                "file": "Implementation/Elements Modeled.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Implementation/A2C.md",
+                "file": "Implementation/Elements Modeled.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Implementation/A2C.md",
+                "file": "Implementation/Elements Modeled.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Implementation/A2C.md"
+                "file": "Implementation/Elements Modeled.md"
               }
             }
           }
@@ -149,19 +149,20 @@
   },
   "active": "367652c2e68dd607",
   "lastOpenFiles": [
-    "PDIS/Dissertation Structure.md",
+    "Implementation/MDP.md",
+    "Implementation/Grid2Op.md",
+    "Implementation/Environment.md",
+    "Implementation/Elements Modeled.md",
+    "Implementation/Deactivate Opponent.md",
+    "Implementation/Observation Space.md",
+    "Implementation/Action Space.md",
     "Implementation/A2C.md",
+    "PDIS/Dissertation Structure.md",
     "PDIS/PD Report Structure.md",
     "PDIS/Problem Formalization.md",
     "PDIS/Proposal.md",
     "PDIS/Research/Research Directions.md",
     "DED Formulation.md",
-    "Implementation/Deactivate Opponent.md",
-    "Implementation/Elements Modeled.md",
-    "Implementation/Action Space.md",
-    "Implementation/Grid2Op.md",
-    "Implementation/Environment.md",
-    "Implementation/Observation Space.md",
     "Untitled.md",
     "Implementation",
     "Reinforcement Learning/Soft Actor-Critic.md",
@@ -175,7 +176,6 @@
     "High Penetration of Distributed Generations.md",
     "PDIS/ACM Computing Classification System.md",
     "PDIS/TODO.md",
-    "Volt-VAR System.md",
     "PDIS/Meetings",
     "PDIS/Research",
     "PDIS",

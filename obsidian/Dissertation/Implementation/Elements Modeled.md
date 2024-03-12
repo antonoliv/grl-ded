@@ -2,25 +2,25 @@
 
 Elements connected to the power grid with the main purpose of producing power.
 #### Static Properties
-|Name|Type|Description|
-|---|---|---|
-|n_gen|int|Total number of generators on the grid|
-|name_gen|vect, string|Names of all the generators|
-|gen_to_subid|vect, int|To which substation each generator is connected|
-|gen_to_sub_pos|vect, int|Internal, see [Creating a new backend](https://grid2op.readthedocs.io/en/latest/createbackend.html#create-backend-module)|
-|gen_pos_topo_vect|vect, int|Internal, see [Creating a new backend](https://grid2op.readthedocs.io/en/latest/createbackend.html#create-backend-module)|
-|* gen_type|vect, string|Type of generator, among “nuclear”, “hydro”, “solar”, “wind” or “thermal”|
-|* gen_renewable|vect, bool|Is the generator “renewable”|
-|* gen_pmin|vect, float|Minimum production physically possible for each generator, in MW|
-|* gen_pmax|vect, float|Maximum production physically possible for each generator, in MW|
-|* gen_redispatchable|vect, bool|For each generator, indicates if it can be “dispatched” see the subsection about the action for more information on dispatch|
-|* gen_max_ramp_up|vect, float|For each generator, indicates the maximum values the power can vary (upward) between two consecutive steps in MW. See the subsection about the equations for more information|
-|* gen_max_ramp_down|vect, float|For each generator, indicates the maximum values the power can vary (downward) between two consecutive steps in MW. See the subsection about the equations for more information|
-|* gen_min_uptime|vect, int|(currently unused) For each generator, indicates the minimum time a generator need to be “on” before being turned off.|
-|* gen_min_downtime|vect, int|(currently unused) For each generator, indicates the minimum time a generator need to be “off” before being turned on again.|
-|* gen_cost_per_MW|vect, float|(will change in the near future) Cost of production, in $ / MWh (in theory) but in $ / (MW . step) (each step “costs” prod_p * gen_cost_per_MW)|
-|* gen_startup_cost|vect, float|(currently unused) Cost to turn on each generator (in $)|
-|* gen_shutdown_cost|vect, float|(currently unused) Cost to turn off each generator (in $)|
+| Name                 | Type         | Description                                                                                                                                                                     |
+| -------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| n_gen                | int          | Total number of generators on the grid                                                                                                                                          |
+| name_gen             | vect, string | Names of all the generators                                                                                                                                                     |
+| gen_to_subid         | vect, int    | To which substation each generator is connected                                                                                                                                 |
+| gen_to_sub_pos       | vect, int    | Internal, see [Creating a new backend](https://grid2op.readthedocs.io/en/latest/createbackend.html#create-backend-module)                                                       |
+| gen_pos_topo_vect    | vect, int    | Internal, see [Creating a new backend](https://grid2op.readthedocs.io/en/latest/createbackend.html#create-backend-module)                                                       |
+| * gen_type           | vect, string | Type of generator, among “nuclear”, “hydro”, “solar”, “wind” or “thermal”                                                                                                       |
+| * gen_renewable      | vect, bool   | Is the generator “renewable”                                                                                                                                                    |
+| * gen_pmin           | vect, float  | Minimum production physically possible for each generator, in MW                                                                                                                |
+| * gen_pmax           | vect, float  | Maximum production physically possible for each generator, in MW                                                                                                                |
+| * gen_redispatchable | vect, bool   | For each generator, indicates if it can be “dispatched” see the subsection about the action for more information on dispatch                                                    |
+| * gen_max_ramp_up    | vect, float  | For each generator, indicates the maximum values the power can vary (upward) between two consecutive steps in MW. See the subsection about the equations for more information   |
+| * gen_max_ramp_down  | vect, float  | For each generator, indicates the maximum values the power can vary (downward) between two consecutive steps in MW. See the subsection about the equations for more information |
+| * gen_min_uptime     | vect, int    | (currently unused) For each generator, indicates the minimum time a generator need to be “on” before being turned off.                                                          |
+| * gen_min_downtime   | vect, int    | (currently unused) For each generator, indicates the minimum time a generator need to be “off” before being turned on again.                                                    |
+| * gen_cost_per_MW    | vect, float  | (will change in the near future) Cost of production, in $ / MWh (in theory) but in $ / (MW . step) (each step “costs” prod_p * gen_cost_per_MW)                                 |
+| * gen_startup_cost   | vect, float  | (currently unused) Cost to turn on each generator (in $)                                                                                                                        |
+| * gen_shutdown_cost  | vect, float  | (currently unused) Cost to turn off each generator (in $)                                                                                                                       |
 \* - optional attribute depending on scenario
 
 #### Modifiable Attributes
@@ -36,18 +36,18 @@ Elements connected to the power grid with the main purpose of producing power.
 
 #### Observable Attributes
 
-| Name | Type | Description |
-| ---- | ---- | ---- |
-| gen_p | vect, float | the current active production of each generators, in MW. |
-| gen_q | vect, float | the current reactive production of each generators, in MVAr. |
-| gen_v | vect, float | the voltage of the bus at which the generator is connected, in kV. |
-| target_dispatch | vect, float | the bus to which each generators is connected. |
-| actual_dispatch | vect, float | the target values given by the agent to the environment, in MW. |
-| gen_bus | vect, int | actual dispatch: the values the environment was able to provide as redispatching, in MW. |
-| curtailment | vect, float | give the ratio of curtailment for each generator. **NB** it will always be 0.0 for non renewable generator. **NB** the property curtailment_mw also exists if you want to convert the curtailment, normally expressed in ratio of gen_pmax as a curtailment in MW. |
-| gen_p_before_curtail | vect, float | give the amount of production for each renewable generators if no curtailment were applied. **NB** by convention it will be 0.0 for non renewable generator |
-| curtailment_limit | vect, float | add the limits of all the past curtailment actions. |
-|  |  |  |
+| Name                 | Type        | Description                                                                                                                                                                                                                                                        |
+| -------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| gen_p                | vect, float | the current active production of each generators, in MW.                                                                                                                                                                                                           |
+| gen_q                | vect, float | the current reactive production of each generators, in MVAr.                                                                                                                                                                                                       |
+| gen_v                | vect, float | the voltage of the bus at which the generator is connected, in kV.                                                                                                                                                                                                 |
+| target_dispatch      | vect, float | the bus to which each generators is connected.                                                                                                                                                                                                                     |
+| actual_dispatch      | vect, float | the target values given by the agent to the environment, in MW.                                                                                                                                                                                                    |
+| gen_bus              | vect, int   | actual dispatch: the values the environment was able to provide as redispatching, in MW.                                                                                                                                                                           |
+| curtailment          | vect, float | give the ratio of curtailment for each generator. **NB** it will always be 0.0 for non renewable generator. **NB** the property curtailment_mw also exists if you want to convert the curtailment, normally expressed in ratio of gen_pmax as a curtailment in MW. |
+| gen_p_before_curtail | vect, float | give the amount of production for each renewable generators if no curtailment were applied. **NB** by convention it will be 0.0 for non renewable generator                                                                                                        |
+| curtailment_limit    | vect, float | add the limits of all the past curtailment actions.                                                                                                                                                                                                                |
+|                      |             |                                                                                                                                                                                                                                                                    |
 
 
 
