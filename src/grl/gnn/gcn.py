@@ -1,4 +1,3 @@
-
 class GCN(torch.nn.Module):
     def __init__(self):
         super(GCN, self).__init__()

@@ -1,6 +1,10 @@
 import grid2op
+
+from create_env import create_environment
+
+SEED = 1234
 env_name = "l2rpn_case14_sandbox"  # or any other...
-env = grid2op.make(env_name)
+env = create_environment(env_name, SEED)[1]
 
 # extract 1% of the "chronics" to be used in the validation environment. The other 99% will
 # be used for test

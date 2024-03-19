@@ -1,5 +1,5 @@
-import grid2op
 from grid2op.Agent import BaseAgent
+
 
 class MyCustomAgent(BaseAgent):
     def __init__(self, action_space, something_else, and_another_something):

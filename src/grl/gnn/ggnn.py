@@ -1,14 +1,8 @@
-import os
 import torch
 import torch.nn.functional as F
-from torch_sparse import spspmm
-from torch_scatter import scatter_max, scatter_add
-from torch_geometric.nn import GCNConv, TopKPooling, GatedGraphConv, global_max_pool, global_mean_pool
-from torch_geometric.utils import (add_self_loops, sort_edge_index,
-                                   remove_self_loops, softmax)
-from torch_geometric.utils.repeat import repeat
-
-
+from torch_geometric.nn import GatedGraphConv, global_max_pool, global_mean_pool
+from torch_geometric.utils import (sort_edge_index,
+                                   softmax)
 
 
 class GGNN(torch.nn.Module):
@@ -61,5 +55,3 @@ class ValueGGNN(torch.nn.Module):
         x = self.fully_con1(x)
         x = global_mean_pool(x, batch).mean(dim=1)
         return x
-
-

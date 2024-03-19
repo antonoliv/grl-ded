@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Implementation/Elements Modeled.md",
+                "file": "Implementation/Observation Space.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Implementation/Elements Modeled.md",
+                "file": "Implementation/Observation Space.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Implementation/Elements Modeled.md",
+                "file": "Implementation/Observation Space.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Implementation/Elements Modeled.md"
+                "file": "Implementation/Observation Space.md"
               }
             }
           }
@@ -149,10 +149,10 @@
   },
   "active": "367652c2e68dd607",
   "lastOpenFiles": [
+    "Implementation/Elements Modeled.md",
     "Implementation/MDP.md",
     "Implementation/Grid2Op.md",
     "Implementation/Environment.md",
-    "Implementation/Elements Modeled.md",
     "Implementation/Deactivate Opponent.md",
     "Implementation/Observation Space.md",
     "Implementation/Action Space.md",
