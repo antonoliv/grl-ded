@@ -81,6 +81,7 @@ class CollectCallback(BaseCallback):
             self.episode_lengths.append(self.episode_step)
             self.acc_reward.append(self.acc_reward_episode)
             self.acc_reward_episode = 0
+            self.episode_step = 0
         return True
 
     def _on_rollout_end(self) -> None:

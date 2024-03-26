@@ -4,7 +4,7 @@ from stable_baselines3 import SAC
 SEED = 1234
 
 # Model Path
-model_path = "./models/sac/"
+model_path = "/home/treeman/school/dissertation/src/grl/models/sac/"
 
 # Environment Path
 env_name = "/home/treeman/school/dissertation/src/grl/data_grid2op/l2rpn_case14_sandbox_test/"
@@ -17,7 +17,7 @@ env = envs[0]
 grid_env = envs[1]
 
 # Load the model
-model = SAC.load(path + "model", env=env, seed=SEED)
+model = SAC.load(model_path + "model", env=env, seed=SEED)
 env = model.get_env()
 
 # total number of episode
@@ -46,7 +46,7 @@ for i in range(episode_count):
         # plt.pause(update_interval)  # Show the plot after each iteration
         action, _states = model.predict(obs, deterministic=1)
         obs, reward, terminated, info = env.step(action)
-
+        print("Action: " + str(obs[0]))
         # print("Load power: " + str(obs["load_p"]))
         # print("Reward: " + str(reward))
 
