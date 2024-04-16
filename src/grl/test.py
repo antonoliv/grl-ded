@@ -1,27 +1,29 @@
-from create_env import create_environment
+from create_env import env_multi
+from observation_space import get_obs_keys
 from stable_baselines3 import SAC
 
 SEED = 1234
 
 # Model Path
-model_path = "/home/treeman/school/dissertation/src/grl/models/sac/"
+model_path = "/home/treeman/school/dissertation/src/grl/models/exp1/m_sac/"
 
-# Environment Path
-env_name = "/home/treeman/school/dissertation/src/grl/data_grid2op/l2rpn_case14_sandbox_test/"
 
+env_name = "/home/treeman/school/dissertation/src/grl/data_grid2op/l2rpn_case14_sandbox_train/"
 # Create the environment
-test = "/home/treeman/school/dissertation/src/grl/data_grid2op/l2rpn_case14_sandbox_train/"
-test = create_environment(test, SEED)
-envs = create_environment(env_name, SEED)
-env = envs[0]
-grid_env = envs[1]
+default_attr = get_obs_keys(False, False, False, False, False)
+env = env_multi(env_name, default_attr, SEED)
+# Environment Path
+env_name = "/home/treeman/school/dissertation/src/grl/data_grid2op/l2rpn_case14_sandbox_val/"
+env = env_multi(env_name, default_attr, SEED)
+
+
 
 # Load the model
 model = SAC.load(model_path + "model", env=env, seed=SEED)
-env = model.get_env()
+d_env = model.get_env()
 
 # total number of episode
-total_episode = len(grid_env.chronics_handler.subpaths)
+total_episode = len(env.init_env.chronics_handler.subpaths)
 
 # Initialize variables
 # agent = RandomAgent(env.action_space)
@@ -36,17 +38,17 @@ for i in range(episode_count):
     ###################################
     if i % total_episode == 0:
         # I shuffle each time i need to
-        grid_env.chronics_handler.shuffle()
+        env.init_env.chronics_handler.shuffle()
     ###################################
 
-    obs = env.reset()
+    obs = d_env.reset()
     # now play the episode as usual
     while True:
         # fig = env.render()  # render the environment
         # plt.pause(update_interval)  # Show the plot after each iteration
         action, _states = model.predict(obs, deterministic=1)
-        obs, reward, terminated, info = env.step(action)
-        print("Action: " + str(obs[0]))
+        obs, reward, terminated, info = d_env.step(action)
+        # print("Action: " + str(obs["action"]))
         # print("Load power: " + str(obs["load_p"]))
         # print("Reward: " + str(reward))
 
