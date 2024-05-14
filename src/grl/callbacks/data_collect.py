@@ -52,9 +52,9 @@ class CollectCallback(BaseCallback):
         self.length = 0
         self.acc_reward = 0
         self.cost = 0
-        self.res_u = []
+        self.res_waste = []
         self.avg_cost = []  
-        self.avg_res_u = []
+        self.avg_res_waste = []
         self.acc_rewards = []  # Accumulated reward of each episode
         self.lengths = []  # Length of each episode
 
@@ -90,11 +90,9 @@ class CollectCallback(BaseCallback):
         self.acc_reward += self.locals['rewards'][0]
         self.cost += (obs['gen_p'] * self.env.gen_cost_per_MW).sum() * self.env.delta_time_seconds / 3600.0
         
-        tmp_res_u = 0
         for i in range(0, self.env.n_gen):
             if obs['gen_p_before_curtail'][0][i] != 0:
-                tmp_res_u += ((100 * obs['gen_p'][0][i] / obs['gen_p_before_curtail'][0][i]))
-        self.res_u.append(tmp_res_u / self.n_res)
+                self.res_waste += (obs['gen_p_before_curtail'][0][i] - obs['gen_p'][0][i])
 
         self.total_steps += 1
         self.length += 1
@@ -105,11 +103,11 @@ class CollectCallback(BaseCallback):
             self.lengths.append(self.length)
             self.acc_rewards.append(self.acc_reward)
             self.avg_cost.append(self.cost * 288 / self.length)
-            self.avg_res_u.append(np.mean(self.res_u))
+            self.avg_res_waste.append(self.res_waste * 288 / self.length)
             self.acc_reward = 0
             self.length = 0
             self.cost = 0
-            self.res_u = []
+            self.res_waste = 0
         return True
 
     def _on_rollout_end(self) -> None:
@@ -135,11 +133,11 @@ class CollectCallback(BaseCallback):
             'Accumulative Reward': self.acc_rewards,
             'Length': self.lengths,
             'Avg Cost': self.avg_cost,
-            'Avg Renewables Utilization': self.avg_res_u,
+            'Avg Renewables Wasted': self.avg_res_waste,
         }
 
         df_info = pd.DataFrame(data)
-        episode_zip = list(zip(episode["Episode"], episode["Accumulative Reward"], episode["Length"], episode["Avg Cost"], episode["Avg Renewables Utilization"]))
+        episode_zip = list(zip(episode["Episode"], episode["Accumulative Reward"], episode["Length"], episode["Avg Cost"], episode["Avg Renewables Wasted"]))
         df_episode = pd.DataFrame(episode_zip, columns=list(episode.keys()))
         # Save to CSV
         df_info.to_csv(self.save_path + "info.csv", index=False)

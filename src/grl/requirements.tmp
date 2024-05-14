@@ -1,0 +1,10 @@
+grid2op
+gymnasium
+stable-baselines3
+matplotlib
+torch
+lightsim2grid
+numba
+tqdm
+rich
+torch-geometric
