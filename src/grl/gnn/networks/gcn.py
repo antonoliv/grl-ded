@@ -5,23 +5,25 @@ import torch.nn.functional as F
 from torch_geometric.nn import GCNConv, global_max_pool, global_mean_pool
 from torch_geometric.utils import (sort_edge_index,
                                    softmax)
-class GCN(torch.nn.Module):
-    def __init__(self):
-        super(GCN, self).__init__()
-        self.conv1 = GCNConv(5, 1000, improved=True)
-        self.conv2 = GCNConv(1000, 1000, improved=True)
-        self.fully_con1 = torch.nn.Linear(1000, 1)
 
-    def forward(self, data, prob, batch=None):
+
+class GCN(torch.nn.Module):
+    def __init__(self, arch):
+        super(GCN, self).__init__()
+        self.convs = torch.nn.ModuleList()
+        for i in range(len(arch) - 1):
+                self.convs.append(GCNConv(arch[i], arch[i + 1], improved=True))
+
+    def forward(self, data, prob=0.5) -> torch.Tensor:
         x, edge_index, edge_weight = data.x, data.edge_index, data.edge_attr
 
-        x = self.conv1(x, edge_index, edge_weight=edge_weight)
-        x = F.relu(x)
-        x = self.conv2(x, edge_index, edge_weight=edge_weight)
-        x = F.relu(x)
+        for layer in self.convs:
+            x = layer(x, edge_index, edge_weight=edge_weight)
+            x = F.relu(x)
         x = F.dropout(x, p=prob)
-        x = self.fully_con1(x)
+
         return x
+
 
 
 class PolicyGCN(torch.nn.Module):

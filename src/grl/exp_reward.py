@@ -1,6 +1,6 @@
 from create_env import env_multi, env_box, env_test_val, split_dataset
 from observation_space import get_obs_keys
-from baselines import sac, ppo, ddpg
+from baselines import sac
 import time
 from reward.default_reward import EconomicReward
 from reward.res_reward import DynamicEconomicReward
@@ -27,11 +27,11 @@ train_name = f"/home/treeman/school/dissertation/src/grl/data_grid2op/{env_name}
 val_name = f"/home/treeman/school/dissertation/src/grl/data_grid2op/{env_name}_val/"
 
 
-train_ep = 1500                     # Number of Episodes
-eval_ep = 100                   # Number of Evaluations
+train_ep = 1                     # Number of Episodes
+eval_ep = 1                   # Number of Evaluations
 
 
-test_path = path + "exp_reward/"
+test_path = path + "test/"
 
 # Paths for the models
 r_sac_path = "r_sac/"

@@ -37,12 +37,15 @@ class CollectCallback(BaseCallback):
         # to have access to the parent object
         # self.parent = None  # type: Optional[BaseCallback]
 
+
         # Global Metrics
         self.start_time = time.time()
         self.total_steps = 0  # Number of Iterations
         self.episodes = 0  # Number of Episodes
         self.model = model
-        self.env = self.training_env.envs[0].unwrapped.init_env
+
+        self.env = self.training_env.get_attr('init_env', 0)[0]
+
         self.n_res = 0
         for i in range(0, self.env.n_gen):
             if self.env.gen_renewable[i] == 1:

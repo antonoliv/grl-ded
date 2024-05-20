@@ -6,6 +6,7 @@ src/grl/data_grid2op/
 src/grl/.venv/
 src/grl/.idea/
 src/grl/.python-version
+__pycache__/
 
 # Latex
 *.aux

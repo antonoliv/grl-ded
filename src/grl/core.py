@@ -22,14 +22,13 @@ def train(path: str, model, episodes: int):
     callback_lst = CallbackList([eval_callback, episode_callback])
 
     # Train the agent and display a progress bar
-    model.learn(total_timesteps=total_timesteps, progress_bar=True, callback=callback_lst)
+    model.learn(total_timesteps=total_timesteps, progress_bar=False, callback=callback_lst)
 
     model.save(path + "model")
 
 
 
 def validate(path, model, grid_env, eval_episodes: int):
-
 
     path += "data/val/"
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -43,9 +42,9 @@ def validate(path, model, grid_env, eval_episodes: int):
 
     # Episode Metrics
     cost = 0
-    res_u = []
+    res_waste = []
     avg_cost = []  
-    avg_res_u = []
+    avg_res_waste = []
 
     n_res = 0
     for i in range(0, grid_env.n_gen):
@@ -89,22 +88,21 @@ def validate(path, model, grid_env, eval_episodes: int):
 
             cost += (obs['gen_p'] * grid_env.gen_cost_per_MW).sum() * grid_env.delta_time_seconds / 3600.0
             
-            tmp_res_u = 0
-            for i in range(0, grid_env.n_gen):
-                if obs['gen_p_before_curtail'][0][i] != 0:
-                    tmp_res_u += ((100 * obs['gen_p'][0][i] / obs['gen_p_before_curtail'][0][i]))
-            res_u.append(tmp_res_u / n_res)
+            res_waste = 0
+            for j in range(0, grid_env.n_gen):
+                if obs['gen_p_before_curtail'][0][j] != 0:
+                    res_waste += ((obs['gen_p_before_curtail'][0][j] - obs['gen_p'][0][j] ))
 
             if terminated:
                 # in this case the episode is over
                 acc_rewards.append(acc_reward)
                 avg_cost.append(cost * 288 / length)
-                avg_res_u.append(np.mean(res_u))
+                avg_res_waste.append(res_waste * 288 / length)
                 lengths.append(length)
                 acc_reward = 0
                 length = 0
                 cost = 0
-                res_u = []
+                res_waste = 0
                 break
 
     data = {
@@ -114,19 +112,21 @@ def validate(path, model, grid_env, eval_episodes: int):
         'Avg Steps per Episode': [np.mean(lengths) if eval_episodes > 0 else 0],
     }
 
-    step = {
+    episode = {
         'Episode': range(eval_episodes),
         'Accumulative Reward': acc_rewards,
+        'Avg Cost': avg_cost,
+        'Avg Renewables Wasted': avg_res_waste,
         'Length': lengths,
     }
 
     df_info = pd.DataFrame(data)
-    step_zip = list(zip(step["Episode"], step["Accumulative Reward"], step["Length"]))
-    df_step = pd.DataFrame(step_zip, columns=list(step.keys()))
+    episode_zip = list(zip(episode["Episode"], episode["Accumulative Reward"], episode["Length"], episode["Avg Cost"], episode["Avg Renewables Wasted"]))
+    df_episode = pd.DataFrame(episode_zip, columns=list(episode.keys()))
     # Save to CSV
     df_info.to_csv(path + "info.csv", index=False)
     print(f'Saved validation info to {path + "info.csv"}')
-    df_step.to_csv(path + "episode.csv", index=False)
+    df_episode.to_csv(path + "episode.csv", index=False)
     print(f'Saved validation info to {path + "episode.csv"}')
 
 

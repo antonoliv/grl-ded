@@ -10,8 +10,16 @@ class EpisodeCallback(BaseCallback):
     def _on_step(self) -> bool:
         if self.locals['dones']:
             self.current_episodes += 1
+            print("\rEpisode: " + str(self.current_episodes), end="")
             if self.verbose > 0:
                 print("Episode: ", self.current_episodes)
             if self.current_episodes >= self.max_episodes:
                 return False  # Return False to stop the training
         return True
+
+    def _on_training_end(self) -> None:
+        """
+        This event is triggered before exiting the `learn()` method.
+        """
+        print()
+        pass
