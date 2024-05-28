@@ -1,15 +1,10 @@
-requests==2.31.0
-gym==0.26.2
 tensorflow==2.16.1
 numpy==1.23.5
 ray==2.21.0
-gtimer==1.0.0b5
-pytest==7.2.0
-PyYAML==6.0.1
 torch==2.3.0
 torch_geometric==2.5.3
 Grid2Op==1.9.8
 pandas==1.5.2
-networkx==2.8.8
 LightSim2Grid==0.8.2
 gymnasium==0.29.1
+stable_baselines3==2.3.2

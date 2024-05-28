@@ -1,8 +1,7 @@
 import torch
 import torch.nn.functional as F
-from torch_geometric.nn import GatedGraphConv, global_max_pool, global_mean_pool
-from torch_geometric.utils import (sort_edge_index,
-                                   softmax)
+from torch_geometric.nn import GatedGraphConv, global_mean_pool
+from torch_geometric.utils import (softmax)
 
 
 class GGNN(torch.nn.Module):

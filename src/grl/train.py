@@ -1,23 +1,22 @@
-import os
 import copy
 import glob
-import pickle
 import json
+import os
+import pickle
 
+import ray
 import tensorflow as tf
 import tree
-import ray
 from ray import tune
-
-from softlearning.environments.utils import get_environment_from_params
 from softlearning import algorithms
 from softlearning import policies
-from softlearning import value_functions
 from softlearning import replay_pools
 from softlearning import samplers
-
+from softlearning import value_functions
+from softlearning.environments.utils import get_environment_from_params
 from softlearning.utils.misc import set_seed
 from softlearning.utils.tensorflow import set_gpu_memory_growth
+
 
 class ExperimentRunner(tune.Trainable):
     def setup(self, params):

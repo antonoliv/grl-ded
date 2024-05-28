@@ -1,0 +1,35 @@
+
+\chapter{Introduction} \label{chap:intro}
+
+In this introductory chapter, the context and motivation regarding this dissertation, as well as its key objectives are presented in sections \ref{sec:intro-context}, \ref{sec:intro-motivation} and \ref{sec:intro-objectives}, respectively. Additionally, the structure of this report is exposed and its logical divisions are described is section \ref{sec:intro-structure}.
+
+\section{Context} \label{sec:intro-context}
+
+Several real-world problems and their objects can be instinctively represented by graph structures. These representations not only capture the main properties of a given domain but also the intricate topology of relationships in a network-oriented problem. Graph representations are often sparse and complex and to appropriately leverage their various topology features   machine learning algorithms require underlying methods to efficiently generalize and produce adequate representations from these structures, considering the trade-off data completeness and computational efficiency. \par
+In the case of sequential decision-making problems, the same is verified. Learning how to map good sequences of decisions in network-oriented domains can depend, in some cases, on accounting for the environment topological features \cite{chenScalableGraphReinforcement2023, xingBilevelGraphReinforcement2023, xingGraphReinforcementLearningBased2023, zhaoGraphbasedDeepReinforcement2022b}. As the main paradigm of machine learning that addresses sequential decision-making problems, \ac{RL} algorithms need to be adapted to reflect these considerations, which establishes the foundations of \acf{GRL}. This compromises the main focus of this work, which will be applied in the application domain of \textit{Smart Grid} Services. \par
+In other regards, this report is written in the context of the course of Dissertation Preparation (PDIS) inserted in the Master's Degree in Informatics and Computing Engineering (MEIC) of the Faculty of Engineering of the University of Porto (FEUP).  In addition, this project is accommodated in the Artificial Intelligence and Computer Science Laboratory (LIACC). \par
+
+
+
+\section{Motivation} \label{sec:intro-motivation}
+
+Reflecting on the current global issues associated with the energetic crisis and climate change, there is an increasing need for sustainable and economic energetic systems to modernize the current power grids. This modernization is translated into the transition to the \textit{smart grid}, a power grid equipped with intelligent control and monitoring systems to efficiently manage power distribution \cite{chenScalableGraphReinforcement2023, liNovelGraphReinforcement2022}, voltage regulation, system restoration \cite{zhaoLearningSequentialDistribution2022}, grid reliability \cite{peiEmergencyControlStrategy2023} or other associated processes. Currently, renewable energy sources play a major role in reducing the reliance on fossil fuels \cite{RenewablesSupplied882023}, which changes the topology of energy distribution systems as consumers gain the capability to generate renewable power. Furthermore, investment in energy storage is becoming a priority in the energy sector \cite{stokerEnergyStorageOutranks2023}, resulting in improvements on storage capacity and approximating the current solutions to the average consumer \cite{lienertGMTakesTesla2022}. \par
+The exposed issues serve as the prime motivation for performing this work on the application domain of \textit{smart grid} services, with the expectation that by proposing concrete improvements in \ac{GRL} techniques a well-performing solution to the dynamic economic dispatch problem can be presented. Beyond this, we hope the proposed solution and its architecture is also adaptable and applicable to other smart grid problems, resulting in a significant contribution to these services. \par
+Furthermore, the main reasons for addressing \ac{GRL} algorithms lies on their novelty and complexity, the lack of well-documented literature regarding these approaches, and the need for systematic and comparative studies confronting the different proposed techniques and architectures.
+
+\section{Objectives} \label{sec:intro-objectives}
+
+Considering this work's context and motivations, we define its main objectives:
+\begin{enumerate}
+	\item Perform a review of literature regarding \ac{GRL} approaches and \ac{DED} systems
+	\item Conduct a comparative and systematic empirical study of different \ac{GRL} solutions of the \ac{DED} problem
+	\item Propose a \ac{GRL} model and concrete improvements facing the literature proposed models
+\end{enumerate}
+
+The first goal addresses the analysis of existent techniques, as well as its limitations, by reviewing the relevant research on \ac{GRL} approaches and \ac{DED} systems. Secondly, we will focus on implementing the different observed approaches to solve the \ac{DED} problem and perform a comparative study to analyse and confront the gathered results. Lastly, we hope the accomplishment of the first to goals to enable the proposition of a state-of-the-art \ac{GRL} model and specific improvements to these techniques.
+
+
+
+\section{Report Structure} \label{sec:intro-structure}
+
+This report is organized as follows: (\ref{chap:intro}) an introductory chapter; (\ref{chap:background-knowledge}) a chapter explaining the relevant background concepts to perform this study; (\ref{chap:literature-review}) the review of the literature regarding \ac{GRL} techniques and \ac{DED} systems; (\ref{chap:proposed-solution}) the statement of the main problem and the presentation of the proposed solution and finally, (\ref{chap:conclusions}) the main conclusions, reflections and expected contributions of this work.

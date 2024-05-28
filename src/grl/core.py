@@ -1,12 +1,12 @@
+import os
+import time
+
+import numpy as np
+import pandas as pd
 
 from callbacks.data_collect import CollectCallback
 from callbacks.train_episode import EpisodeCallback
 from stable_baselines3.common.callbacks import CallbackList
-import numpy as np
-import pandas as pd
-import time
-import os   
-
 
 
 def train(path: str, model, episodes: int):
@@ -17,19 +17,18 @@ def train(path: str, model, episodes: int):
     total_timesteps = max_episodes * avg_episode_length
 
     # Create a callbacks
-    eval_callback = CollectCallback(save_path=path + "data/train/", model=model)  # Saves training data
-    episode_callback = EpisodeCallback(max_episodes=max_episodes, verbose=0)  # Stops training after x episodes
+    eval_callback = CollectCallback(save_path=path + "data/train/", model=model, verbose=1,
+                                    max_episodes=episodes)  # Saves training data
+    episode_callback = EpisodeCallback(max_episodes=max_episodes, verbose=1)  # Stops training after x episodes
     callback_lst = CallbackList([eval_callback, episode_callback])
 
     # Train the agent and display a progress bar
-    model.learn(total_timesteps=total_timesteps, progress_bar=False, callback=callback_lst)
+    model.learn(total_timesteps=total_timesteps, progress_bar=False, callback=eval_callback)
 
     model.save(path + "model")
 
 
-
 def validate(path, model, grid_env, eval_episodes: int):
-
     path += "data/val/"
     os.makedirs(os.path.dirname(path), exist_ok=True)
 
@@ -42,8 +41,8 @@ def validate(path, model, grid_env, eval_episodes: int):
 
     # Episode Metrics
     cost = 0
-    res_waste = []
-    avg_cost = []  
+    res_waste = 0
+    avg_cost = []
     avg_res_waste = []
 
     n_res = 0
@@ -67,12 +66,6 @@ def validate(path, model, grid_env, eval_episodes: int):
     # and now the loop starts
     for i in range(episode_count):
 
-        ###################################
-        if i % total_episode == 0:
-            # I shuffle each time i need to
-            grid_env.chronics_handler.shuffle()
-        ###################################
-
         obs = env.reset()
 
         # now play the episode as usual
@@ -82,16 +75,15 @@ def validate(path, model, grid_env, eval_episodes: int):
             action, _states = model.predict(obs, deterministic=1)
             obs, reward, terminated, info = env.step(action)
 
-            acc_reward += reward
+            acc_reward += reward[0]
             length += 1
             total_steps += 1
 
             cost += (obs['gen_p'] * grid_env.gen_cost_per_MW).sum() * grid_env.delta_time_seconds / 3600.0
-            
-            res_waste = 0
+
             for j in range(0, grid_env.n_gen):
                 if obs['gen_p_before_curtail'][0][j] != 0:
-                    res_waste += ((obs['gen_p_before_curtail'][0][j] - obs['gen_p'][0][j] ))
+                    res_waste += (obs['gen_p_before_curtail'][0][j] - obs['gen_p'][0][j]).sum()
 
             if terminated:
                 # in this case the episode is over
@@ -105,6 +97,8 @@ def validate(path, model, grid_env, eval_episodes: int):
                 res_waste = 0
                 break
 
+    env.close()
+
     data = {
         'Time Elapsed': [time.time() - start_time],
         'Num Steps': [total_steps],
@@ -113,22 +107,20 @@ def validate(path, model, grid_env, eval_episodes: int):
     }
 
     episode = {
-        'Episode': range(eval_episodes),
+        'Episode': range(1, eval_episodes + 1),
         'Accumulative Reward': acc_rewards,
+        'Length': lengths,
         'Avg Cost': avg_cost,
         'Avg Renewables Wasted': avg_res_waste,
-        'Length': lengths,
     }
 
     df_info = pd.DataFrame(data)
-    episode_zip = list(zip(episode["Episode"], episode["Accumulative Reward"], episode["Length"], episode["Avg Cost"], episode["Avg Renewables Wasted"]))
+    episode_zip = list(zip(episode["Episode"], episode["Accumulative Reward"], episode["Length"], episode["Avg Cost"],
+                           episode["Avg Renewables Wasted"]))
     df_episode = pd.DataFrame(episode_zip, columns=list(episode.keys()))
     # Save to CSV
     df_info.to_csv(path + "info.csv", index=False)
-    print(f'Saved validation info to {path + "info.csv"}')
     df_episode.to_csv(path + "episode.csv", index=False)
-    print(f'Saved validation info to {path + "episode.csv"}')
-
 
 # from stable_baselines3 import SAC
 # from grid_obs import get_obs_keys
@@ -150,4 +142,3 @@ def validate(path, model, grid_env, eval_episodes: int):
 #
 #
 # validate(sac_model, val_env.init_env, 1)
-

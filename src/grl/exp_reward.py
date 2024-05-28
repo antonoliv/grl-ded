@@ -1,9 +1,11 @@
-from create_env import env_multi, env_box, env_test_val, split_dataset
-from observation_space import get_obs_keys
-from baselines import sac
 import time
-from reward.default_reward import EconomicReward
-from reward.res_reward import DynamicEconomicReward
+
+from baselines import sac
+from environment.create_env import env_test_val
+from environment.observation_space import get_obs_keys
+from environment.reward.default_reward import EconomicReward
+from environment.reward.res_reward import DynamicEconomicReward
+
 
 def seed(path):
     # SEED = 123456789
@@ -12,7 +14,7 @@ def seed(path):
     # Save the seed
     with open(path + 'seed.txt', 'w') as file:
         file.write(f"Seed: {SEED}\n")
-    
+
     return SEED
 
 
@@ -20,16 +22,14 @@ def seed(path):
 path = "/home/treeman/school/dissertation/src/grl/models/"
 
 # Environment Name
-env_name = "l2rpn_case14_sandbox"   
+env_name = "l2rpn_case14_sandbox"
 
 # Environment paths
 train_name = f"/home/treeman/school/dissertation/src/grl/data_grid2op/{env_name}_train/"
 val_name = f"/home/treeman/school/dissertation/src/grl/data_grid2op/{env_name}_val/"
 
-
-train_ep = 1                     # Number of Episodes
-eval_ep = 1                   # Number of Evaluations
-
+train_ep = 1  # Number of Episodes
+eval_ep = 1  # Number of Evaluations
 
 test_path = path + "test/"
 
@@ -47,7 +47,6 @@ rd4_sac_path = "rd4_sac/"
 default_attr = get_obs_keys(False, False, False, False, False)
 delta_time_attr = get_obs_keys(False, False, True, False, False)
 time_attr = get_obs_keys(False, False, True, True, False)
-
 
 default_reward = EconomicReward
 res1_reward = DynamicEconomicReward(res_penalty=0.1)
@@ -70,6 +69,5 @@ sac(test_path + rd2_sac_path, rd2_train_env, rd2_val_env, train_ep, eval_ep, "Mu
 
 rd3_train_env, rd3_val_env = env_test_val(train_name, val_name, default_attr, res3_reward, SEED, False)
 sac(test_path + rd3_sac_path, rd3_train_env, rd3_val_env, train_ep, eval_ep, "MultiInputPolicy", SEED)
-
 
 # Train and validate the models
