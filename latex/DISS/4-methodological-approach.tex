@@ -25,36 +25,225 @@ In this section, the main problem of study of this dissertation is formally intr
 
 \begin{comment}
 	* Citation Needed (?)
+	* Revise
+	* Constraints
+	
+	
+	
+	
+	
+	
+	
 \end{comment}
+
+\begin{center}
+	\begin{tabular}{ | m{2cm} | m{10cm}| } 
+		\hline
+		$F(t)$ & Total Operational Cost \\ 
+		\hline
+		$F_\text{NRES}(t)$ & Total Non-Renewable Generators Operational Cost \\
+		\hline
+		$F_\text{NRES}(t)$ & Total Renewable Generators Operational Cost \\
+		\hline
+		$F_\text{ESS}(t)$ & Total ESS Operational Cost \\
+		\hline
+		$T$ & Terminal Timestep \\
+		\hline
+		$t$ & Timestep \\
+		\hline
+		$c^\text{NRES}_i$ & Cost of conventinal generator $i$ in €/MWh \\
+		\hline
+		$P^\text{NRES}_i(t)$ & Current generated power of non-renewable generator $i$ in MW \\
+		\hline
+		$\beta_\text{RES}$ & \ac{RES} wasted energy penalty term \\
+		\hline
+		$P^\text{RES}_i(t)$ & Current generated power of renewable generator $i$ in MW \\
+		\hline
+		$\overline{P^\text{RES}_i}(t)$ &  Current power of renewable generator $i$ before curtailmentin MW \\
+		\hline
+		$c^\text{ESS}_i$ & Operational Cost of \ac{ESS} $i$ in €/MW \\
+		\hline
+		$P^\text{ESS}_i(t)$ & Discharging/Charging Power of \ac{ESS} $i$ \\
+		\hline
+		$P^\text{LOAD}_i(t)$ & Active Power demand of load $i$ \\
+		\hline
+		$Q^\text{LOAD}_i(t)$ & Reactive Power demand of load $i$ \\
+		\hline
+		$F_i$ or $F_{i,j}$ & Powerline $i$ status \\
+		\hline
+		$\text{rho}_i$ or $\text{rho}_{i,j}$ & Relative flows of powerline $i$ or with origin in substation $i$ and destination in substation $j$. Ratio of the flow divided by its thermal limit. \\
+		\hline
+		$P^\text{G}_i(t)$ & Current generated active power of generator $i$ in MW \\
+		\hline
+		$Q^\text{G}_i(t)$ & Current generated reactive power of generator $i$ in MW \\
+		\hline
+		$N$ & Number of non-renewable generators \\
+		\hline
+		$M$ & Number of renewable generators \\
+		\hline
+		$K$ & Number of loads \\
+		\hline
+		$L$ & Number of powerlines \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsubsection{Objective Function}
 
 The \ac{DED} problem addresses the issue of balancing the necessity for ensuring stability, security and reliability of a power grid while also minimizing its operating cost. This problem is hardened by the paradigm observed in current power systems where \ac{ESS} and \ac{RES} are available and also need to be taken in consideration when studying solutions for this problem. \par
-Equation \ref{eq:ded-function} highlights the main objective function for the \ac{DED} problem and is composed of three main components: $F_G(t)$ represents the cost of energy produced by conventional generators, $F_\text{RES}(t)$ is the term that depicts the cost of wasted energy from \ac{RES} and $F_{\text{ESS}}(t)$ the \ac{ESS} operation cost. \par
+Equation \ref{eq:ded-function} highlights the main objective function for the \ac{DED} problem and is composed of three main components: $F_\text{NRES}(t)$ represents the cost of energy produced by conventional generators, $F_\text{RES}(t)$ is the term that depicts the cost of wasted energy from \ac{RES} and $F_{\text{ESS}}(t)$ the \ac{ESS} operation cost. \par
 
 \begin{equation} \label{eq:ded-function}
- \min\sum^T_{t=1}F_G(t) + F_{\text{RES}}(t) + F_{\text{ESS}}(t)
+ \min\sum^T_{t=1}F_\text{NRES}(t) + F_{\text{RES}}(t) + F_{\text{ESS}}(t)
 \end{equation}
 
-Conventional generation cost calculation is presented in equation \ref{eq:conv-cost}. For the sake of simplicity, this component is reduced to a linear equation and represented by a static $c_i$ term for generator $i$ in €/MWh . Regarding the cost of wasted \ac{RES} energy, a penalty term $\beta_\text{RES}$ is introduced that defines a cost for the abandoned renewable energy. Lastly, for
-
-\begin{comment}
-	* REVISE
-\end{comment}
+Conventional generation cost calculation is presented in equation \ref{eq:conv-cost}. For the sake of simplicity, this component is reduced to a linear equation and represented by a static $c_i$ term for generator $i$ in €/MWh . Regarding the cost of wasted \ac{RES} energy, a penalty term $\beta_\text{RES}$ is introduced that defines a cost for the abandoned renewable energy. Lastly, concerning \acp{ESS}, the cost is directly related to its operation cost $c^\text{ESS}_i$ in €/MW and to its current discharging/charging power $P^\text{ESS}_i$ with a positive power meaning that energy is being absorbed.
 
 \begin{equation} \label{eq:conv-cost}
-	F_G(t) = \sum^N_{i=0} c_i P^G_i \Delta t
+	F_\text{NRES}(t) = \sum^N_{i=0} c^\text{NRES}_i P^\text{NRES}_i(t) \Delta t
 \end{equation}
 
 \begin{equation} \label{eq:res-cost}
-	F_\text{RES}(t) = \sum^K_{i=0} \beta_\text{RES} (\overline{P^\text{RES}_i} - P^\text{RES}_i) \Delta t 
+	F_\text{RES}(t) = \beta_\text{RES} \sum^M_{i=0}  (\overline{P^\text{RES}_i}(t) - P^\text{RES}_i(t)) \Delta t 
 \end{equation}
 
 \begin{equation} \label{eq:ess-cost}
-	F_\text{ESS}(t) = \sum^K_{i=0} c_i (\overline{P^\text{RES}_i} - P^\text{RES}_i) \Delta t 
+	F_\text{ESS}(t) = \sum^O_{i=0} c^\text{ESS}_i P^\text{ESS}_i(t) 
 \end{equation}
 
 
+\subsubsection{Constraints}
+
 
 \subsection{\acf{MDP}}
+
+
+
+\begin{comment}
+	* Voltage Deviation
+\end{comment}
+
+In this section, the \ac{DED} problem is formalized in the as a sequential decision-making problem and its \ac{MDP} is uncovered. 
+
+\subsubsection{Simple}
+
+\begin{description}
+	\item[Action] The considered action space includes the change in conventional generator redispatching $\Delta P^G_i$, renewable energy curtailment $P^\text{RES}_i$ and \ac{ESS} absorption/production power $P^\text{ESS}_i$.
+	
+	\item[Observation] The observation space is composed of four components regarding Generators, \ac{RES}, Loads and Powerlines, highlighted in the following equations:
+	
+	\begin{comment}
+		* Voltage
+	\end{comment}
+	
+	\begin{equation} \label{eq:simple-obs-space1}
+		o_{1}(t)= \begin{bmatrix}
+			P^\text{NRES}_1 & P^\text{NRES}_2 & \dots & P^\text{NRES}_{N} \\
+		\end{bmatrix}
+	\end{equation}
+	
+	\begin{equation} \label{eq:simple-obs-space2}
+		o_{2}(t)= \begin{bmatrix}
+			P^\text{RES}_1 & P^\text{RES}_2 & \dots & P^\text{RES}_{M} \\
+			\overline{P^\text{RES}_1} & \overline{P^\text{RES}_2} & \dots & \overline{P^\text{RES}_{M}} \\
+		\end{bmatrix}
+	\end{equation}
+	
+	\begin{equation} \label{eq:simple-obs-space3}
+		o_{3}(t)= \begin{bmatrix}
+			P^\text{LOAD}_1 & P^\text{LOAD}_2 & \dots & P^\text{LOAD}_{K} \\
+			Q^\text{LOAD}_1 & Q^\text{LOAD}_2 & \dots & Q^\text{LOAD}_{K} \\
+		\end{bmatrix}
+	\end{equation}
+	
+	\begin{equation} \label{eq:simple-obs-space4}
+		o_{4}(t)= \begin{bmatrix}
+			F_1 & F_2 & \dots & F_{L} \\
+			\text{rho}_1 & \text{rho}_2 & \dots & \text{rho}_{L} \\
+		\end{bmatrix}
+	\end{equation}
+	
+	\begin{equation} \label{eq:simple-obs-space}
+		o(t)= \{ o_{1}(t), o_{2}(t), o_{3}(t), o_{4}(t) \}
+	\end{equation}
+	
+	This tuple encompasses the main elements of the powergrid an their characteristics, without capturing their topology.
+	
+	\item[Reward] 
+	
+	\begin{equation}
+		r(t) = r_1(t) + r_2(t)
+	\end{equation}
+	
+	\begin{equation}
+		\begin{split}
+			r_1(t) &= \overline{F_\text{NRES}} - F_\text{NRES}(t) \\
+			&= \overline{F_\text{NRES}} - \sum^N_{i=0} c^\text{NRES}_i P^\text{NRES}_i(t) \Delta t
+		\end{split}
+	\end{equation}
+	
+	\begin{equation}
+		\begin{split}
+			r_2(t) &= - F_\text{RES}(t) \\
+			&= \beta_\text{RES} \sum^M_{i=0} (\overline{P^\text{RES}_i}(t) - P^\text{RES}_i(t)) \Delta t
+		\end{split}
+	\end{equation}
+\end{description}
+
+
+\subsubsection{Graph}
+
+\begin{description}
+	\item[Action] The considered action space includes the change in conventional generator redispatching $\Delta P^G_i$, renewable energy curtailment $P^\text{RES}_i$ and \ac{ESS} absorption/production power $P^\text{ESS}_i$.
+	
+	\item[Observation] The observation space includes the current active and reactive load power, conventional and \ac{RES} generator active power, \ac{RES} power before curtailment, state-of-charge of \ac{ESS} and the current timestep for each node of the grid, respectively represented as a tuple in equation \ref{eq:graph-obs-space}.
+	
+	\begin{equation} \label{eq:graph-obs-space}
+		o_i(t) = \{P^\text{LOAD}_i, Q^\text{LOAD}_i, P^\text{NRES}_i, P^\text{RES}_i, \overline{P^\text{RES}_i}, t\}
+	\end{equation}
+	
+	Beyond that, the observation also includes the topology of the power grid as a graph structure, considering the current powerline status as edges connecting substations and their respective relative flow as their weights. In this manner, the full observation is represented as:
+	
+	\begin{equation}
+		o(t) = G(\text{Adj}, W, X)
+	\end{equation}
+	
+	where 
+	
+	\begin{equation}
+		\text{Adj}_{i,j} = F_{i,j}
+	\end{equation}
+	
+	\begin{equation}
+		W_{i,j} = \text{rho}_{i,j}
+	\end{equation}
+	
+	\begin{equation}
+		X_i = o_i
+	\end{equation}
+	
+	\item[Reward] description
+	
+	\begin{equation}
+		r(t) = r_1(t) + r_2(t)
+	\end{equation}
+	
+	\begin{equation}
+		\begin{split}
+			r_1(t) &= \overline{F_\text{NRES}} - F_\text{NRES}(t) \\
+			&= \overline{F_\text{NRES}} - \sum^N_{i=0} c^\text{NRES}_i P^\text{NRES}_i(t) \Delta t
+		\end{split}
+	\end{equation}
+	
+	\begin{equation}
+		\begin{split}
+			r_2(t) &= - F_\text{RES}(t) \\
+			&= \beta_\text{RES} \sum^M_{i=0} (\overline{P^\text{RES}_i}(t) - P^\text{RES}_i(t)) \Delta t
+		\end{split}
+	\end{equation}
+	\end{description}
+	
+\end{description}
 
 \begin{comment}
 	* TODO
@@ -156,66 +345,9 @@ Considering the conclusions taken from the reviewed literature, in chapter \ref{
 To fulfil this, the agent adjusts the generator power output and voltage levels and manages the \ac{ESS} operation in real-time. \par
 The solution is executed in the context of a power grid simulation that models the appropriate elements, properties, constraints and operating of the power distribution grid. This method is further described in the upcoming subsection \ref{sec:method}.
 
-\section{Methodology} \label{sec:method}
-
-\begin{comment}
-	* Evaluative mehtods as subsection?
-\end{comment}
-
-Regarding the established methodology for enabling the implementation of the proposed solution, the \textit{grid2Op} framework \cite{rtefranceGrid2OpDocumentation} will be used for modelling the sequential decision-making process on simulated power distribution grid. \textit{grid2Op} is designed by RTE (\textit{Réseau de Transport d'Électricité}), the electricity transmission system operator of France, and is equipped with a variety of pre-defined scenarios used in coding competitions and based on real-world data \cite{rtefranceGrid2OpDocumentation}. This platform focuses on easing the job using the grid topology to control the power flows and also allowing for it to be reconfigured in real-time \cite{rtefranceGrid2OpDocumentation}. Additionally, enables to graphically plot the current observable state of the grid, as portrayed in figure \ref{fig:grid2op-graph}. Apart from graph topology, \textit{grid2op} also enables the manipulation of:
-
-\begin{itemize}
-\item the \textbf{voltages} by manipulating the set-point value of the generators;
-\item the \textbf{active generation} by mapping the received observations to optimal sequences of dispatch actions \cite{rtefranceGrid2OpDocumentation}
-\end{itemize}
-
-This framework is compatible with the \textit{Gymnasium} framework \cite{faramafoundationGymnasiumDocumentation}, a widely used toolkit for developing \ac{RL} algorithms, which will also will be used in this work together with the Grid2Op simulation environment. 
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.85\linewidth]{./figures/grid2op-graph.png}
-	\caption{Grid2Op \textit{l2rpn\_idf\_2023} 118-bus test case \cite{rtefranceGrid2OpDocumentation}}
-	\label{fig:grid2op-graph}
-\end{figure}
-
-This platform focuses on describing the power distribution grids by modelling the following objects:
-\begin{itemize}
-	\item \textbf{Buses} are the fundamental objects of the power grid, representing nodes where power sources, loads and other elements are connected\cite{rtefranceGrid2OpDocumentation}.
-	
-	\item \textbf{Powerlines} represent edges in the power grid and connect the different buses together. They represent the physical transmission and distribution lines and allow power to flow from one part of the grid to another \cite{rtefranceGrid2OpDocumentation}.
-	
-	\item \textbf{Generators} are critical grid elements connected to buses whose main role is to produce power and maintain grid stability by balancing the energy supply and demand. They can be Conventional Thermal Generators, Wind Turbines or Photovoltaic Cells \cite{rtefranceGrid2OpDocumentation}.
-	
-	\item \textbf{Loads} consume power from the grid, simulating electricity use. They're also associated to an individual bus \cite{rtefranceGrid2OpDocumentation}.
-	
-	\item \textbf{Storage Units} can act as both consumers and producers. They're able to retain energy from the power grid when production surpasses demand for later injecting back power when convenient. Storage units are bound by a maximum energy storage capacity \cite{rtefranceGrid2OpDocumentation}.
-\end{itemize}
-
-\begin{table}[H] 
-	\centering
-	\caption{Test Case Sizes}
-	\begin{tabular}{|P{2cm}|P{3.5cm}|P{3.5cm}|  }
-		\hline
-		 & \textbf{l2rpn\_icaps\_2021} & \textbf{l2rpn\_idf\_2023} \\
-		\hline
-		\textbf{Buses} & 36 & 118 \\
-		\hline
-		\textbf{Powerlines} & 59  & 186  \\
-		\hline
-		\textbf{Generators} & 22 & 62  \\
-		\hline
-		\textbf{Loads} & 37 & 99 \\
-		\hline
-	\end{tabular}
-	\label{tab:test-case}
-\end{table}
-
-This work will use the pre-defined \textit{grid2op} \textit{l2rpn\_icaps\_2021} and \textit{l2rpn\_idf\_2023} test environments, a modified case studies based on the original IEEE 118-bus system test case \cite{christiePowerSystemsTesta} of 36 and 118 buses, respectively. The first test case is a subset of the original 118-bus system with 50 years worth of data divided into independent \footnote{non-consecutive} weekly scenarios, while in the second case the system was modified to accommodate the \textit{possible energy mix} of France in 2035, containing 16 years of data \cite{rtefranceGrid2OpDocumentation}. The scenarios document the loads and productions at each time step, the grid layout (for display purposes), generator and \ac{ESS} characteristics \cite{rtefranceGrid2OpDocumentation} for a weekly episode, the sizes of test cases can be further observed in table \ref{tab:test-case}. In addition, the test cases data will be modified to reflect the defined requirements of this work. \par
-Beyond \textit{grid2op} to build and run the test cases and \textit{gymnasium} as the RL framework, this project will use \textit{PyTorch} \cite{pytorchPyTorch} with \textit{PyTorch Geometric} \cite{pygteamPyGPytorch_geometric} library for developing the \ac{GNN} because of its extensive list of available implemented models. The different combinations of algorithms will be applied to a set of modified scenarios that fulfil the settled requirements. For Deep Reinforcement Learning algorithms, solutions with plain \ac{SAC}, \ac{DDPG} and \ac{PPO} approaches and combined with the \ac{GCN}, \ac{GAT} and \ac{GIN} architectures.  \par
-Concerning result analysis, it's also important to point out the use of quantitative methods for evaluating the different implemented models, a topic that is further explored in the following section \ref{sec:eval-methods}.
 
 
-\subsection{Evaluation Metrics} \label{sec:eval-methods}
+\section{Evaluation Metrics} \label{sec:eval-methods}
 
 \begin{comment}
 	* Sample Efficiency
