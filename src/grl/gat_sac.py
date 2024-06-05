@@ -1,6 +1,6 @@
+from models.ppo import PPO, SAGE_PPO
+from models.sac import GAT_SAC
 import time
-
-from baselines import gat_sac
 from environment.create_env import env_graph
 from environment.create_env import env_test_val
 from environment.observation_space import get_obs_keys
@@ -18,50 +18,25 @@ def seed(path):
     return SEED
 
 
-def make_env(rank, env_name, default_attr, reward, seed):
-    def _init():
-        env = env_graph(env_name, default_attr, reward, seed)
-        env.reset(seed=seed + rank)
-        return env
+# Path to save the experiments
+path = "/home/treeman/school/dissertation/src/grl/experiments/"
 
-    return _init
+# Environment Name
+env_name = "l2rpn_case14_sandbox"
+# env_name = "l2rpn_idf_2023"
 
+# Environment paths
+train_name = f"/home/treeman/school/dissertation/src/grl/data_grid2op/{env_name}_train/"
+val_name = f"/home/treeman/school/dissertation/src/grl/data_grid2op/{env_name}_val/"
 
-def main():
-    # Path to save the models
-    path = "/home/treeman/school/dissertation/src/grl/models/"
+train_ep = 1000  # Number of Episodes
+eval_ep = 10  # Number of Evaluations
 
-    # Environment Name
-    env_name = "l2rpn_case14_sandbox"
-    # env_name = "l2rpn_idf_2023"
+test_path = path + "grl3/"
 
-    # Environment paths
-    train_name = f"/home/treeman/school/dissertation/src/grl/data_grid2op/{env_name}_train/"
-    val_name = f"/home/treeman/school/dissertation/src/grl/data_grid2op/{env_name}_val/"
+path = "gcn_sac/"
 
-    train_ep = 1000  # Number of Episodes
-    eval_ep = 100  # Number of Evaluations
+SEED = 234523455
 
-    test_path = path + "grl1/"
-
-    # Paths for the models
-    gat_sac_path = "gat_sac/"
-
-    # Split the dataset
-    # split_dataset(env_name, SEED)
-
-    # Get the observation attributes
-    default_attr = get_obs_keys(False, False, False, False, False)
-
-    reward = DynamicEconomicReward(res_penalty=0.4)
-
-    SEED = 234523455
-    # SEED = seed(test_path)
-
-    g_train_env, g_val_env = env_test_val(train_name, val_name, default_attr, reward, SEED, True)
-
-    gat_sac(test_path + gat_sac_path, g_train_env, g_val_env, train_ep, eval_ep, SEED)
-
-
-if __name__ == '__main__':
-    main()
+gcn_a2c = GAT_SAC(test_path + path, SEED)
+gcn_a2c.train_and_validate(train_name, val_name, train_ep, eval_ep)

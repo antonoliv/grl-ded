@@ -59,9 +59,9 @@ class GCN(torch.nn.Module):
             This method can accelerate GNN execution on CPU-based platforms
             (*e.g.*, 2-3x speedup on the
             :class:`~torch_geometric.datasets.Reddit` dataset) for common GNN
-            models such as :class:`~torch_geometric.nn.models.GCN`,
-            :class:`~torch_geometric.nn.models.GraphSAGE`,
-            :class:`~torch_geometric.nn.models.GIN`, etc.
+            experiments such as :class:`~torch_geometric.nn.experiments.GCN`,
+            :class:`~torch_geometric.nn.experiments.GraphSAGE`,
+            :class:`~torch_geometric.nn.experiments.GIN`, etc.
             However, this method is not applicable to all GNN operators
             available, in particular for operators in which message computation
             can not easily be decomposed, *e.g.* in attention-based GNNs.
@@ -94,10 +94,13 @@ class GCN(torch.nn.Module):
 
         self.to(device)
 
-    def forward(self, data, mask, prob=0.5) -> Tensor:
+    def forward(self, data, prob=0.5) -> Tensor:
 
         x, edge_index, edge_weight = data.x, data.edge_index, data.edge_attr
 
+        print(x)
+        print(edge_index)
+        print(edge_weight)
         for layer in self.convs:
             x = layer(x, edge_index, edge_weight=edge_weight)
             x = F.relu(x)
