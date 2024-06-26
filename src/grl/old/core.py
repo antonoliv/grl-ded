@@ -4,7 +4,7 @@ import time
 import numpy as np
 import pandas as pd
 
-from callbacks.data_collect import CollectCallback
+from callbacks.train_callback import TrainCallback
 from callbacks.train_episode import EpisodeCallback
 from stable_baselines3.common.callbacks import CallbackList
 
@@ -17,8 +17,8 @@ def train(path: str, model, episodes: int):
     total_timesteps = max_episodes * avg_episode_length
 
     # Create a callbacks
-    eval_callback = CollectCallback(save_path=path + "data/train/", model=model, verbose=1,
-                                    max_episodes=episodes)  # Saves training data
+    eval_callback = TrainCallback(path=path + "data/train/", model=model, verbose=1,
+                                  max_episodes=episodes)  # Saves training data
     episode_callback = EpisodeCallback(max_episodes=max_episodes, verbose=1)  # Stops training after x episodes
     callback_lst = CallbackList([eval_callback, episode_callback])
 

@@ -1,10 +1,29 @@
 import torch as th
 
-from environment.create_env import env_test_val
+from environment.utils import env_test_val
 from environment.observation_space import get_obs_keys
-from environment.reward.res_reward import DynamicEconomicReward
+from environment.reward.res_penalty_reward import RESPenaltyReward
+import os
+import time
+from stable_baselines3.common.torch_layers import CombinedExtractor
+import stable_baselines3
+from torch import nn
 
-path = "/experiments/"
+optimizer = th.optim.Adam  # Optimizer TODO
+gamma = 0.85  # Discount Factor
+learning_rate = 1e-4  # Learning Rate
+buffer_size = int(1e6)  # Replay Buffer Size
+activation_fn = nn.ReLU  # Activation Function
+num_hidden_layers = 6  # Number of Hidden Layers
+num_units_layer = 256  # Number of Units per Hidden Layer
+batch_size = 256  # Number of Samples per Minibatch
+tau = 0.005  # Target Smoothing Coefficient
+target_update_interval = 1  # Target Update Interval
+gradient_steps = 1  # Gradient Steps
+learning_starts = int(5e3)
+device = "auto"
+
+path = "./experiments/"
 
 # Environment Name
 env_name = "l2rpn_case14_sandbox"
@@ -13,11 +32,11 @@ env_name = "l2rpn_case14_sandbox"
 # Environment paths
 train_name = f"/home/treeman/school/dissertation/src/grl/data_grid2op/{env_name}_train/"
 val_name = f"/home/treeman/school/dissertation/src/grl/data_grid2op/{env_name}_val/"
-
+seed = 123456789
 train_ep = 1000  # Number of Episodes
 eval_ep = 100  # Number of Evaluations
 
-test_path = path + "grl1/"
+test_path = path + "test/"
 
 # Paths for the experiments
 sac_path = "sac/"
@@ -29,7 +48,7 @@ gcn_sac_path = "gcn_sac/"
 # Get the observation attributes
 default_attr = get_obs_keys(False, False, False, False, False)
 
-reward = DynamicEconomicReward(res_penalty=0.4)
+reward = RESPenaltyReward(res_penalty=0.4)
 
 SEED = 234523455
 # SEED = seed(test_path)
@@ -37,21 +56,108 @@ SEED = 234523455
 
 train_env, val_env = env_test_val(train_name, val_name, default_attr, reward, SEED, False)
 
-grid_env = train_env.init_env
-observation = grid_env.reset()
+grid_env = val_env.get_wrapper_attr('init_env')
 
-weight_matrix = th.full(size=(1, 1), fill_value=-1, dtype=th.float32)
+extractor = CombinedExtractor
+extractor_kwargs = None
 
-for line in range(20):
-    node1 = observation.line_or_to_subid[line]
-    node2 = observation.line_ex_to_subid[line]
+    # Policy Parameters
+optimizer = th.optim.Adam  # Optimizer
+activation_fn = th.nn.ReLU  # Activation Function
+num_units_layer = 256
+num_hidden_layers = 2
 
-edge_idx = (weight_matrix > -1).nonzero(as_tuple=False).t().contiguous()
-edge_weight = weight_matrix[weight_matrix > -1]
+net_arch = [num_units_layer] * num_hidden_layers  # Network Architecture
+policy_kwargs = dict(
+    net_arch=net_arch,
+    activation_fn=activation_fn,
+    optimizer_class=optimizer,
+    features_extractor_class=extractor,
+    features_extractor_kwargs=extractor_kwargs
+)
+model = stable_baselines3.SAC("MultiInputPolicy",
+                                      train_env,
+                                      learning_rate=learning_rate,
+                                      gradient_steps=gradient_steps,
+                                      verbose=0,
+                                      buffer_size=buffer_size,
+                                      batch_size=batch_size,
+                                      tau=tau,
+                                      gamma=gamma,
+                                      target_update_interval=target_update_interval,
+                                      policy_kwargs=policy_kwargs,
+                                      learning_starts=learning_starts,
+                                      train_freq=1,
+                                      action_noise=None,
+                                      replay_buffer_class=None,
+                                      replay_buffer_kwargs=None,
+                                      optimize_memory_usage=False,
+                                      ent_coef="auto",
+                                      target_entropy="auto",
+                                      use_sde=False,
+                                      sde_sample_freq=-1,
+                                      use_sde_at_warmup=False,
+                                      device=device,
+                                      seed=seed)
 
-print(edge_idx)
+# model = stable_baselines3.SAC.load("/home/treeman/school/dissertation/src/grl/experiments/grl5/sac/model", env=train_env)
 
-print(edge_weight)
+path += "data/val/"
+os.makedirs(os.path.dirname(path), exist_ok=True)
+
+# Evaluate the agent
+# NOTE: If you use wrappers with your environment that modify rewards,
+#       this will be reflected here. To evaluate with original rewards,
+#       wrap environment in a "Monitor" wrapper before other wrappers.
+
+env = model.get_env()
+
+# Episode Metrics
+cost = 0
+res_waste = 0
+avg_cost = []
+avg_res_waste = []
+
+n_res = 0
+for i in range(0, grid_env.n_gen):
+    if grid_env.gen_renewable[i] == 1:
+        n_res += 1
+
+start_time = time.time()
+total_steps = 0
+acc_reward = 0
+length = 0
+acc_rewards = []
+lengths = []
+total_episode = len(grid_env.chronics_handler.subpaths)
+
+# Initialize variables
+# agent = RandomAgent(env.action_space)
+episode_count = 100  # i want to make lots of episode
+update_interval = 0.1  # Update interval
+
+# and now the loop starts
+for i in range(episode_count):
+
+    obs = env.reset()
+
+    # now play the episode as usual
+    while True:
+        # fig = env.render()  # render the environment
+        # plt.pause(update_interval)  # Show the plot after each iteration
+        action, _states = model.predict(obs, deterministic=1)
+        obs, reward, terminated, info = env.step(action)
+        print(obs['current_step'])
+        print(info[0]['exception'])
+
+        if terminated:
+            # in this case the episode is over
+
+            break
+
+env.close()
+
+
 # Dict(
 # '_shunt_bus': Box(-2147483648, 2147483647, (1,), int32),
 # '_shunt_p': Box(-inf, inf, (1,), float32),
@@ -61,6 +167,7 @@ print(edge_weight)
 # 'a_or': Box(0.0, inf, (20,), float32),
 # 'actual_dispatch': Box([-140. -120.  -70.  -70.  -40. -100.], [140. 120.  70.  70.  40. 100.], (6,), float32),
 # 'attention_budget': Box(0.0, inf, (1,), float32),
+
 # 'current_step': Box(-2147483648, 2147483647, (1,), int32),
 # 'curtailment': Box(0.0, 1.0, (6,), float32),
 # 'curtailment_limit': Box(0.0, 1.0, (6,), float32),

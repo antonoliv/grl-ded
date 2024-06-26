@@ -1,102 +1,81 @@
-import torch
-
-obs_keys = [
-    'gen_p',
-    # 'gen_q',
-    # 'gen_theta',
-    # 'gen_v',
-
-    'gen_p_before_curtail',
-
-    'load_p',
-    'load_q',
-    # 'load_theta',
-    # 'load_v',
-
-    'line_status',
-    'rho'
-]
-
-storage_keys = [
-    'storage_charge',
-    'storage_power',
-    'storage_power_target',
-    'storage_theta'
-]
-
-delta_time = [
-    'delta_time',
-]
-
-time_keys = [
-    'minute_of_hour',
-    'hour_of_day',
-    'day',
-    'day_of_week',
-    'month',
-    'year',
-]
-
-timestep_overflow_keys = [
-    "timestep_overflow"
-]
-
-maintenance_keys = [
-    'duration_next_maintenance',
-    'time_next_maintenance',
-
-    'time_before_cooldown_line',
-    'time_before_cooldown_sub',
-]
-
-
-def get_obs_keys(storage: bool, maintenance: bool, delta_time: bool, time: bool, timestep_overflow: bool):
-    ret = list(obs_keys)
-    if storage:
-        ret.extend(storage_keys)
-
-    if delta_time:
-        ret.extend(time_keys)
-
-    if time:
-        ret.extend(time_keys)
-
-    if maintenance:
-        ret.extend(maintenance_keys)
-
-    if timestep_overflow:
-        ret.extend(timestep_overflow_keys)
-
-    return ret
-
-
 import copy
 
+import grid2op
 import numpy as np
+import torch
+import torch_geometric
 from gymnasium import spaces
 from stable_baselines3.common.utils import get_device
 
 
 class GraphObservationSpace(spaces.Dict):
-    def __init__(self, init_space, gnn):
-        # do as you please here
+    """
+    Graph Observation Space for the environment
 
+    Main features:
+    - Handle the graph observation space
+    - Directly extract features with GNN
+    - Handle scaled and unscaled observations
+    - Handle step and time features
+    """
 
+    def __init__(
+        self,
+        init_env: grid2op.Environment,
+        gnn: torch_geometric.nn.models,
+        scaled: bool,
+        step: bool,
+    ):
+        """
+        Init function for the GraphObservationSpace class.
 
-        self.n_nodes = init_space.n_sub
-        self.n_edges = init_space.n_line
+        :param init_env:    grid2op observation environment
+        :param gnn:         Graph Neural Network
+        :param scaled:      if true observations are scaled
+        :param step:        if true step features are used instead of time features
+        """
 
-        self._in_features = 5
-        self._out_features = 15
+        if init_env is None:
+            raise ValueError("Environment is not initialized")
+        if gnn is None:
+            raise ValueError("GNN is not initialized")
+        if scaled is None:
+            raise ValueError("Scaled is not initialized")
+        if step is None:
+            raise ValueError("Step is not initialized")
 
+        # Initialize parameters
         self.device = get_device("auto")
+        self._init_env = init_env
+        self.gnn = gnn.to(self.device)
+        self.step = step
+        self.scaled = scaled
 
-        # self.gcn = GCN(gnn_arch, self.device)
+        self.n_nodes = init_env.n_sub
+        self.n_edges = init_env.n_line
 
-        import torch
-        from torch_geometric.nn.models import GCN
-        self.gnn = gnn
+        self.high_p = self._get_node_pmax()
+        self.low_p = self._get_node_pmin()
+        self.high_res = self._get_node_resmax()
 
+        if self.step:
+            # if step is used, the input features are 6
+            self._in_features = 6
+        else:
+            # else, time features (day_of_the_week, hour_of_day, minute_of_hour) are used
+            self._in_features = 8
+
+        # Check if the input features of the GNN are correct
+        if gnn.in_channels != self._in_features:
+            raise ValueError(
+                f"Expected input features to be {self._in_features} but got {gnn.in_channels}"
+            )
+
+        self._out_features = gnn.out_channels
+
+        extra_losses = 0.3 * np.abs(init_env.gen_pmax).sum()
+
+        # Step space
         step = spaces.Box(
             np.full(shape=(1,), fill_value=0, dtype=np.int64),
             np.full(shape=(1,), fill_value=2016, dtype=np.int64),
@@ -104,204 +83,264 @@ class GraphObservationSpace(spaces.Dict):
             np.int64,
         )
 
-        # n_active_edge_space = spaces.Box(
-        #     np.full(shape=(1,), fill_value=0, dtype=np.int64),
-        #     np.full(shape=(1,), fill_value=self.n_edges, dtype=np.int64),
-        #     (1,),
-        #     np.int64,
-        # )
-
-        # edge_idx_space = spaces.Box(
-        #     np.full(shape=(2, self.n_edges), fill_value=-1, dtype=np.int64),
-        #     np.full(shape=(2, self.n_edges), fill_value=self.n_edges - 1, dtype=np.int64),
-        #     (2, self.n_edges),
-        #     np.int64
-        # )
-        #
-        # edge_weight_space = spaces.Box(
-        #     np.full(shape=(self.n_edges,), fill_value=-1, dtype=np.float32),
-        #     np.full(shape=(self.n_edges,), fill_value=1, dtype=np.float32),
-        #     (self.n_edges,),
-        #     np.float32
-        # )
-
-        # edge_or_space = spaces.Sequence(spaces.Box(0, 1, dtype=np.int64), seed=0)
-        # edge_ex_space = spaces.Sequence(spaces.Box(0, 1, dtype=np.int64), seed=0)
-        # edge_weight_space = spaces.Sequence(spaces.Box(0, 1, dtype=np.float32), seed=0)
-
-        # matrix_space = spaces.Box(
-        #     np.full(shape=(self.n_nodes, self.n_nodes), fill_value=-1, dtype=np.float32),
-        #     np.full(shape=(self.n_nodes, self.n_nodes), fill_value=1, dtype=np.float32),
-        #     (self.n_nodes, self.n_nodes),
-        #     np.float32
-        # )
-
+        # Feature Matrix space
         x_space = spaces.Box(
-            np.full(shape=(self.n_nodes, self._out_features), fill_value=-np.inf, dtype=np.float32),
-            np.full(shape=(self.n_nodes, self._out_features), fill_value=+np.inf, dtype=np.float32),
+            np.full(
+                shape=(self.n_nodes, self._out_features),
+                fill_value=-np.inf,
+                dtype=np.float32,
+            ),
+            np.full(
+                shape=(self.n_nodes, self._out_features),
+                fill_value=+np.inf,
+                dtype=np.float32,
+            ),
             (self.n_nodes, self._out_features),
-            np.float32
-        )
-
-        self._init_space = init_space
-        gen_p_space = spaces.Box(
-            np.full(shape=(init_space.n_gen,), fill_value=0.0, dtype=np.float32)
-            - _compute_extra_power_for_losses(init_space) + (init_space.obs_env._tol_poly),
-            init_space.gen_pmax + _compute_extra_power_for_losses(init_space) + (init_space.obs_env._tol_poly),
-            (init_space.n_gen,),
             np.float32,
         )
 
-        edge_idx_mask_space = spaces.MultiBinary((2, self.n_edges))
-        edge_weight_mask_space = spaces.MultiBinary(self.n_edges)
+        # gen_p space
+        gen_p_space = spaces.Box(
+            np.full(shape=(init_env.n_gen,), fill_value=0.0, dtype=np.float32)
+            - extra_losses
+            + init_env._tol_poly,
+            init_env.gen_pmax + extra_losses + init_env._tol_poly,
+            (init_env.n_gen,),
+            np.float32,
+        )
 
-        # don't forget to initialize the base class
-        spaces.Dict.__init__(self, spaces=dict({
-            "x": x_space,
-            # "n_active_edges": n_active_edge_space,
-            # "edge_idx": edge_idx_space,
-            # 'edge_or': edge_or_space,
-            # 'edge_ex': edge_ex_space,
-            # "matrix": matrix_space,
-            "step": step,
-            "gen_p": gen_p_space,
-            "gen_p_before_curtail": copy.deepcopy(gen_p_space),
-        }))
-        # eg. Box.__init__(self, low=..., high=..., dtype=float)
+        # line_status space
+        line_status_space = spaces.Box(
+            np.full(shape=(init_env.n_line,), fill_value=0.0, dtype=np.int32),
+            np.full(shape=(init_env.n_line,), fill_value=1.0, dtype=np.int32),
+            (init_env.n_line,),
+            np.int32,
+        )
 
-    def _get_x(self, obs):
+        # Initialize the observation space
+        spaces.Dict.__init__(
+            self,
+            spaces=dict(
+                {
+                    "x": x_space,  # Feature Matrix ({load_p, load_q, nres_p, res_p, res_p_before_curtail, step})
+                    "line_status": line_status_space,  # Line status (0: disconnected, 1: connected)
+                    "step": step,  # Current episode step
+                    "gen_p": gen_p_space,  # Generation output of all generators
+                    "gen_p_before_curtail": copy.deepcopy(gen_p_space),
+                    # Generation of Renewable sources before curtail actions
+                }
+            ),
+        )
 
-        n_features = 5
+    def _get_x(self, obs: grid2op.Observation) -> np.ndarray:
+        """
+        Get the feature matrix from current observation.
 
-        x = np.full(shape=(self.n_nodes, n_features), fill_value=0, dtype=np.float32)
+        :param obs: current observation
+        :return: feature matrix
+        """
+
+        # Initialize x as a matrix of zeros
+        x = np.full(
+            shape=(self.n_nodes, self._in_features), fill_value=0, dtype=np.float32
+        )
+
+        # Initialize node_pmax, node_pmin, node_resmax
+        node_pmax = self.high_p.copy()
+        node_pmin = self.low_p.copy()
+        node_resmax = self.high_res.copy()
+
+        # Aggregate load attributes
         for load in range(obs.n_load):
             node_id = obs.load_to_subid[load]
             x[node_id][0] = obs.load_p[load]
             x[node_id][1] = obs.load_q[load]
 
+        # Aggregate generation attributes
         for gen in range(obs.n_gen):
             node_id = obs.gen_to_subid[gen]
+
             if obs.gen_renewable[gen]:
+                # if generator is renewable add the generation output to the feature matrix
                 x[node_id][3] += obs.gen_p[gen]
                 x[node_id][4] += obs.gen_p_before_curtail[gen]
+
+                # Update node_pmax
+                # node_pmax[node_id] += obs.gen_p_before_curtail[gen]
             else:
                 x[node_id][2] += obs.gen_p[gen]
 
+        for node in range(self.n_nodes):
+            if self.scaled:
+                # if scaled, normalize the features
+
+                # if node_pmax - node_pmin > 0, normalize nres_p, else set the feature to -1
+                if (node_pmax[node] - node_pmin[node]) > 0:
+                    x[node][2] = np.interp(
+                        x[node][2], [node_pmin[node], node_pmax[node]], [-1, 1]
+                    )
+                    # x[node][2] = -1 + 2 * (x[node][2] - node_pmin[node]) / (node_pmax[node] - node_pmin[node])
+                else:
+                    x[node][2] = -1
+
+                # if node has renewable power normalize features, else set the features to -1
+                if node_resmax[node] > 0:
+
+                    # if res_p_before_curtail > 0, normalize res_p, else set the feature to -1
+                    if x[node][4] > 0:
+                        x[node][3] = np.interp(x[node][3], [0, x[node][4]], [-1, 1])
+                        # x[node][3] = -1 + 2 * (x[node][3] / x[node][4])
+                    else:
+                        x[node][3] = -1
+
+                    # normalize res_p
+                    x[node][4] = np.interp(x[node][4], [0, node_resmax[node]], [-1, 1])
+                    # x[node][4] = -1 + 2 * (x[node][4] / node_resmax[gen])
+                else:
+                    x[node][4] = -1
+                    x[node][3] = -1
+
+            # if step is used, set the step feature, else set the time features
+            if self.step:
+                x[node][5] = obs.current_step
+            else:
+                x[node][5] = obs.day_of_week
+                x[node][6] = obs.hour_of_day
+                x[node][7] = obs.minute_of_hour
+
         return x
 
-    # def _get_graph(self, observation):
-    #     edge_idx = np.full(shape=(2, self.n_edges), fill_value=-1, dtype=np.int64)
-    #     edge_weight = np.full(shape=(self.n_edges,), fill_value=-1, dtype=np.float32)
-    #     i = 0
-    #
-    #     for line in range(self.n_edges):
-    #         node1 = observation.line_or_to_subid[line]
-    #         node2 = observation.line_ex_to_subid[line]
-    #         if observation.line_status[line]:
-    #             edge_idx[0][i] = node1
-    #             edge_idx[1][i] = node2
-    #             edge_weight[i] = observation.rho[line]
-    #             i += 1
-    #
-    #     return edge_idx, edge_weight
+    def _get_graph(
+        self, observation: grid2op.Observation
+    ) -> (np.ndarray, np.ndarray, int):
+        """
+        Get the graph attributes from the current observation.
 
-    def _get_graph(self, observation):
-        edge_idx = np.full(shape=(2, self.n_edges), fill_value=-1, dtype=np.int64)
-        edge_weight = np.full(shape=(self.n_edges,), fill_value=-1, dtype=np.float32)
+        :param observation: grid2op observation
+        :return: edge_idx, edge_weight, n_active_edges
+        """
 
-        # edge_or = []
-        # edge_ex = []
-        # edge_idx = [[], []]
-        # edge_weight = []
-        i = 0
+        # Initialize variables
+        edge_idx = [[], []]  # edge_idx = [[or1, or2, ..., orn], [ex1, ex2, ..., exn]]
+        edge_weight = []  # edge_weight = [rho1, rho2, ..., rhon]
+        n_active_edges = 0  # n_active_edges
 
         for line in range(self.n_edges):
             node1 = observation.line_or_to_subid[line]
             node2 = observation.line_ex_to_subid[line]
+
             if observation.line_status[line]:
-                edge_idx[0][line] = node1
-                edge_idx[1][line] = node2
-                edge_weight[line] = observation.rho[line]
-                # edge_idx[0].append(node1)
-                # edge_idx[1].append(node2)
-                # edge_weight.append(observation.rho[line])
-                i += 1
-            else:
-                pass
+                # if line connected update variables
+                edge_idx[0].append(node1)
+                edge_idx[1].append(node2)
+                edge_weight.append(observation.rho[line])
+                n_active_edges += 1
 
-        return edge_idx, edge_weight, i
+        return (
+            np.array(edge_idx, dtype=np.int32),
+            np.array(edge_weight, dtype=np.float32),
+            n_active_edges,
+        )
 
-    def _get_matrix(self, observation):
+    def to_gym(self, observation: grid2op.Observation) -> dict:
+        """
+        Convert grid2op observation to gym observation.
 
-        weight_matrix = np.full(shape=(self.n_nodes, self.n_nodes), fill_value=-1, dtype=np.float32)
+        :param observation: grid2op observation
+        :return: gym observation
+        """
 
-        for line in range(self.n_edges):
-            node1 = observation.line_or_to_subid[line]
-            node2 = observation.line_ex_to_subid[line]
-            if observation.line_status[line] and line != 19:
-                weight_matrix[node1][node2] = observation.rho[line]
-
-        return weight_matrix
-
-    def to_gym(self, observation):
-        x = self._get_x(observation)
-
+        # Get graph attributes
         edge_idx, edge_weight, n_active_edges = self._get_graph(observation)
 
-        x = self.gnn.forward(torch.tensor(x, device=self.device), torch.tensor(edge_idx, device=self.device), torch.tensor(edge_weight, device=self.device))
-        # matrix = self._get_matrix(observation)
+        if n_active_edges > 0:
+            # if there is active edges, get the feature matrix and pass it through the GNN
+            x = self._get_x(observation)
+            x = self.gnn.forward(
+                torch.tensor(x, device=self.device),
+                torch.tensor(edge_idx, device=self.device),
+                torch.tensor(edge_weight, device=self.device),
+            )
+        else:
+            # else set the feature matrix to zeros
+            x = torch.zeros((self.n_nodes, self._out_features), device=self.device)
 
         return {
             "x": x.detach().cpu().numpy(),
-            # "n_active_edges": np.array([n_active_edges]),
-            # "edge_idx": edge_idx,
-            # "edge_or": edge_or,
-            # "edge_ex": edge_ex,
-            # "edge_weight": edge_weight,
-            # "edge_idx_mask": np.array([observation.line_status, observation.line_status]),
-            # "edge_weight_mask": observation.line_status,
-            # "matrix": matrix,
+            "line_status": observation.line_status,
             "step": np.array([observation.current_step]),
             "gen_p": observation.gen_p,
             "gen_p_before_curtail": observation.gen_p_before_curtail,
         }
-        # eg. return np.concatenate((obs.gen_p * 0.1, np.sqrt(obs.load_p))
 
-    def _get_x_space(self, init_space):
+    def _get_node_pmax(self) -> np.ndarray:
+        """
+        Get the maximum non-renewable power output of each node.
 
-        extra_losses = _compute_extra_power_for_losses(init_space) + (init_space.obs_env._tol_poly)
+        :return: maximum non-renewable power output of each node
+        """
 
-        x_shape = (self.n_nodes, self.n_features)
-        high = np.empty(x_shape, dtype=np.float32)
-        for sub in range(self.n_nodes):
-            high[sub] = [+np.inf, +np.inf, extra_losses, extra_losses, extra_losses]
+        node_max = np.zeros(shape=(self.n_nodes,), dtype=np.float32)
+        for gen in range(self._init_env.n_gen):
+            node_id = self._init_env.gen_to_subid[gen]
 
-        for gen in range(init_space.n_gen):
-            node_id = init_space.gen_to_subid[gen]
+            if self._init_env.gen_redispatchable[gen]:
+                node_max[node_id] += self._init_env.gen_pmax[gen]
 
-            if init_space.gen_renewable[gen]:
-                high[node_id][3] += init_space.gen_pmax[gen]
-                high[node_id][4] += init_space.gen_pmax[gen]
-            else:
-                high[node_id][2] += init_space.gen_pmax[gen]
+        return node_max
 
-        x_space = spaces.Box(
-            np.array([-np.inf, -np.inf, -extra_losses, -extra_losses, -extra_losses] * self.n_nodes,
-                     dtype=np.float32).reshape(x_shape),
-            high,
-            x_shape,
-            np.float32
-        )
+    def _get_node_pmin(self) -> np.ndarray:
+        """
+        Get the minimum non-renewable power output of each node.
 
-        return x_space
+        :return: minimum non-renewable power output of each node
+        """
+
+        node_min = np.zeros(shape=(self.n_nodes,), dtype=np.float32)
+        for gen in range(self._init_env.n_gen):
+            node_id = self._init_env.gen_to_subid[gen]
+            if self._init_env.gen_redispatchable[gen]:
+                node_min[node_id] += self._init_env.gen_pmin[gen]
+
+        return node_min
+
+    def _get_node_resmax(self) -> np.ndarray:
+        """
+        Get the maximum renewable power output of each node.
+
+        :return: maximum renewable power output of each node
+        """
+
+        node_max = np.zeros(shape=(self.n_nodes,), dtype=np.float32)
+        for gen in range(self._init_env.n_gen):
+            node_id = self._init_env.gen_to_subid[gen]
+
+            if self._init_env.gen_renewable[gen]:
+                node_max[node_id] += self._init_env.gen_pmax[gen]
+
+        return node_max
+
+    def __getstate__(self):
+        """
+        Get state, required for compatibility with stable-baselines3.
+
+        :return: state
+        """
+        state = self.__dict__.copy()
+        if "gnn" in state:
+            del state["gnn"]
+
+        return state
 
     def close(self):
-        if hasattr(self, "_init_space"):
-            self._init_space = None  # this doesn't own the environment
+        """
+        Get state, required for compatibility with stable-baselines3.
 
-def _compute_extra_power_for_losses(gridobj):
-    """
-    to handle the "because of the power losses gen_pmin and gen_pmax can be slightly altered"
-    """
+        :return: state
+        """
 
-    return 0.3 * np.abs(gridobj.gen_pmax).sum()
+        if hasattr(self, "gnn"):
+            self.gnn = None
+
+        if hasattr(self, "_init_env"):
+            self._init_env = None

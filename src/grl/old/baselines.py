@@ -83,7 +83,7 @@ def gcn_sac(path, train_env, val_env, train_ep, eval_ep, seed):
     print("GCN-SAC - " + path)
     print()
 
-    from gnn.graph_extractor import GCNExtractor
+    from gnn.filter_extractor import GCNExtractor
 
     extractor_kwargs = dict(
         gnn_arch=[15, 15],
@@ -143,7 +143,7 @@ def gat_sac(path, train_env, val_env, train_ep, eval_ep, seed):
     print("GAT-SAC - " + path)
     print()
 
-    from gnn.graph_extractor import GATExtractor
+    from gnn.filter_extractor import GATExtractor
 
     extractor_kwargs = dict(
         gat_arch=[15, 15],
@@ -253,7 +253,7 @@ def gcn_a2c(path, train_env, val_env, train_ep, eval_ep, seed):
     print("GCN-A2C - " + path)
     print()
 
-    from gnn.graph_extractor import GCNExtractor
+    from gnn.filter_extractor import GCNExtractor
 
     extractor_kwargs = dict(
         gnn_arch=[15, 15],

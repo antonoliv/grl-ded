@@ -8,14 +8,17 @@
 
 \section{Simulation Environment}
 
-Regarding the established methodology for enabling the implementation of the proposed solution, the \textit{grid2Op} framework \cite{rtefranceGrid2OpDocumentation} will be used for modelling the sequential decision-making process on simulated power distribution grid. \textit{grid2Op} is designed by RTE (\textit{Réseau de Transport d'Électricité}), the electricity transmission system operator of France, and is equipped with a variety of pre-defined scenarios used in coding competitions and based on real-world data \cite{rtefranceGrid2OpDocumentation}. This platform focuses on easing the job using the grid topology to control the power flows and also allowing for it to be reconfigured in real-time \cite{rtefranceGrid2OpDocumentation}. Additionally, enables to graphically plot the current observable state of the grid, as portrayed in figure \ref{fig:grid2op-graph}. Apart from graph topology, \textit{grid2op} also enables the manipulation of:
+The \textit{Grid2Op} framework \cite{rtefranceGrid2OpDocumentation} will be used for modelling the sequential decision-making process on simulated power distribution grids. \textit{Grid2Op} is designed by RTE (\textit{Réseau de Transport d'Électricité}), the electricity transmission system operator of France, and is equipped with a variety of pre-defined scenarios used in coding competitions and based on real-world data \cite{rtefranceGrid2OpDocumentation}. \par
+This \textit{python} library implements the creation of power grid environments that emulate a subset of the elements and physical constraints of real power systems. On one hand, the main objects and their interactions are captured realistically, while on the other, the abstraction level used to model the fundamental elements of a power grid facilitates the implementation of intelligent systems in safe and controllable scenarios. \par
+Furthermore, \textit{Grid2Op} models the dynamic topology of power systems as graph-structured data, which also eases the study of how this information can influence decision-making systems performing on these environments.  In figure \ref{fig:grid2op-graph}, a graphical plot of the environment state at an arbitrary timestep can be observed. \par
+This framework is compatible with the \textit{Gymnasium} framework \cite{faramafoundationGymnasiumDocumentation}, a widely used toolkit for developing \ac{RL} algorithms, which will also will be used in this work together with the Grid2Op simulation environment. 
 
 \begin{itemize}
-	\item the \textbf{voltages} by manipulating the set-point value of the generators;
-	\item the \textbf{active generation} by mapping the received observations to optimal sequences of dispatch actions \cite{rtefranceGrid2OpDocumentation}
+	\item redispatch - change the production output of non-renewable generators in incrementing or decrementing intervals 
+	\item curtail - change the production setpoint of renewable generators bellow the current maximum available power \cite{rtefranceGrid2OpDocumentation}
 \end{itemize}
 
-This framework is compatible with the \textit{Gymnasium} framework \cite{faramafoundationGymnasiumDocumentation}, a widely used toolkit for developing \ac{RL} algorithms, which will also will be used in this work together with the Grid2Op simulation environment. 
+
 
 \begin{figure}
 	\centering
@@ -24,15 +27,34 @@ This framework is compatible with the \textit{Gymnasium} framework \cite{faramaf
 	\label{fig:grid2op-graph}
 \end{figure}
 
-This platform focuses on describing the power distribution grids by modelling the following objects:
+
+\subsection{Elements}
+
+The main elements that are modelled by the simulation environment are presented in this subsection. The power grid is reduced to its fundamental components and their properties:
+
 \begin{itemize}
 	\item \textbf{Buses} are the fundamental objects of the power grid, representing nodes where power sources, loads and other elements are connected\cite{rtefranceGrid2OpDocumentation}.
 	
 	\item \textbf{Powerlines} represent edges in the power grid and connect the different buses together. They represent the physical transmission and distribution lines and allow power to flow from one part of the grid to another \cite{rtefranceGrid2OpDocumentation}.
+	\begin{itemize}
+		\item status
+		\item rho
+	\end{itemize}
 	
 	\item \textbf{Generators} are critical grid elements connected to buses whose main role is to produce power and maintain grid stability by balancing the energy supply and demand. They can be Conventional Thermal Generators, Wind Turbines or Photovoltaic Cells \cite{rtefranceGrid2OpDocumentation}.
+	\begin{itemize}
+		\item $P^\text{NRES}_i(t)$ - Power generation at non-renewable generator $i$
+		\item $P^\text{RES}_i(t)$ - Power generation at renewable generator $i$
+		\item $\overline{P^\text{RES}_i}(t)$ - Maximum power generation at renewable generator $i$
+		\item $\overline{P^\text{NRES}_i}, \underline{P^\text{NRES}_i}$ - Maximum/Minimum power generation at renewable generator $i$
+	\end{itemize}
+	
 	
 	\item \textbf{Loads} consume power from the grid, simulating electricity use. They're also associated to an individual bus \cite{rtefranceGrid2OpDocumentation}.
+	\begin{itemize}
+		\item $P^\text{LOAD}_i$ - Active power at load $i$
+		\item $Q^\text{LOAD}_i$ - Reactive power at load $i$
+	\end{itemize}
 	
 	\item \textbf{Storage Units} can act as both consumers and producers. They're able to retain energy from the power grid when production surpasses demand for later injecting back power when convenient. Storage units are bound by a maximum energy storage capacity \cite{rtefranceGrid2OpDocumentation}.
 \end{itemize}

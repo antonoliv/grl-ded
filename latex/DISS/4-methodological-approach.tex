@@ -91,6 +91,7 @@ In this section, the main problem of study of this dissertation is formally intr
 \subsubsection{Objective Function}
 
 The \ac{DED} problem addresses the issue of balancing the necessity for ensuring stability, security and reliability of a power grid while also minimizing its operating cost. This problem is hardened by the paradigm observed in current power systems where \ac{ESS} and \ac{RES} are available and also need to be taken in consideration when studying solutions for this problem. \par
+In the idealized power system, the main components taken into account are renewable and non-renewable generators, loads, powerlines, substations and storage systems.
 Equation \ref{eq:ded-function} highlights the main objective function for the \ac{DED} problem and is composed of three main components: $F_\text{NRES}(t)$ represents the cost of energy produced by conventional generators, $F_\text{RES}(t)$ is the term that depicts the cost of wasted energy from \ac{RES} and $F_{\text{ESS}}(t)$ the \ac{ESS} operation cost. \par
 
 \begin{equation} \label{eq:ded-function}
@@ -113,6 +114,38 @@ Conventional generation cost calculation is presented in equation \ref{eq:conv-c
 
 
 \subsubsection{Constraints}
+
+In order to maintain stability and reliable operation, the system must follow constraints related to generators, voltage, powerlines and its overall stability.  \par
+
+The main rule the decision-making process must follow in a power system environment is the compliance with power balance. The sum of production output of all generators must surpass the total system load demand, as portrayed by equation \ref{eq:c-power-balance}. 
+
+\begin{equation} \label{eq:c-power-balance}
+	\sum^N_i P^\text{NRES}_i(t) + \sum^M_i P^\text{RES}_i(t) = \sum^L_i P^\text{LOAD}_i(t) + \delta, \delta > 0
+\end{equation}
+
+Additionally, generation production is bounded by maximum and minimum values for each generator and non-renewable generators must comply with the maximum ramp up and down limits when being redispatched, depicted in equations \ref{eq:c-prod-limits} and \ref{eq:c-ramp-limits}. \par
+
+\begin{equation} \label{eq:c-prod-limits}
+	\forall t, i: \underline{P^\text{RES}_i} \leq P^\text{RES}_i(t) \leq \overline{P^\text{RES}_i}
+\end{equation}
+
+\begin{equation} \label{eq:c-ramp-limits}
+	\forall t, i: \underline{\eta_i } \Delta t \leq P^\text{NRES}_i (t + 1) - P^\text{NRES}_i (t) \leq \overline{\eta_i} \Delta t
+\end{equation}
+
+In contrast with these static production limits, renewable generator production is bounded by a varying maximum value and 0.
+
+\begin{equation}
+	\forall t, i: 0 \leq P^\text{RES}_i (t) \leq \overline{P^\text{RES}_i} (t)
+\end{equation}
+
+\begin{comment}
+	Flow constraints
+\end{comment}
+
+\begin{equation}
+	\forall t, i: 
+\end{equation}
 
 
 \subsection{\acf{MDP}}

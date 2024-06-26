@@ -1,13 +1,12 @@
-
-import torch as th
 import stable_baselines3
-from environment.create_env import env_graph, env_multi
-from gnn.graph_extractor import GCNExtractor
-from .base_model import BaseModel
-from gnn.graph_extractor import FilterExtractor
+import torch as th
 from stable_baselines3.common.torch_layers import CombinedExtractor
-from torch_geometric.nn.models.basic_gnn import GCN, GAT, GraphSAGE
 from stable_baselines3.common.utils import get_device
+from torch_geometric.nn.models.basic_gnn import GCN, GAT, GraphSAGE
+
+from environment.utils import env_graph, env_multi
+from gnn.graph_extractor import GraphExtractor
+from .base_model import BaseModel
 
 
 class A2C(BaseModel):
@@ -18,7 +17,7 @@ class A2C(BaseModel):
         self.path = path
         self.seed = seed
 
-        super().__init__(path, seed, name)
+        super().__init__(s, seed, name)
 
         if extractor is None:
             extractor = CombinedExtractor
@@ -62,59 +61,57 @@ class A2C(BaseModel):
 
     def _init_env(self, name):
         obs_attr = [
-                    'gen_p',
-                    # 'gen_q',
-                    # 'gen_theta',
-                    # 'gen_v',
-
-                    'gen_p_before_curtail',
-
-                    'load_p',
-                    'load_q',
-                    # 'load_theta',
-                    # 'load_v',
-
-                    'line_status',
-                    'rho',
-                    'step'
-                    ]
+            "gen_p",
+            # 'gen_q',
+            # 'gen_theta',
+            # 'gen_v',
+            "gen_p_before_curtail",
+            "load_p",
+            "load_q",
+            # 'load_theta',
+            # 'load_v',
+            "line_status",
+            "rho",
+            "step",
+        ]
 
         print("Creating MultiInput env - " + name)
         env = env_multi(name, obs_attr, self.reward, self.seed)
         return env
 
     def _setup_train(self, env):
-        a2c_model = self.model("MultiInputPolicy",
-                                          env,
-                                          learning_rate=self.learning_rate,
-                                          n_steps=self.n_steps,
-                                          verbose=self.verbose,
-                                          gamma=self.gamma,
-                                          gae_lambda=self.gae_lambda,
-                                          policy_kwargs=self.policy_kwargs,
-                                          ent_coef=self.ent_coef,
-                                          vf_coef=self.vf_coef,
-                                          max_grad_norm=self.max_grad_norm,
-                                          use_sde=self.use_sde,
-                                          sde_sample_freq=self.sde_sample_freq,
-                                          use_rms_prop=self.use_rms_prop,
-                                          rms_prop_eps=self.rms_prop_eps,
-                                          normalize_advantage=self.normalize_advantage,
-                                          rollout_buffer_kwargs=self.rollout_buffer_kwargs,
-                                          rollout_buffer_class=self.rollout_buffer_class,
-                                          device=self.device,
-                                          seed=self.seed)
+        a2c_model = self.model(
+            "MultiInputPolicy",
+            env,
+            learning_rate=self.learning_rate,
+            n_steps=self.n_steps,
+            verbose=self.verbose,
+            gamma=self.gamma,
+            gae_lambda=self.gae_lambda,
+            policy_kwargs=self.policy_kwargs,
+            ent_coef=self.ent_coef,
+            vf_coef=self.vf_coef,
+            max_grad_norm=self.max_grad_norm,
+            use_sde=self.use_sde,
+            sde_sample_freq=self.sde_sample_freq,
+            use_rms_prop=self.use_rms_prop,
+            rms_prop_eps=self.rms_prop_eps,
+            normalize_advantage=self.normalize_advantage,
+            rollout_buffer_kwargs=self.rollout_buffer_kwargs,
+            rollout_buffer_class=self.rollout_buffer_class,
+            device=self.device,
+            seed=self.seed,
+        )
         return a2c_model
+
+
 class GCN_A2C(A2C):
     def __init__(self, path, seed):
 
         name = "GCN-A2C"
 
-        extractor = FilterExtractor
-        extractor_kwargs = dict(
-            ignored_keys=["gen_p", "gen_p_before_curtail"]
-        )
-
+        extractor = GraphExtractor
+        extractor_kwargs = dict(ignored_keys=["gen_p", "gen_p_before_curtail"])
 
         super().__init__(path, seed, name, extractor, extractor_kwargs)
 
@@ -122,7 +119,8 @@ class GCN_A2C(A2C):
             in_channels=5,
             hidden_channels=100,
             out_channels=15,
-            num_layers=2, dropout=0.4
+            num_layers=2,
+            dropout=0.4,
         ).to(device=self.device)
 
         self.gnn = th.compile(gnn)
@@ -138,10 +136,8 @@ class GAT_A2C(A2C):
 
         name = "GCN-A2C"
 
-        extractor = FilterExtractor
-        extractor_kwargs = dict(
-            ignored_keys=["gen_p", "gen_p_before_curtail"]
-        )
+        extractor = GraphExtractor
+        extractor_kwargs = dict(ignored_keys=["gen_p", "gen_p_before_curtail"])
 
         super().__init__(path, seed, name, extractor, extractor_kwargs)
 
@@ -153,7 +149,7 @@ class GAT_A2C(A2C):
             dropout=0.4,
             heads=5,
             v2=False,
-            concat=True
+            concat=True,
         ).to(device=self.device)
 
         self.gnn = th.compile(gnn)
@@ -163,16 +159,14 @@ class GAT_A2C(A2C):
         env = env_graph(name, self.reward, self.seed, self.gnn)
         return env
 
+
 class SAGE_A2C(A2C):
     def __init__(self, path, seed):
 
         name = "SAGE-A2C"
 
-        extractor = FilterExtractor
-        extractor_kwargs = dict(
-            ignored_keys=["gen_p", "gen_p_before_curtail"]
-        )
-
+        extractor = GraphExtractor
+        extractor_kwargs = dict(ignored_keys=["gen_p", "gen_p_before_curtail"])
 
         super().__init__(path, seed, name, extractor, extractor_kwargs)
 
@@ -180,7 +174,8 @@ class SAGE_A2C(A2C):
             in_channels=5,
             hidden_channels=100,
             out_channels=15,
-            num_layers=2, dropout=0.4
+            num_layers=2,
+            dropout=0.4,
         ).to(device=self.device)
 
         self.gnn = th.compile(gnn)

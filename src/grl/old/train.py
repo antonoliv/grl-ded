@@ -219,8 +219,8 @@ class ExperimentRunner(tune.Trainable):
         tf_checkpoint = tf.train.Checkpoint(**self.algorithm.tf_saveables)
 
         status = tf_checkpoint.restore(tf.train.latest_checkpoint(
-            # os.path.split(f"{save_path}/checkpoint")[0])
-            # f"{save_path}/checkpoint-xxx"))
+            # os.path.split(f"{path}/checkpoint")[0])
+            # f"{path}/checkpoint-xxx"))
             os.path.split(os.path.join(save_path, "checkpoint"))[0]))
         status.assert_consumed().run_restore_ops()
 

@@ -1,10 +1,10 @@
 import time
 
 from baselines import sac
-from environment.create_env import env_test_val
+from environment.utils import env_test_val
 from environment.observation_space import get_obs_keys
 from environment.reward.default_reward import EconomicReward
-from environment.reward.res_reward import DynamicEconomicReward
+from environment.reward.res_penalty_reward import RESPenaltyReward
 
 
 def seed(path):
@@ -49,9 +49,9 @@ delta_time_attr = get_obs_keys(False, False, True, False, False)
 time_attr = get_obs_keys(False, False, True, True, False)
 
 default_reward = EconomicReward
-res1_reward = DynamicEconomicReward(res_penalty=0.1)
-res2_reward = DynamicEconomicReward(res_penalty=0.4)
-res3_reward = DynamicEconomicReward(res_penalty=0.7)
+res1_reward = RESPenaltyReward(res_penalty=0.1)
+res2_reward = RESPenaltyReward(res_penalty=0.4)
+res3_reward = RESPenaltyReward(res_penalty=0.7)
 
 # SEED = 123456789
 SEED = seed(test_path)

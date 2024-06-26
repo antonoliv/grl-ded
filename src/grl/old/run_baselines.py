@@ -1,10 +1,10 @@
 import time
 
 from models.sac import SAC, GCN_SAC
-from environment.create_env import env_graph
-from environment.create_env import env_test_val
+from environment.utils import env_graph
+from environment.utils import env_test_val
 from environment.observation_space import get_obs_keys
-from environment.reward.res_reward import DynamicEconomicReward
+from environment.reward.res_penalty_reward import RESPenaltyReward
 
 
 def seed(path):
@@ -54,7 +54,7 @@ def main():
     # Get the observation attributes
     default_attr = get_obs_keys(False, False, False, False, False)
 
-    reward = DynamicEconomicReward(res_penalty=0.4)
+    reward = RESPenaltyReward(res_penalty=0.4)
 
     SEED = 123456789
     # SEED = seed(test_path)
