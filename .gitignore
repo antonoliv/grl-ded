@@ -6,6 +6,8 @@ src/grl/data_grid2op/
 src/grl/.venv/
 src/grl/.idea/
 src/grl/.python-version
+src/grl/.pylintrc
+src/grl/old
 __pycache__/
 
 # Latex
@@ -19,5 +21,3 @@ __pycache__/
 *.lot
 *.brf
 
-# Python
-src/.venv/*
