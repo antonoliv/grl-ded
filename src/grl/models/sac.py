@@ -1,6 +1,5 @@
 import stable_baselines3
 import torch as th
-from stable_baselines3.common.utils import get_device
 from torch_geometric.nn.models.basic_gnn import GCN, GAT, GraphSAGE
 
 from environment.reward.res_penalty_reward import RESPenaltyReward
@@ -16,8 +15,6 @@ class SAC(BaseModel):
         seed: int,
         name: str,
         verbose: int,
-        train_episodes: int,
-        eval_episodes: int,
         model_params: dict,
         env_params: dict,
     ):
@@ -63,17 +60,16 @@ class SAC(BaseModel):
         del model_params_cp["activation_fn"]
 
         model_params_cp["class"] = stable_baselines3.SAC
-        self.device = get_device("auto")
 
         super().__init__(
             seed=seed,
             name=name,
             verbose=verbose,
-            train_episodes=train_episodes,
-            eval_episodes=eval_episodes,
             model_params=model_params_cp,
             env_params=env_params,
         )
+
+        self._env_kwargs["obs_graph"] = False
 
 
 class GCN_SAC(SAC):
@@ -82,8 +78,6 @@ class GCN_SAC(SAC):
         seed: int,
         name: str,
         verbose: int,
-        train_episodes: int,
-        eval_episodes: int,
         model_params: dict,
         env_params: dict,
         gnn_params: dict,
@@ -92,8 +86,6 @@ class GCN_SAC(SAC):
             seed=seed,
             name=name,
             verbose=verbose,
-            train_episodes=train_episodes,
-            eval_episodes=eval_episodes,
             model_params=model_params,
             env_params=env_params,
         )

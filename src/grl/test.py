@@ -3,6 +3,12 @@ import torch as th
 import torch_geometric
 
 from environment.reward.res_penalty_reward import RESPenaltyReward
+from grid2op.Reward import EconomicReward
+import os
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+import tensorflow as tf
+
 
 sac_params = {
     "class": stable_baselines3.SAC,
@@ -69,29 +75,36 @@ train_ep = 1500
 eval_ep = 250
 
 seed = 123433334
-from models.sac import GCN_SAC
+from models.sac import SAC, GCN_SAC
 
-m = GCN_SAC(
-    seed, "no_curtail", 1, train_ep, eval_ep, sac_params, env_params, gnn_params
-)
-m.train_and_validate()
-
-env_params = env_params.copy()
-env_params["act_no_curtail"] = False
-env_params["climit_type"] = None
-
-m = GCN_SAC(seed, "no_limit", 1, train_ep, eval_ep, sac_params, env_params, gnn_params)
-m.train_and_validate()
-
-env_params = env_params.copy()
-env_params["act_no_curtail"] = False
-env_params["climit_type"] = "fixed"
-env_params["climit_low"] = 0.4
-
-m = GCN_SAC(
-    seed, "fixed_curtail", 1, train_ep, eval_ep, sac_params, env_params, gnn_params
-)
-m.train_and_validate()
+#
+# m = SAC(
+#     seed, "sac", 1, train_ep, eval_ep, sac_params, env_params
+# )
+# m.train_and_validate()
+#
+#
+# m = GCN_SAC(
+#     seed, "gcn_sac/no_curtail", 1, train_ep, eval_ep, sac_params, env_params, gnn_params
+# )
+# m.train_and_validate()
+#
+# env_params = env_params.copy()
+# env_params["act_no_curtail"] = False
+# env_params["climit_type"] = None
+#
+# m = GCN_SAC(seed, "gcn_sac/no_limit", 1, train_ep, eval_ep, sac_params, env_params, gnn_params)
+# m.train_and_validate()
+#
+# env_params = env_params.copy()
+# env_params["act_no_curtail"] = False
+# env_params["climit_type"] = "fixed"
+# env_params["climit_low"] = 0.4
+#
+# m = GCN_SAC(
+#     seed, "gcn_sac/fixed_curtail", 1, train_ep, eval_ep, sac_params, env_params, gnn_params
+# )
+# m.train_and_validate()
 
 env_params = env_params.copy()
 env_params["act_no_curtail"] = False
@@ -101,6 +114,13 @@ env_params["climit_end"] = 1200
 env_params["climit_factor"] = 3
 
 m = GCN_SAC(
-    seed, "sqrt_curtail", 1, train_ep, eval_ep, sac_params, env_params, gnn_params
+    seed,
+    # "gcn_sac/sqrt_curtail",
+    "gcn_sac/sqrt_curtail_nr",
+    1,
+    sac_params,
+    env_params,
+    gnn_params,
 )
-m.train_and_validate()
+
+m.train_and_validate(train_ep, eval_ep)

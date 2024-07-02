@@ -31,8 +31,8 @@ class CompleteActionSpace(spaces.Box):
             raise ValueError("Environment is not initialized")
         if scaled is None:
             raise ValueError("Scaled is not initialized")
-        if curtail_limit is None or curtail_limit < 0.0 or curtail_limit > 1.0:
-            raise ValueError("Curtail limit should be between 0 and 1")
+        if curtail_limit is None:
+            raise ValueError("Curtail limit not initialized")
 
         self.curtail_limit = 0.0
         self.reconnect_delta = 10  # reconnect line after x timesteps

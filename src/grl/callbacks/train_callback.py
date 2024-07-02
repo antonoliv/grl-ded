@@ -106,7 +106,7 @@ class TrainCallback(BaseCallback):
         self.lengths = []  # Length of each episode
 
         # Initial update of climit
-        self._update_climit()
+        # self._update_climit()
 
     def _on_step(self) -> bool:
         """
@@ -145,8 +145,8 @@ class TrainCallback(BaseCallback):
         if self.locals["dones"][0]:
             # If episode is done, record metrics
 
-            self._update_climit()
             self.episodes += 1
+            self._update_climit()
             # tune.report(training_iterations=self.episodes)
             self.lengths.append(self.length)
             self.acc_rewards.append(self.acc_reward)
@@ -220,7 +220,7 @@ class TrainCallback(BaseCallback):
             # If climit_type is None or fixed, do nothing
             return
 
-        if self.climit_end > self.episodes:
+        if self.climit_end >= self.episodes:
             # if climit_end is not reached, update climit
 
             if self.climit_type == "linear":

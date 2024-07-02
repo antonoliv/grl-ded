@@ -231,7 +231,7 @@ def env_graph(
 
 
 def make_env(
-    env_name: str,
+    env_path: str,
     seed: int,
     reward: grid2op.Reward,
     obs_graph: bool,
@@ -255,7 +255,7 @@ def make_env(
         act_curtail_limit = 0.0
 
     # Create the environment
-    env = grid_env(env_name, seed, reward, params=grid_params)
+    env = grid_env(env_path, seed, reward, params=grid_params)
 
     g_env = env.get_wrapper_attr("init_env")
 
@@ -305,6 +305,9 @@ def make_env(
 
     if act_no_curtail:
         act_space = NoCurtailActionSpace(g_env, scaled=True)
+        # act_space = BoxGymnasiumActSpace(
+            # g_env.action_space, attr_to_keep=["redispatch"]
+        # )
     else:
         act_space = CompleteActionSpace(
             g_env, scaled=True, curtail_limit=act_curtail_limit
