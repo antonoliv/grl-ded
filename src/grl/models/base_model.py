@@ -37,8 +37,8 @@ class BaseModel(ABC):
     """
 
     SB3Model = stable_baselines3.common.base_class.BaseAlgorithm
-    GRID2OP_DATA = "/home/treeman/school/dissertation/src/grl/data_grid2op/"
-    EXPERIMENTS = "/home/treeman/school/dissertation/src/grl/experiments/"
+    GRID2OP_DATA = "./data_grid2op/"
+    EXPERIMENTS = "./experiments/"
     MAX_ITER = 2016
 
     # make_env = make_env

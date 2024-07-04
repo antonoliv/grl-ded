@@ -7,9 +7,6 @@ from environment.reward.res_bonus_reward import RESBonusReward
 from grid2op.Reward import EconomicReward
 import os
 
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-import tensorflow as tf
-
 
 sac_params = {
     "class": stable_baselines3.SAC,
