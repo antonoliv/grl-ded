@@ -74,8 +74,6 @@ class BaseModel(ABC):
             raise ValueError("Environment Name is empty")
         if "reward" not in env_params:
             raise ValueError("Reward is empty")
-        if "class" not in env_params["reward"]:
-            raise ValueError("Reward Class is empty")
         if "obs_scaled" not in env_params:
             raise ValueError("Observation Scaled flag is empty")
         if "obs_step" not in env_params:
@@ -101,12 +99,6 @@ class BaseModel(ABC):
         self._train_path = f"{self.GRID2OP_DATA}{env_name}_train/"
         self._val_path = f"{self.GRID2OP_DATA}{env_name}_val/"
         del self._env_kwargs["env_path"]
-
-        # Create and set reward instance
-        reward_class = env_params["reward"]["class"]
-        reward_kwargs = env_params["reward"].copy()
-        del reward_kwargs["class"]
-        self._env_kwargs["reward"] = reward_class(**reward_kwargs)
 
         # Set model class
         self.model = model_params["class"]

@@ -3,6 +3,7 @@ import torch as th
 import torch_geometric
 
 from environment.reward.res_penalty_reward import RESPenaltyReward
+from environment.reward.res_bonus_reward import RESBonusReward
 from grid2op.Reward import EconomicReward
 import os
 
@@ -61,66 +62,138 @@ gnn_params = {
 
 env_params = {
     "env_path": "l2rpn_icaps_2021_small",
-    "reward": {"class": RESPenaltyReward, "res_penalty": 0.4},
+    "reward": RESPenaltyReward(0.4),
     "obs_scaled": False,
     "obs_step": True,
-    "act_no_curtail": True,
-    "climit_type": None,
-    "climit_end": 0,
-    "climit_low": 0,
-    "climit_factor": 0,
+    "act_no_curtail": False,
+    "climit_type": "sqrt",
+    "climit_end": 2,
+    "climit_low": 0.4,
+    "climit_factor": 3,
 }
 
-train_ep = 1500
-eval_ep = 250
+# SAC -> Done
+# Rewards -> RESPenalty, RESBonus, vary res term
+#
+
+train_ep = 2
+eval_ep = 2
 
 seed = 123433334
 from models.sac import SAC, GCN_SAC
 
-#
-# m = SAC(
-#     seed, "sac", 1, train_ep, eval_ep, sac_params, env_params
-# )
-# m.train_and_validate()
-#
-#
-# m = GCN_SAC(
-#     seed, "gcn_sac/no_curtail", 1, train_ep, eval_ep, sac_params, env_params, gnn_params
-# )
-# m.train_and_validate()
-#
-# env_params = env_params.copy()
-# env_params["act_no_curtail"] = False
-# env_params["climit_type"] = None
-#
-# m = GCN_SAC(seed, "gcn_sac/no_limit", 1, train_ep, eval_ep, sac_params, env_params, gnn_params)
-# m.train_and_validate()
-#
-# env_params = env_params.copy()
-# env_params["act_no_curtail"] = False
-# env_params["climit_type"] = "fixed"
-# env_params["climit_low"] = 0.4
-#
-# m = GCN_SAC(
-#     seed, "gcn_sac/fixed_curtail", 1, train_ep, eval_ep, sac_params, env_params, gnn_params
-# )
-# m.train_and_validate()
 
-env_params = env_params.copy()
-env_params["act_no_curtail"] = False
-env_params["climit_type"] = "sqrt"
-env_params["climit_low"] = 0.4
-env_params["climit_end"] = 1200
-env_params["climit_factor"] = 3
-
-m = GCN_SAC(
+# SAC with Curtail and penalty (0.4
+m = SAC(
     seed,
-    # "gcn_sac/sqrt_curtail",
-    "gcn_sac/sqrt_curtail_nr",
+    "sac/curtail",
     1,
-    sac_params,
-    env_params,
-    gnn_params,
+    sac_params.copy(),
+    env_params.copy(),
 )
 
 m.train_and_validate(train_ep, eval_ep)
+
+
+# RES Penalty 0.4
+m = GCN_SAC(
+    seed,
+    "gcn_sac/2/pen_4",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gnn_params.copy(),
+)
+
+m.train_and_validate(train_ep, eval_ep)
+
+
+# RES Penalty 0.6
+env_params["reward"] = RESPenaltyReward(0.6)
+
+m = GCN_SAC(
+    seed,
+    "gcn_sac/2/pen_6",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gnn_params.copy(),
+)
+
+m.train_and_validate(train_ep, eval_ep)
+
+
+# RES Penalty 0.8
+env_params["reward"] = RESPenaltyReward(0.8)
+
+m = GCN_SAC(
+    seed,
+    "gcn_sac/2/pen_8",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gnn_params.copy(),
+)
+
+m.train_and_validate(train_ep, eval_ep)
+
+
+# RES Bonus 0.4
+
+env_params["reward"] = RESBonusReward(0.4)
+
+m = GCN_SAC(
+    seed,
+    "gcn_sac/2/bon_4",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gnn_params.copy(),
+)
+
+m.train_and_validate(train_ep, eval_ep)
+
+
+# RES Bonus 0.6
+env_params["reward"] = RESBonusReward(0.6)
+
+m = GCN_SAC(
+    seed,
+    "gcn_sac/2/bon_6",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gnn_params.copy(),
+)
+
+m.train_and_validate(train_ep, eval_ep)
+
+# RES Bonus 0.8
+env_params["reward"] = RESBonusReward(0.8)
+
+m = GCN_SAC(
+    seed,
+    "gcn_sac/2/bon_8",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gnn_params.copy(),
+)
+
+m.train_and_validate(train_ep, eval_ep)
+
+# LEss GNN out_features
+gnn_params["out_channels"] = 3
+
+m = GCN_SAC(
+    seed,
+    "gcn_sac/2/less_out",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gnn_params.copy(),
+)
+
+m.train_and_validate(train_ep, eval_ep)
+
+# then, try obs_step, obs_scaled

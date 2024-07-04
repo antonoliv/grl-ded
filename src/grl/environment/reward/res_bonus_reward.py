@@ -22,7 +22,7 @@ class RESBonusReward(BaseReward):
         :param res_bonus: renewable energy bonus
         :param logger: logger
         """
-        if res_bonus is None or res_bonus < 0 or res_bonus > 0.0:
+        if res_bonus is None or res_bonus < 0.0 or res_bonus > 1.0:
             raise ValueError("res_bonus must be greater than 0")
         BaseReward.__init__(self, logger=logger)
         self.reward_min = np.float32(-1.0)
