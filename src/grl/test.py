@@ -58,13 +58,13 @@ gnn_params = {
 }
 
 env_params = {
-    "env_path": "l2rpn_icaps_2021_small",
+    "env_path": "l2rpn_icaps_2021_large",
     "reward": RESPenaltyReward(0.4),
     "obs_scaled": False,
     "obs_step": True,
     "act_no_curtail": False,
     "climit_type": "sqrt",
-    "climit_end": 2,
+    "climit_end": 4200,
     "climit_low": 0.4,
     "climit_factor": 3,
 }
@@ -73,8 +73,8 @@ env_params = {
 # Rewards -> RESPenalty, RESBonus, vary res term
 #
 
-train_ep = 2
-eval_ep = 2
+train_ep = 5000
+eval_ep = 500
 
 seed = 123433334
 from models.sac import SAC, GCN_SAC
@@ -180,6 +180,7 @@ m = GCN_SAC(
 m.train_and_validate(train_ep, eval_ep)
 
 # LEss GNN out_features
+env_params["reward"] = RESPenaltyReward(0.4)
 gnn_params["out_channels"] = 3
 
 m = GCN_SAC(
