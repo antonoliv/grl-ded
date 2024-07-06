@@ -25,7 +25,7 @@ def split_dataset(env_name: str, val_pct: int = 10):
     :param val_pct:      percentage of the dataset to be used for validation
     """
 
-    grid2op.change_local_dir("/home/treeman/school/dissertation/src/grl/data_grid2op/")
+    grid2op.change_local_dir("./data_grid2op/")
 
     # Create the train environment
     grid_env = grid2op.make(
@@ -306,7 +306,7 @@ def make_env(
     if act_no_curtail:
         act_space = NoCurtailActionSpace(g_env, scaled=True)
         # act_space = BoxGymnasiumActSpace(
-            # g_env.action_space, attr_to_keep=["redispatch"]
+        # g_env.action_space, attr_to_keep=["redispatch"]
         # )
     else:
         act_space = CompleteActionSpace(
