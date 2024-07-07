@@ -93,6 +93,7 @@ m = GCN_SAC(
 m.train_and_validate(train_ep, eval_ep)
 
 # out_channels = 3 and obs_scaled = False and obs_step = False
+gnn_params['in_channels'] = 8
 gnn_params['out_channels'] = 3
 env_params['obs_scaled'] = False
 env_params['obs_step'] = False
@@ -128,48 +129,49 @@ m.train_and_validate(train_ep, eval_ep)
 
 # out_channels = 6 and obs_scaled = False and obs_step = True
 
-gnn_params['out_channels'] = 6
-env_params['obs_scaled'] = False
-env_params['obs_step'] = True
-m = GCN_SAC(
-    seed,
-    "gcn_sac/3/6_step",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-    gnn_params.copy(),
-)
-
-m.train_and_validate(train_ep, eval_ep)
-
-# out_channels = 6 and obs_scaled = False and obs_step = False
-
-env_params['obs_scaled'] = False
-env_params['obs_step'] = False
-gnn_params['out_channels'] = 6
-m = GCN_SAC(
-    seed,
-    "gcn_sac/3/6_time",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-    gnn_params.copy(),
-)
-
-m.train_and_validate(train_ep, eval_ep)
-
-# out_channels = 6 and obs_scaled = True and obs_step = True
-
-env_params['obs_scaled'] = True
-env_params['obs_step'] = True
-gnn_params['out_channels'] = 6
-m = GCN_SAC(
-    seed,
-    "gcn_sac/3/6_scaled_step",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-    gnn_params.copy(),
-)
-
-m.train_and_validate(train_ep, eval_ep)
+# gnn_params['out_channels'] = 6
+# env_params['obs_scaled'] = False
+# env_params['obs_step'] = True
+# m = GCN_SAC(
+#     seed,
+#     "gcn_sac/3/6_step",
+#     1,
+#     sac_params.copy(),
+#     env_params.copy(),
+#     gnn_params.copy(),
+# )
+#
+# m.train_and_validate(train_ep, eval_ep)
+#
+# # out_channels = 6 and obs_scaled = False and obs_step = False
+#
+# env_params['obs_scaled'] = False
+# env_params['obs_step'] = False
+# gnn_params['in_channels'] = 8
+# gnn_params['out_channels'] = 6
+# m = GCN_SAC(
+#     seed,
+#     "gcn_sac/3/6_time",
+#     1,
+#     sac_params.copy(),
+#     env_params.copy(),
+#     gnn_params.copy(),
+# )
+#
+# m.train_and_validate(train_ep, eval_ep)
+#
+# # out_channels = 6 and obs_scaled = True and obs_step = True
+#
+# env_params['obs_scaled'] = True
+# env_params['obs_step'] = True
+# gnn_params['out_channels'] = 6
+# m = GCN_SAC(
+#     seed,
+#     "gcn_sac/3/6_scaled_step",
+#     1,
+#     sac_params.copy(),
+#     env_params.copy(),
+#     gnn_params.copy(),
+# )
+#
+# m.train_and_validate(train_ep, eval_ep)
