@@ -126,6 +126,22 @@ m = GCN_SAC(
 
 m.train_and_validate(train_ep, eval_ep)
 
+# out_channels = 3 and obs_scaled = True and obs_step = False
+
+gnn_params['out_channels'] = 3
+env_params['obs_scaled'] = True
+env_params['obs_step'] = False
+m = GCN_SAC(
+    seed,
+    "gcn_sac/3/3_scaled_time",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gnn_params.copy(),
+)
+
+m.train_and_validate(train_ep, eval_ep)
+
 
 # out_channels = 6 and obs_scaled = False and obs_step = True
 
