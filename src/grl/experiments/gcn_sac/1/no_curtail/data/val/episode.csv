@@ -1,4 +1,4 @@
-Episode,Accumulative Reward,Length,Avg Cost,Avg Renewables Wasted
+episode,acc_reward,length,cost,res_wasted
 1,129.95484220981598,335,464890.4021492537,0.0
 2,91.10909277200699,214,443754.42037383176,0.0
 3,67.04752576351166,112,466725.6546428573,0.0

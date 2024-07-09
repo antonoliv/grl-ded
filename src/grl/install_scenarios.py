@@ -1,4 +1,4 @@
-from environment.utils import split_dataset
+from grl.environment.make import split_dataset
 
 val_pct = 10  # % of the dataset to use for validation
 

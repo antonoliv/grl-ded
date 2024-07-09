@@ -1,2 +1,2 @@
-time,episodes,avg_length,avg_reward,avg_cost,avg_res_waste
+time,episodes,avg_length,avg_reward,avg_cost,avg_res_wasted
 6708.5973262786865,5000,138.5174,60.79588946991265,538506.6958510618,1576.764748188878
