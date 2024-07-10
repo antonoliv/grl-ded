@@ -2,11 +2,7 @@ import stable_baselines3
 import torch as th
 import torch_geometric
 
-from environment.reward.res_penalty_reward import RESPenaltyReward
-from environment.reward.res_bonus_reward import RESBonusReward
-from grid2op.Reward import EconomicReward
-import os
-
+from grl.environment.reward.res_penalty_reward import RESPenaltyReward
 
 sac_params = {
     "class": stable_baselines3.SAC,
@@ -77,7 +73,7 @@ train_ep = 5000
 eval_ep = 500
 
 seed = 123433334
-from models.sac import SAC, GCN_SAC
+from grl.model.sac import GCN_SAC
 
 
 # out_channels = 3 and obs_scaled = False and obs_step = True
@@ -92,57 +88,57 @@ m = GCN_SAC(
 
 m.train_and_validate(train_ep, eval_ep)
 
-# out_channels = 3 and obs_scaled = False and obs_step = False
-gnn_params['in_channels'] = 8
-gnn_params['out_channels'] = 3
-env_params['obs_scaled'] = False
-env_params['obs_step'] = False
+# # out_channels = 3 and obs_scaled = False and obs_step = False
+# gnn_params['in_channels'] = 8
+# gnn_params['out_channels'] = 3
+# env_params['obs_scaled'] = False
+# env_params['obs_step'] = False
 
-m = GCN_SAC(
-    seed,
-    "gcn_sac/3/3_time",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-    gnn_params.copy(),
-)
+# m = GCN_SAC(
+#     seed,
+#     "gcn_sac/3/3_time",
+#     1,
+#     sac_params.copy(),
+#     env_params.copy(),
+#     gnn_params.copy(),
+# )
 
-m.train_and_validate(train_ep, eval_ep)
+# m.train_and_validate(train_ep, eval_ep)
 
 
-# out_channels = 3 and obs_scaled = True and obs_step = True
+# # out_channels = 3 and obs_scaled = True and obs_step = True
 
-gnn_params['in_channels'] = 6
-gnn_params['out_channels'] = 3
-env_params['obs_scaled'] = True
-env_params['obs_step'] = True
-m = GCN_SAC(
-    seed,
-    "gcn_sac/3/3_scaled_step",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-    gnn_params.copy(),
-)
+# gnn_params['in_channels'] = 6
+# gnn_params['out_channels'] = 3
+# env_params['obs_scaled'] = True
+# env_params['obs_step'] = True
+# m = GCN_SAC(
+#     seed,
+#     "gcn_sac/3/3_scaled_step",
+#     1,
+#     sac_params.copy(),
+#     env_params.copy(),
+#     gnn_params.copy(),
+# )
 
-m.train_and_validate(train_ep, eval_ep)
+# m.train_and_validate(train_ep, eval_ep)
 
-# out_channels = 3 and obs_scaled = True and obs_step = False
+# # out_channels = 3 and obs_scaled = True and obs_step = False
 
-gnn_params['in_channels'] = 8
-gnn_params['out_channels'] = 3
-env_params['obs_scaled'] = True
-env_params['obs_step'] = False
-m = GCN_SAC(
-    seed,
-    "gcn_sac/3/3_scaled_time",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-    gnn_params.copy(),
-)
+# gnn_params['in_channels'] = 8
+# gnn_params['out_channels'] = 3
+# env_params['obs_scaled'] = True
+# env_params['obs_step'] = False
+# m = GCN_SAC(
+#     seed,
+#     "gcn_sac/3/3_scaled_time",
+#     1,
+#     sac_params.copy(),
+#     env_params.copy(),
+#     gnn_params.copy(),
+# )
 
-m.train_and_validate(train_ep, eval_ep)
+# m.train_and_validate(train_ep, eval_ep)
 
 
 # out_channels = 6 and obs_scaled = False and obs_step = True

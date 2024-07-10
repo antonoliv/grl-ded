@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import stable_baselines3
 from stable_baselines3.common.utils import get_device
-
+from torch_geometric.seed import seed_everything
 import settings
 from grl.environment import make_env
 from .train_callback import TrainCallback
@@ -29,6 +29,7 @@ def set_seed(seed, path):
     with open(path + "seed.txt", "w+", encoding="utf-8") as file:
         file.write(f"Seed: {seed}\n")
 
+    seed_everything(seed)
     return seed
 
 

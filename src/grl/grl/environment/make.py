@@ -236,6 +236,7 @@ def make_env(
     obs_graph: bool,
     obs_scaled: bool,
     obs_step: bool,
+    act_limit_inf: bool,
     act_no_curtail: bool,
     act_curtail_limit: float,
     gnn: torch_geometric.nn.models = None,
@@ -252,9 +253,13 @@ def make_env(
         raise ValueError("act_no_curtail is not initialized")
     if act_curtail_limit is None:
         act_curtail_limit = 0.0
+    if act_limit_inf is not None and act_limit_inf == True:
+        grid_params.LIMIT_INFEASIBLE_CURTAILMENT_STORAGE_ACTION = True
+
 
     # Create the environment
     env = grid_env(env_path, seed, reward, params=grid_params)
+
 
     g_env = env.get_wrapper_attr("init_env")
 
