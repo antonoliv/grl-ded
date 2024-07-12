@@ -68,7 +68,7 @@ env_params = {
     "obs_step": True,
     "act_no_curtail": False,
     "climit_type": "sqrt",
-    "climit_end": 1,
+    "climit_end": 2400,
     "climit_low": 0.4,
     "climit_factor": 3,
 }
@@ -77,15 +77,13 @@ params = {
     "name": "gcn_sac/gnn_tune",
     "seed": 123433334,
     "verbose": 1,
-    "train_episodes": 1,
-    "eval_episodes": 1,
+    "train_episodes": 3000,
+    "eval_episodes": 300,
     "sac_params": sac_params,
     "gnn_params": gnn_params,
     "env_params": env_params,
 }
 
-train_ep = 5000
-eval_ep = 500
 
 
 
