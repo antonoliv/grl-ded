@@ -2,12 +2,10 @@ import stable_baselines3
 import torch as th
 import torch_geometric
 
-from environment.reward.res_penalty_reward import RESPenaltyReward
+from grl.environment.reward import RESPenaltyReward
 from grid2op.Reward import EconomicReward
 import os
 
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-import tensorflow as tf
 
 
 sac_params = {
@@ -64,6 +62,7 @@ env_params = {
     "reward": {"class": RESPenaltyReward, "res_penalty": 0.4},
     "obs_scaled": False,
     "obs_step": True,
+    "act_limit_inf": False,
     "act_no_curtail": True,
     "climit_type": None,
     "climit_end": 0,
@@ -75,26 +74,26 @@ train_ep = 5000
 eval_ep = 500
 
 seed = 123433334
-from models.sac import SAC, GCN_SAC
+from grl.model import SAC, GCN_SAC
 
 
 m = SAC(
-    seed, "sac", 1, train_ep, eval_ep, sac_params, env_params
+    seed, "test/sac/no_curtail", 1, sac_params, env_params
 )
-m.train_and_validate()
+m.train_and_validate(train_ep, eval_ep)
 
 
 m = GCN_SAC(
-    seed, "gcn_sac/no_curtail", 1, train_ep, eval_ep, sac_params, env_params, gnn_params
+    seed, "gcn_sac/no_curtail", 1, sac_params, env_params, gnn_params
 )
-m.train_and_validate()
+m.train_and_validate(train_ep, eval_ep)
 
 env_params = env_params.copy()
 env_params["act_no_curtail"] = False
 env_params["climit_type"] = None
 
-m = GCN_SAC(seed, "gcn_sac/no_limit", 1, train_ep, eval_ep, sac_params, env_params, gnn_params)
-m.train_and_validate()
+m = GCN_SAC(seed, "gcn_sac/no_limit", 1, sac_params, env_params, gnn_params)
+m.train_and_validate(train_ep, eval_ep)
 
 env_params = env_params.copy()
 env_params["act_no_curtail"] = False
@@ -102,9 +101,9 @@ env_params["climit_type"] = "fixed"
 env_params["climit_low"] = 0.4
 
 m = GCN_SAC(
-    seed, "gcn_sac/fixed_curtail", 1, train_ep, eval_ep, sac_params, env_params, gnn_params
+    seed, "gcn_sac/fixed_curtail", 1, sac_params, env_params, gnn_params
 )
-m.train_and_validate()
+m.train_and_validate(train_ep, eval_ep)
 
 env_params = env_params.copy()
 env_params["act_no_curtail"] = False
