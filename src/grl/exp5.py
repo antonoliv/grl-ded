@@ -72,8 +72,8 @@ env_params = {
 # Rewards -> RESPenalty, RESBonus, vary res term
 #
 
-train_ep = 5000
-eval_ep = 500
+train_ep = 10000
+eval_ep = 1000
 
 seed = 123433334
 from grl.model import SAC, GCN_SAC
