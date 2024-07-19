@@ -1,3 +1,8 @@
+l2rpn_case14_sandbox = 904
+l2rpn_icaps_2021_large = 2657
+l2rpn_idf_2023 = 748
+
+
 sac_params = {
     "policy": "MultiInputPolicy",
     "learning_rate": 3e-4,
