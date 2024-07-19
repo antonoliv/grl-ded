@@ -60,7 +60,7 @@ env_params = {
     "reward": RESPenaltyReward(0.4),
     "obs_scaled": False,
     "obs_step": True,
-    "act_no_curtail": True,
+    "act_no_curtail": False,
     "act_limit_inf": False,
     "climit_type": None,
     "climit_end": 7200,
@@ -77,65 +77,6 @@ eval_ep = 1000
 
 seed = 123433334
 from grl.model import SAC, GCN_SAC
-
-m = SAC(
-    seed,
-    "sac/7/no_curtail",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-)
-
-m.train_and_validate(train_ep, eval_ep)
-
-env_params['act_no_curtail'] = False
-m = SAC(
-    seed,
-    "sac/7/curtail_nc",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-)
-
-m.train_and_validate(train_ep, eval_ep)
-
-env_params['act_limit_inf'] = True
-
-m = SAC(
-    seed,
-    "sac/7/limit_curtail_nc",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-)
-
-m.train_and_validate(train_ep, eval_ep)
-
-env_params['climit_type'] = 'sqrt'
-
-m = SAC(
-    seed,
-    "sac/7/curtail_c",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-)
-
-m.train_and_validate(train_ep, eval_ep)
-
-env_params['act_limit_inf'] = True
-
-m = SAC(
-    seed,
-    "sac/7/limit_curtail_c",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-)
-
-m.train_and_validate(train_ep, eval_ep)
-
-env_params['act_no_curtail'] = False
 
 m = GCN_SAC(
     seed,
