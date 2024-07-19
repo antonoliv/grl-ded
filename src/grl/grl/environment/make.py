@@ -158,8 +158,9 @@ def grid_env(
     # grid_env.set_chunk_size(100)          # set the chunk size
     grid_env.deactivate_forecast()  # deactivate the forecast
     grid_env.set_max_iter(MAX_ITER)  # set the maximum number of iterations per episode
-
-    return GymnasiumEnv(grid_env, render_mode="rgb_array", shuffle_chronics=True)
+    env = GymnasiumEnv(grid_env, render_mode="rgb_array", shuffle_chronics=True)
+    env.reset(seed=seed, options=None)
+    return env
 
 
 # def act_space(env, seed, no_curtail=False, curtail_limit=0.0):
