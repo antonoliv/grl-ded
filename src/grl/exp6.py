@@ -80,7 +80,7 @@ from grl.model import SAC, GCN_SAC
 
 m = GCN_SAC(
     seed,
-    "gcn_sac/5/no_curtail",
+    "gcn_sac/6/no_curtail",
     1,
     sac_params.copy(),
     env_params.copy(),
@@ -94,7 +94,7 @@ env_params['climit_type'] = 'sqrt'
 
 m = GCN_SAC(
     seed,
-    "gcn_sac/5/curtail",
+    "gcn_sac/6/curtail",
     1,
     sac_params.copy(),
     env_params.copy(),
@@ -107,7 +107,7 @@ env_params['act_limit_inf'] = True
 
 m = GCN_SAC(
     seed,
-    "gcn_sac/5/limit_curtail",
+    "gcn_sac/6/limit_curtail",
     1,
     sac_params.copy(),
     env_params.copy(),
