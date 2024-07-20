@@ -103,7 +103,7 @@ tuner = tune.Tuner(
     param_space=params,
     run_config=train.RunConfig(stop={"training_iteration": 1}),
     tune_config=tune.TuneConfig(
-        num_samples=20, max_concurrent_trials=5, scheduler=scheduler
+        num_samples=25, max_concurrent_trials=5, scheduler=scheduler
     ),
 )
 
