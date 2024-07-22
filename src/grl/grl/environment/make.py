@@ -159,7 +159,7 @@ def grid_env(
     grid_env.deactivate_forecast()  # deactivate the forecast
     grid_env.set_max_iter(MAX_ITER)  # set the maximum number of iterations per episode
     env = GymnasiumEnv(grid_env, render_mode="rgb_array", shuffle_chronics=True)
-    env.reset(seed=seed, options=None)
+    env.reset(seed=seed, options={})
     return env
 
 

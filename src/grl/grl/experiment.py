@@ -20,6 +20,7 @@ class Experiment(tune.Trainable):
         env_params = config['env_params'].copy()
         gnn_params = config['gnn_params'].copy()
 
+        model_class = config['class']
         self.model = GCN_SAC(
             seed,
             name,
