@@ -7,13 +7,13 @@ import torch as th
 import torch_geometric
 
 from grl.environment.reward.res_penalty_reward import RESPenaltyReward
+from grl.model import GCN_SAC
 
 import settings
 
 EXPERIMENTS = settings.EXPERIMENTS
 
 sac_params = {
-    "class": stable_baselines3.SAC,
     "policy": "MultiInputPolicy",
     "learning_rate": tune.loguniform(1e-5, 1e-3),
     "gamma": tune.uniform(0.85, 0.99),
@@ -37,7 +37,6 @@ sac_params = {
 }
 
 gnn_params = {
-    "class": torch_geometric.nn.models.GCN,
     "in_channels": 6,
     "hidden_channels": 18,
     "num_layers": 2,
@@ -78,6 +77,7 @@ params = {
     "name": "gcn_sac/tune_sac",
     "seed": 123433334,
     "verbose": 1,
+    "class": GCN_SAC,
     "train_episodes": 2500,
     "eval_episodes": 295,
     "sac_params": sac_params,
@@ -99,11 +99,11 @@ from grl.experiment import Experiment
 from ray import train, tune
 
 tuner = tune.Tuner(
-    tune.with_resources(Experiment, resources={"cpu": 1, "gpu": 1}),
+    tune.with_resources(Experiment, resources={"cpu": 1, "gpu": 0.2}),
     param_space=params,
     run_config=train.RunConfig(stop={"training_iteration": 1}),
     tune_config=tune.TuneConfig(
-        num_samples=25, max_concurrent_trials=5, scheduler=scheduler
+        num_samples=30, max_concurrent_trials=5, scheduler=scheduler
     ),
 )
 
