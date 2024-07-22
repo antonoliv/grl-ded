@@ -158,7 +158,6 @@ class GAT_SAC(SAC):
             raise ValueError("Number of Layers is empty")
 
         gnn_params = gnn_params.copy()
-        del gnn_params["class"]
 
         seed_everything(seed)
         self._env_kwargs["gnn"] = GAT(**gnn_params)
@@ -193,7 +192,6 @@ class SAGE_SAC(SAC):
             raise ValueError("Number of Layers is empty")
 
         gnn_params = gnn_params.copy()
-        del gnn_params["class"]
 
         seed_everything(seed)
         self._env_kwargs["gnn"] = GraphSAGE(**gnn_params)

@@ -21,7 +21,7 @@ class Experiment(tune.Trainable):
         gnn_params = config['gnn_params'].copy()
 
         model_class = config['class']
-        self.model = GCN_SAC(
+        self.model = model_class(
             seed,
             name,
             verbose,

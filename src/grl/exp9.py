@@ -100,7 +100,7 @@ from grl.model import SAC, GCN_SAC, GAT_SAC, SAGE_SAC
 
 m = GCN_SAC(
     seed,
-    "gcn_sac/7/curtail_nc",
+    "gcn_sac/9",
     1,
     sac_params.copy(),
     env_params.copy(),
@@ -112,7 +112,7 @@ m.train_and_validate(train_ep, eval_ep)
 
 m = GAT_SAC(
     seed,
-    "gcn_sac/7/limit_curtail_nc",
+    "gat_sac/9",
     1,
     sac_params.copy(),
     env_params.copy(),
@@ -123,7 +123,7 @@ m.train_and_validate(train_ep, eval_ep)
 
 m = SAGE_SAC(
     seed,
-    "gcn_sac/7/limit_curtail_nc",
+    "sage_sac/9",
     1,
     sac_params.copy(),
     env_params.copy(),

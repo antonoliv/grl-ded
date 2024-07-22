@@ -45,35 +45,14 @@ gnn_params = {
     "flow": "source_to_target",
     "node_dim": -2,
     "decomposed_layers": 1,
-}
 
-gcn_params = {
-    "improved": False,
+    "improved": True,
     "cached": False,
     "add_self_loops": None,
     "normalize": True,
     "bias": True,
 }
 
-gat_params = {
-    "heads": 3,
-    "v2": False,
-    "concat": True,
-    "negative_slope": 0.2,
-    "dropout": 0.0,
-    "add_self_loops": True,
-    "edge_dim": None,
-    "fill_value": "mean",
-    "bias": True,
-}
-
-sage_params = {
-    "aggr": "mean",
-    "normalize": False,
-    "root_weight": True,
-    "project": False,
-    "bias": True,
-}
 
 env_params = {
     "env_path": "l2rpn_icaps_2021_large",
@@ -88,9 +67,6 @@ env_params = {
     "climit_factor": 3,
 }
 
-gcn_params.update(gnn_params)
-gat_params.update(gnn_params)
-gat_params.update(gnn_params)
 
 train_ep = 10000
 eval_ep = 1000
@@ -100,7 +76,7 @@ from grl.model import SAC, GCN_SAC, GAT_SAC, SAGE_SAC
 
 m = GCN_SAC(
     seed,
-    "gcn_sac/7/curtail_nc",
+    "gcn_sac/8/improved",
     1,
     sac_params.copy(),
     env_params.copy(),
@@ -109,25 +85,27 @@ m = GCN_SAC(
 
 m.train_and_validate(train_ep, eval_ep)
 
+gnn_params['act_first'] = True
+gnn_params['improved'] = False
 
-m = GAT_SAC(
+m = GCN_SAC(
     seed,
-    "gcn_sac/7/limit_curtail_nc",
+    "gcn_sac/8/act_first",
     1,
     sac_params.copy(),
     env_params.copy(),
     gnn_params.copy(),
 )
-
 m.train_and_validate(train_ep, eval_ep)
 
-m = SAGE_SAC(
+gnn_params['improved'] = True
+
+m = GCN_SAC(
     seed,
-    "gcn_sac/7/limit_curtail_nc",
+    "gcn_sac/8/act_first_improved",
     1,
     sac_params.copy(),
     env_params.copy(),
     gnn_params.copy(),
 )
-
 m.train_and_validate(train_ep, eval_ep)
