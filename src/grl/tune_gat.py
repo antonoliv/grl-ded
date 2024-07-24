@@ -54,8 +54,8 @@ gnn_params = {
     # "node_dim": -2,
     "decomposed_layers": 1,
 
-    "heads": tune.choice([1, 2, 3]),
-    "v2": tune.choice([False, True]),
+    "heads": tune.grid_search([1, 2, 3]),
+    "v2": tune.grid_search([False, True]),
     "concat": True,
     "negative_slope": 0.2,
     "add_self_loops": True,
@@ -72,7 +72,7 @@ env_params = {
     "act_no_curtail": False,
     "act_limit_inf": True,
     "climit_type": "sqrt",
-    "climit_end": 1,
+    "climit_end": 2400,
     "climit_low": 0.4,
     "climit_factor": 3,
 }
@@ -107,7 +107,7 @@ tuner = tune.Tuner(
     param_space=params,
     run_config=train.RunConfig(stop={"training_iteration": 1}),
     tune_config=tune.TuneConfig(
-        num_samples=6, max_concurrent_trials=5, scheduler=scheduler
+        num_samples=2, max_concurrent_trials=5, scheduler=scheduler
     ),
 )
 
@@ -115,4 +115,4 @@ results = tuner.fit()
 
 print(results.get_dataframe())
 
-results.get_dataframe().to_csv(settings.EXPERIMENTS + params['name'] + "/parameters.csv", index=False)
+results.get_dataframe().to_csv(settings.EXPERIMENTS + params['name'] + "/parameters.csv", mode index=False)

@@ -38,22 +38,22 @@ sac_params = {
 
 gnn_params = {
     "in_channels": 6,
-    "hidden_channels": tune.choice([6, 18]),
-    "num_layers": tune.choice([2, 6, 8]),
+    "hidden_channels": tune.grid_search([6, 18]),
+    "num_layers": tune.grid_search([2, 6]),
     "out_channels": 6,
     "dropout": 0.1,
     "act": "relu",
-    "act_first": False, # Check
+    "act_first": True, 
     "act_kwargs": None,
     "norm": None,
     "norm_kwargs": None,
     "jk": None, # Check
-    "aggr": tune.choice(["sum", "mean", "min", "max", "mul"]),
+    "aggr": tune.grid_search(["sum", "mean", "min", "max", "mul"]),
     "aggr_kwargs": None,
     "flow": "source_to_target",
     "node_dim": -2,
     "decomposed_layers": 1,
-    "improved": False,          # Check
+    "improved": False,         
     "cached": False,
     "add_self_loops": None,
     "normalize": True,
@@ -68,7 +68,7 @@ env_params = {
     "act_no_curtail": False,
     "act_limit_inf": True,
     "climit_type": "sqrt",
-    "climit_end": 1,
+    "climit_end": 2400,
     "climit_low": 0.4,
     "climit_factor": 3,
 }
@@ -103,7 +103,7 @@ tuner = tune.Tuner(
     param_space=params,
     run_config=train.RunConfig(stop={"training_iteration": 1}),
     tune_config=tune.TuneConfig(
-        num_samples=30, max_concurrent_trials=5, scheduler=scheduler
+        num_samples=20, max_concurrent_trials=5, scheduler=scheduler
     ),
 )
 
