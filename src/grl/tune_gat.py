@@ -43,7 +43,7 @@ gnn_params = {
     "out_channels": 6,
     "dropout": 0.1,
     "act": "relu",
-    "act_first": False,
+    "act_first": True,
     "act_kwargs": None,
     "norm": None,
     "norm_kwargs": None,
@@ -115,4 +115,4 @@ results = tuner.fit()
 
 print(results.get_dataframe())
 
-results.get_dataframe().to_csv(settings.EXPERIMENTS + params['name'] + "/parameters.csv", mode index=False)
+results.get_dataframe().to_csv(settings.EXPERIMENTS + params['name'] + "/parameters.csv", index=False)
