@@ -1,0 +1,193 @@
+\chapter{Result Discussion}
+
+In this chapter, the obtained results are thoroughly analysed and discussed. The performed experiments can be subdivided into 6 categories: Curtail Lower Limit (section \ref{sec:curtailment-lower-limit}), Limit Infeasible Curtailment Actions \ref{sec:limit-infeasible}, Reward Tests\ref{sec:rewards}, \acp{GNN} Hyperparameter Tuning, \ac{GNN} Implementation Comparison \ref{sec:gnn-comparison} and Scability Tests \ref{sec:gnn-comparison}.
+
+\begin{comment}
+	* Best SAC and GNN parameters
+	* Environment Parameters
+	* Explain that SAC was used for most experiments as a baseline
+	* Explain the non-reproducability of experiements (https://github.com/pytorch/pytorch/issues/50469)
+\end{comment}
+
+\begin{table}
+	\begin{tabular}{|l | l|}
+		\hline
+		Learning Rate & 1e-4 \\
+		\hline
+		Gamma & 0.85 \\
+		\hline
+		Entropy Coefficient & 'auto' \\
+		\hline
+		Gradient Steps & 1 \\
+		\hline
+		Buffer Size & 1e6 \\
+		\hline
+		Batch Size & 256 \\
+		\hline
+		Tau & 0.001 \\
+		\hline
+		Target Update Interval & 1 \\
+		\hline
+		Training Frequency & 1 \\
+		\hline
+		Target Entropy & 'auto' \\
+		\hline 
+		Optimizer & Adam \\
+		\hline
+		Activation Function & ReLU \\
+		\hline
+		Number of Units per Hidden Layer & 128 \\
+		\hline
+		Number of Hidden Layers & 6 \\
+		\hline
+		\end{tabular}
+		\caption{Soft Actor-Critic Parameters}
+\end{table}
+
+\begin{table}
+	\begin{tabular}{|l|l|}
+		\hline
+		Input Channels & 6 \\
+		\hline
+		Hidden Channels & 18 \\
+		\hline
+		Number of Layers & 2 \\
+		\hline
+		Output Channels & 6 \\
+		\hline
+		Dropout Rate & 0.1 \\
+		\hline
+		Activation Function & ReLu \\
+		 \hline
+		Aggregation Function & 'sum' \\
+		\hline
+		act\_first & True \\
+		\hline
+		Flow & Source to Target \\
+		\hline
+		Node Dimension & -2 \\
+		\hline 
+		Decomposed Layers & -1 \\
+		\hline
+		Improved & False \\
+		\hline
+		Cached & False \\
+		\hline
+		Normalize & True \\
+		\hline
+		Bias & True \\		
+		\hline
+	\end{tabular}
+	\caption{\ac{GCN} Parameters}
+\end{table}
+
+\section{Limit Infeasible Curtailment Actions} \label{sec:limit-infeasible}
+
+\section{Curtailment Lower Limit} \label{sec:curtailment-lower-limit}
+
+The initial exploratory experiments and posterior analysis of training performance showed significant instability and lack of convergence of \ac{DRL} models. This is aggravated by the inclusion of curtailment actions in the action space, which in turn introduced additional complexity to the decision process and severely affected the model's survivability. 
+\par
+Considering the secondary goal of maximization of generated renewable energy, the idealization of a lower bound to restrict the curtailment action space became a potential solution to aid in the model's convergence. Additionally, two methods of 
+
+\begin{comment}
+	Graph:
+	- No limit
+	- Fixed Limit
+	- Linear Limit
+	- Sqrt Limit
+\end{comment}
+
+\begin{comment}
+	Validation Table
+	Graph:
+	- No limit
+	- Fixed Limit
+	- Linear Limit
+	- Sqrt Limit
+\end{comment}
+
+Results showed in graph GRAPH proved that the introduced curtailment lower bounds considerably increased the models training performance and convergence, with the square root decay method achieving the overall highest average accumulated reward during validation. Introducing a decay in the lower bound limit implies an enhanced overall performance and survivability of the algorithm.
+
+\section{Rewards Tests} \label{sec:rewards}
+
+Several implementations posed as relevant formulas to describe the reward function of the environment, namely three: Economic Reward, \acp{RES} Penalty Factor Reward and \acp{RES} Bonus Reward. The first considered only the saved cost in non-renewable generators operation, while the second and third accounted for \ac{RES} maximization in a penalty and bonus factor, respectively.
+\par
+
+Considering the new parameter introduced by both the Penalty and Bonus Factor rewards, $\beta$, the experiments took into account three distinct values: $\{0.2, 0.4, 0.6\}$.
+
+
+\par
+\begin{comment}
+	Graph:
+	- Economic Reward
+	- Penalty Reward
+	- Bonus Reward
+	
+	Graph:
+	- 0.2 pen
+	- 0.4 pen
+	- 0.6 pen
+	- 0.2 bonus
+	- 0.4 bonus
+	- 0.6 bonus
+	
+	Do result discussion:
+	- Penalty with 0.4 factor was the best
+\end{comment}
+
+It's critical to take into account that when evaluating and comparing Reward Functions, the average accumulative reward values have different meanings. Furthermore, other crucial metrics such as the survival rate and the average daily operating cost are favoured.
+\par
+Results revealed that the proposed implementations were superior to the already defined Economic Reward both in survivability and overall performance of the models. The with the best results were observed in the Penalty Factor Reward with $\beta = 0.2$.
+
+\section{\acp{GNN} Hyperparameter Tuning} \label{sec:gnn-hypertune}
+
+As a key area of this research work, the \ac{GNN} component of the proposed algorithm was given a particular focus in what accounts for hyperparameter tuning. Concrete experiments were devised to assess the performance of different parameter combinations, mainly using the GCN-SAC algorithm. 
+
+Regarding the parameters analyzed, they can be observed in the table bellow:
+
+
+\begin{table}
+	\begin{tabular}{|l|l|}
+		\hline
+		\textbf{Parameter} & \textbf{Values} \\
+		\hline
+		Aggregation Function & \{'sum','mean', 'min', 'max', 'mul'\} \\
+		\hline
+		Number of Layers & \{1,2,3,4,5\} \\
+		\hline
+		Hidden Channels & \{6, 12, 18, 24, 36\} \\
+		\hline
+		Ouput Channels & \{3, 6, 12, 18, 24, 36\} \\
+		\hline 
+		Dropout Rate & [0.1, 0.4] \\
+		\hline
+		Activation First & {True, False} \\
+		\hline 
+		Heads & {1,2,3,6} \\
+		\hline
+		GATv2 & {True, False} \\
+		\hline
+	\end{tabular}
+	\caption{General \ac{GNN} Parameters Tuned}
+\end{table}
+
+\begin{table}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Implementation} & \textbf{Parameter} & \textbf{Values} \\
+		\hline
+		GCN & Improved & {True, False} \\
+		\hline 
+		GAT & Heads & {1,2,3,6} \\
+		\hline
+		GAT & GATv2 & {True, False} \\
+		\hline
+	\end{tabular}
+	\caption{Model-Specific Parameters Tuned}
+\end{table}
+
+
+\section{GNN Implementation Comparison} \label{sec:gnn-comparison}
+
+\section{Scalability Tests} \label{sec:scalability-tests}
+

@@ -95,7 +95,7 @@ In the idealized power system, the main components taken into account are renewa
 Equation \ref{eq:ded-function} highlights the main objective function for the \ac{DED} problem and is composed of three main components: $F_\text{NRES}(t)$ represents the cost of energy produced by conventional generators, $F_\text{RES}(t)$ is the term that depicts the cost of wasted energy from \ac{RES} and $F_{\text{ESS}}(t)$ the \ac{ESS} operation cost. \par
 
 \begin{equation} \label{eq:ded-function}
- \min\sum^T_{t=1}F_\text{NRES}(t) + F_{\text{RES}}(t) + F_{\text{ESS}}(t)
+ \min\sum^T_{t=1}(F_\text{NRES}(t) + F_{\text{RES}}(t) + F_{\text{ESS}}(t))
 \end{equation}
 
 Conventional generation cost calculation is presented in equation \ref{eq:conv-cost}. For the sake of simplicity, this component is reduced to a linear equation and represented by a static $c_i$ term for generator $i$ in €/MWh . Regarding the cost of wasted \ac{RES} energy, a penalty term $\beta_\text{RES}$ is introduced that defines a cost for the abandoned renewable energy. Lastly, concerning \acp{ESS}, the cost is directly related to its operation cost $c^\text{ESS}_i$ in €/MW and to its current discharging/charging power $P^\text{ESS}_i$ with a positive power meaning that energy is being absorbed.
@@ -113,48 +113,46 @@ Conventional generation cost calculation is presented in equation \ref{eq:conv-c
 \end{equation}
 
 
+
 \subsubsection{Constraints}
 
-In order to maintain stability and reliable operation, the system must follow constraints related to generators, voltage, powerlines and its overall stability.  \par
+In order to maintain stability and reliable power distribution, the system must follow several operational constraints. These restrictions are related to generators, voltage, powerlines and its overall stability.  \par
 
-The main rule the decision-making process must follow in a power system environment is the compliance with power balance. The sum of production output of all generators must surpass the total system load demand, as portrayed by equation \ref{eq:c-power-balance}. 
+The main rule in a power system environment consists in the compliance with power balance. This  implies that, at all times, the sum of production output of all generators must surpass the total system load demand, as portrayed by equation \ref{eq:c-power-balance}. 
 
 \begin{equation} \label{eq:c-power-balance}
 	\sum^N_i P^\text{NRES}_i(t) + \sum^M_i P^\text{RES}_i(t) = \sum^L_i P^\text{LOAD}_i(t) + \delta, \delta > 0
 \end{equation}
 
-Additionally, generation production is bounded by maximum and minimum values for each generator and non-renewable generators must comply with the maximum ramp up and down limits when being redispatched, depicted in equations \ref{eq:c-prod-limits} and \ref{eq:c-ramp-limits}. \par
+Considering non-renewable generations, its output value it is bounded by absolute maximum and minimum values respective to each generator, $\underline{P^\text{NRES}_i}$ and $\overline{P^\text{NRES}_i}$, as depicted in equation \ref{eq:prod-limits}. Furthermore, as illustrated in equation \ref{eq:ramp-limits}, the varying power between two different timesteps is also restricted by maximum ramp up and down limits, $\underline{\eta_i }$ and $\overline{\eta_i }$. \par
 
-\begin{equation} \label{eq:c-prod-limits}
-	\forall t, i: \underline{P^\text{RES}_i} \leq P^\text{RES}_i(t) \leq \overline{P^\text{RES}_i}
+\begin{equation} \label{eq:prod-limits}
+	\forall t, i: \underline{P^\text{NRES}_i} \leq P^\text{NRES}_i(t) \leq \overline{P^\text{NRES}_i}
 \end{equation}
 
-\begin{equation} \label{eq:c-ramp-limits}
+\begin{equation} \label{eq:ramp-limits}
 	\forall t, i: \underline{\eta_i } \Delta t \leq P^\text{NRES}_i (t + 1) - P^\text{NRES}_i (t) \leq \overline{\eta_i} \Delta t
 \end{equation}
 
-In contrast with these static production limits, renewable generator production is bounded by a varying maximum value and 0.
+In contrast with these static production limits, renewable generator production limits are dynamic. Depending on the type of \ac{RES}, the maximum available generation output is subject to the environmental characteristics dictated by the environment. In such manner, the ouput value of renewable generations for any timestep $t$ is bounded by a maximum production value, $\overline{P^\text{RES}_i} (t)$ and 0. Equation \ref{eq:res-limits}
 
-\begin{equation}
+\begin{equation} \label{eq:res-limits}
 	\forall t, i: 0 \leq P^\text{RES}_i (t) \leq \overline{P^\text{RES}_i} (t)
 \end{equation}
 
+Regarding powerlines, there are two thresholds that restrict their operation in cases of line overflow. They are applied to safeguard the condition of powerlines and emulate the behaviour of a real power system $\text{rho}$, in two difference scenarios:
+\begin{itemize}
+	\item \textbf{Hard Overflow} - In case the relative flow of any powerline surpasses the hard overflow threshold, $\theta_\text{hard},$ it's instantly disconnected. This is known as time overcurrent;
+	\item \textbf{Soft Overflow} - A line is allowed to surpass the soft overflow threshold, $\theta_\text{soft}$, for $T_\text{soft}$ timesteps before being disconnected for safety reasons. This consists in an instantenous overcurrent;
+\end{itemize}
+In any case, when a powerline is disconnected for safety reasons, it's affected by a reconnection cooldown, $T_\text{reconnect}$.
+
 \begin{comment}
-	Flow constraints
+	Flow constraints ?
+	Voltage Constraints ? 
 \end{comment}
-
-\begin{equation}
-	\forall t, i: 
-\end{equation}
-
 
 \subsection{\acf{MDP}}
-
-
-
-\begin{comment}
-	* Voltage Deviation
-\end{comment}
 
 In this section, the \ac{DED} problem is formalized in the as a sequential decision-making problem and its \ac{MDP} is uncovered. 
 
@@ -281,86 +279,6 @@ In this section, the \ac{DED} problem is formalized in the as a sequential decis
 	* TODO
 \end{comment}
 
-\section{Requirements}  \label{sec:requirements}
-
-\subsection{Functional}
-
-\begin{table}[H]
-	\centering
-	\caption{Functional Requirements}
-	\begin{tabular}{|P{1cm}|p{4cm}|p{8cm}|  }
-		\hline
-		\textbf{FR} & \textbf{Title} & \textbf{Description} \\
-		\hline
-		F1 & Dispatch Optimization & The system should be able to optimize the dispatch power of generation resources in real-time by managing generator power levels to meet the time-varying load demands. They can be of the following types:
-		\begin{itemize}
-			\item Conventional Thermal Generation
-			\item Photovoltaic Cell
-			\item Wind Turbine
-		\end{itemize} \\
-		\hline
-		F2 & \ac{ESS} Management & The system is responsible for managing energy storage resources by controlling their discharge and charge operations. \\
-		\hline
-		F3 & Voltage Regulation & The system needs to appropriately manage voltage levels of generators and \acp{ESS} to maintain grid stability \\
-		\hline
-		F4 & Graph Features Extraction & The system must implement a graph machine learning mechanism for creating and generalising efficient representations of the environment \\
-		\hline
-		F5 & Learning Capability & The system must learn from experience and optimize its dispatch policies over time \\
-		\hline
-		F6 & Motorization & The system must implement tracking mechanisms in order to gather the different metrics, namely: 
-		\begin{itemize}
-			\item Convergence Rate
-			\item Training Time
-			\item Computation Time
-			\item CPU/GPU Utilization
-			\item Operating Cost
-			\item Average \ac{ESS} charge
-			\item Loss of renewable energy active power
-		\end{itemize} 
-		in order to enable the comparative and evaluative process between the different models. \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection{Non-functional}
-
-\begin{table}[H]
-	\centering
-	\caption{Non-functional Requirements}
-	\begin{tabular}{|P{1cm}|p{4cm}|p{8cm}|  }
-		\hline
-		\textbf{NFR} & \textbf{Title} & \textbf{Description} \\
-		\hline
-		NF1 & Adaptability & The system should adapt to changes in the power grid topology or in load patterns \\
-		\hline
-		NF2 & Reliability & The system should fulfil the various power grid constraints, namely power balance, generator constraints, ramp rate limits and \ac{ESS} constraints \\
-		\hline
-		NF3 & Scalability & The system must handle scenarios of different sizes, ranging from small to complex power distribution grids \\
-		\hline
-		NF4 & Simulation Environment & The system will be implemented in the context of an IEEE bus system test case that simulated the operation of a real-world power distribution grid. \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsection{Structural}
-
-\begin{table}[H]
-	\centering
-	\caption{Structural Requirements}
-	\begin{tabular}{|P{2cm}|p{4cm}|p{8cm}|  }
-		\hline
-		\textbf{SR} & \textbf{Title} & \textbf{Description} \\
-		\hline
-		S1 & Storage Space & Required for storing the test cases and the project's various artifacts \\
-		\hline
-		S2 & CPU/GPU \& Memory Resources & The system requires sufficient processing power and volatile memory for executing the models and power grid simulations \\
-		\hline
-		S3 & Connectivity &  This project requires a stable internet connection, specially for downloading the large scenarios \\
-		\hline
-		S4 & Visualization & This system requires visualization capabilities in order to observe the grid state and metrics at real-time \\
-		\hline
-	\end{tabular}
-\end{table}
 
 \section{Architecture} \label{sec:arch}
 
@@ -402,28 +320,127 @@ In this manner, we define the four dimensions for evaluating and analysing the d
 	\item[Scalability and Adaptation]  The solution will be applied to scenarios of several sizes for analysing its scalability. Furthermore, we will induce variations in the simulation scenarios to test the model's ability to handle topology changes.
 \end{description}
 
-\section{Work Plan} \label{sec:work-plan}
 
+\begin{comment}
+	* TODO
+\end{comment}
 
-In order to make this project possible, we propose a 40-week work plan divided into four stages, whose start was in the last week of September 2023 and expected conclusion is scheduled for the last week of June 2024, observable in figure \ref{fig:gantt-chart}. 
-The first stage, ranging from the first week of the plan to the delivery of this report, encompasses the \textbf{dissertation preparation} phase. This stage mainly addressed the initial knowledge acquisition necessary to understand this work's context and gather a basic grasp on the concepts and topics it addresses, namely:
+\section{Technologies}
+
+Beyond being a well-documented, fast, robust and modular language, \textit{Python} is an ubiquitous technology for implementing machine learning algorithms. Furthermore, the main libraries used to implement the simulation environment and algorithm are native to this language.
+\par
+In table x, the main requirements for the project can be observed, along with their respective version number and a short description of their purpose and functionality.
+\par
+
+\begin{table}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Name} & \textbf{Description} & \textbf{Version Number} \\
+		\hline
+		Python & Functional Programming Language & 3.11.9 \\
+		\hline
+		Numpy & Numerical Computing Library& 1.24.3 \\
+		\hline
+		Ray & Used for hyperparameter tuning & 2.21.0 \\
+		\hline
+		PyTorch & \acs{ML} Library used by stable-baselines3 & 2.3.0 \\
+		\hline
+		PyTorch Geometric & \ac{GNN} Implementations & 2.5.3 \\
+		\hline
+		Grid2Op & Power Grid Simulation Platform & 1.9.8 \\
+		\hline
+		Pandas & Data Manipulation and Analysis & 1.5.3 \\
+		\hline
+		LightSim2Grid & Fast Grid2Op Backend & 0.8.2 \\
+		\hline
+		Gymnasium & \ac{RL} Single-Agent API & 0.29.1 \\
+		\hline
+		Stable Baselines 3 & \ac{DRL} Implementations & 2.3.2 \\
+		\hline
+	\end{tabular}
+	\caption{Project Requirements}
+\end{table}
+
+Grid2Op is a critical requirement used to simulate the power grid operation in different manageable scenarios. This is further discussed in the next subsection \ref{sec:simulation-env}. Stable-Baselines3 was chosen for its performance, customization and descriptive documentation, while PyTorch Geometric was favoured because of the wide variety of \acp{GNN} Implementations included. Additionally, these libraries mix well because stable-baselines3 already uses PyTorch in its \ac{DRL} implementations.
+\par
+Lastly, \textit{Gymnasium} is used as the standard \ac{RL} single-agent API in the entirety of the project, adding robustness, scalability and flexibility to agent-environment interaction process in the implementation.  \par
+
+\section{Simulation Environment} \label{sec:simulation-env}
+
+The \textit{Grid2Op} framework \cite{rtefranceGrid2OpDocumentation} will be used for modelling the sequential decision-making process on simulated power distribution grids. \textit{Grid2Op} is designed by RTE (\textit{Réseau de Transport d'Électricité}), the electricity transmission system operator of France, and is equipped with a variety of pre-defined scenarios used in coding competitions and based on real-world data \cite{rtefranceGrid2OpDocumentation}. \par
+This \textit{python} library implements the creation of power grid environments that emulate a subset of the elements and physical constraints of real power systems. On one hand, the main objects and their interactions are captured realistically, while on the other, the abstraction level used to model the fundamental elements of a power grid facilitates the implementation of intelligent systems in safe and controllable scenarios. \par
+Furthermore, \textit{Grid2Op} models the dynamic topology of power systems as graph-structured data, which also eases the study of how this information can influence decision-making systems performing on these environments.  In figure \ref{fig:grid2op-graph}, a graphical plot of the environment state at an arbitrary timestep can be observed. \par
+This framework is compatible with the \textit{Gymnasium} framework \cite{faramafoundationGymnasiumDocumentation}, a widely used toolkit for developing \ac{RL} algorithms, which will also will be used in this work together with the Grid2Op simulation environment. 
+
 \begin{itemize}
-	 \item Reinforcement Learning
-	\item Graph Theory
-	\item Graph Representation Learning
-	\item Graph Reinforcement Learning
-	\item Graph Neural Networks
-	\item Smart Grids Services
+	\item redispatch - change the production output of non-renewable generators in incrementing or decrementing intervals 
+	\item curtail - change the production setpoint of renewable generators bellow the current maximum available power \cite{rtefranceGrid2OpDocumentation}
 \end{itemize}
-This process is followed by the analysis of existing research and approaches in \ac{GRL} and Smart Grid technologies which spans till the first week of January 2024, documented in chapter \ref{chap:literature-review}. Lastly, the preparation phase is also compromised of the PDIS report write-up until its delivery in the first week of February 2024, marking the end of this phase. \par
-The preparation phase is followed by the \textbf{Development} phase. This stage encompasses all activities related to the system implementation, from the preparation of the simulation environment to the model training and calibration. The development phase spans from the first week of February 2024 to the second-to-last week of April 2024. \par
-Next, the \textbf{Evaluation \& Analysis} stage is set, compromising the time frame where the various implemented models will be evaluated in the context of the previously mentioned dimensions and the evaluation results will be analysed. \par
-Lastly, the \textbf{Dissertation} write-up and subsequent revision work will be performed, compromised of the write-up, proofreading and correction tasks and ranging from the end of the evaluation and analysis phase in the last week of April 2024 until the last week of the plan.
 
 
-\begin{sidewaysfigure}
-	\includegraphics[width=1.0\linewidth]{./figures/gantt-chart.png}
-	\caption{Project Work Plan}
-	\label{fig:gantt-chart}
-\end{sidewaysfigure}
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.85\linewidth]{./figures/grid2op-graph.png}
+	\caption{Grid2Op \textit{l2rpn\_idf\_2023} 118-bus test case \cite{rtefranceGrid2OpDocumentation}}
+	\label{fig:grid2op-graph}
+\end{figure}
+
+
+\subsection{Elements}
+
+The main elements that are modelled by the simulation environment are presented in this subsection. The power grid is reduced to its fundamental components and their properties:
+
+\begin{itemize}
+	\item \textbf{Buses} are the fundamental objects of the power grid, representing nodes where power sources, loads and other elements are connected\cite{rtefranceGrid2OpDocumentation}.
+	
+	\item \textbf{Powerlines} represent edges in the power grid and connect the different buses together. They represent the physical transmission and distribution lines and allow power to flow from one part of the grid to another \cite{rtefranceGrid2OpDocumentation}.
+	\begin{itemize}
+		\item status
+		\item rho
+	\end{itemize}
+	
+	\item \textbf{Generators} are critical grid elements connected to buses whose main role is to produce power and maintain grid stability by balancing the energy supply and demand. They can be Conventional Thermal Generators, Wind Turbines or Photovoltaic Cells \cite{rtefranceGrid2OpDocumentation}.
+	\begin{itemize}
+		\item $P^\text{NRES}_i(t)$ - Power generation at non-renewable generator $i$
+		\item $P^\text{RES}_i(t)$ - Power generation at renewable generator $i$
+		\item $\overline{P^\text{RES}_i}(t)$ - Maximum power generation at renewable generator $i$
+		\item $\overline{P^\text{NRES}_i}, \underline{P^\text{NRES}_i}$ - Maximum/Minimum power generation at renewable generator $i$
+	\end{itemize}
+	
+	
+	\item \textbf{Loads} consume power from the grid, simulating electricity use. They're also associated to an individual bus \cite{rtefranceGrid2OpDocumentation}.
+	\begin{itemize}
+		\item $P^\text{LOAD}_i$ - Active power at load $i$
+		\item $Q^\text{LOAD}_i$ - Reactive power at load $i$
+	\end{itemize}
+	
+	\item \textbf{Storage Units} can act as both consumers and producers. They're able to retain energy from the power grid when production surpasses demand for later injecting back power when convenient. Storage units are bound by a maximum energy storage capacity \cite{rtefranceGrid2OpDocumentation}.
+\end{itemize}
+
+
+Beyond \textit{grid2op} to build and run the test cases and \textit{gymnasium} as the RL framework, this project will use \textit{PyTorch} \cite{pytorchPyTorch} with \textit{PyTorch Geometric} \cite{pygteamPyGPytorch_geometric} library for developing the \ac{GNN} because of its extensive list of available implemented models. The different combinations of algorithms will be applied to a set of modified scenarios that fulfil the settled requirements. For Deep Reinforcement Learning algorithms, solutions with plain \ac{SAC}, \ac{DDPG} and \ac{PPO} approaches and combined with the \ac{GCN}, \ac{GAT} and \ac{GIN} architectures.  \par
+Concerning result analysis, it's also important to point out the use of quantitative methods for evaluating the different implemented models, a topic that is further explored in the following section \ref{sec:eval-methods}.
+
+\section{Scenarios}
+
+\begin{table}[H] 
+	\centering
+	\caption{Test Case Sizes}
+	\begin{tabular}{|P{2cm}|P{3.5cm}|P{3.5cm}|  }
+		\hline
+		& \textbf{l2rpn\_icaps\_2021} & \textbf{l2rpn\_idf\_2023} \\
+		\hline
+		\textbf{Buses} & 36 & 118 \\
+		\hline
+		\textbf{Powerlines} & 59  & 186  \\
+		\hline
+		\textbf{Generators} & 22 & 62  \\
+		\hline
+		\textbf{Loads} & 37 & 99 \\
+		\hline
+	\end{tabular}
+	\label{tab:test-case}
+\end{table}
+
+This work will use the pre-defined \textit{grid2op} \textit{l2rpn\_icaps\_2021} and \textit{l2rpn\_idf\_2023} test environments, a modified case studies based on the original IEEE 118-bus system test case \cite{christiePowerSystemsTesta} of 36 and 118 buses, respectively. The first test case is a subset of the original 118-bus system with 50 years worth of data divided into independent \footnote{non-consecutive} weekly scenarios, while in the second case the system was modified to accommodate the \textit{possible energy mix} of France in 2035, containing 16 years of data \cite{rtefranceGrid2OpDocumentation}. The scenarios document the loads and productions at each time step, the grid layout (for display purposes), generator and \ac{ESS} characteristics \cite{rtefranceGrid2OpDocumentation} for a weekly episode, the sizes of test cases can be further observed in table \ref{tab:test-case}. In addition, the test cases data will be modified to reflect the defined requirements of this work. \par
