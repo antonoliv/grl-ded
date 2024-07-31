@@ -31,7 +31,7 @@ sac_params = {
 gnn_params = {
     "in_channels": 6,
     "hidden_channels": 18,
-    "num_layers": 2,
+    "num_layers": 1,
     "out_channels": 6,
     "dropout": 0.1,
     "act": "relu",
@@ -55,26 +55,6 @@ gcn_params = {
     "bias": True,
 }
 
-gat_params = {
-    "heads": 3,
-    "v2": True,
-    "concat": True,
-    "negative_slope": 0.2,
-    "dropout": 0.0,
-    "add_self_loops": True,
-    "edge_dim": None,
-    "fill_value": "mean",
-    "bias": True,
-}
-
-sage_params = {
-    "aggr": "mean",
-    "normalize": False,
-    "root_weight": True,
-    "project": False,
-    "bias": True,
-}
-
 env_params = {
     "env_path": "l2rpn_icaps_2021_large",
     "reward": RESPenaltyReward(0.4),
@@ -89,45 +69,57 @@ env_params = {
 }
 
 gcn_params.update(gnn_params)
-gat_params.update(gnn_params)
-gat_params.update(gnn_params)
 
 train_ep = 10000
 eval_ep = 295
 
 seed = 123433334
-from grl.model import SAC, GCN_SAC, GAT_SAC, SAGE_SAC
+from grl.model import SAC, GCN_SAC
+
+m = SAC(
+    seed,
+    "sac/10/36",
+    1,
+    sac_params.copy(),
+    env_params.copy()
+)
+
+m.train_and_validate(train_ep, eval_ep)
+
+env_params["env_path"] = "l2rpn_idf_2023"
+
+m = SAC(
+    seed,
+    "sac/10/118",
+    1,
+    sac_params.copy(),
+    env_params.copy()
+)
+
+m.train_and_validate(train_ep, eval_ep)
+
+env_params["env_path"] = "l2rpn_icaps_2021_large"
 
 m = GCN_SAC(
     seed,
-    "gcn_sac/9",
+    "gcn_sac/10/36",
     1,
     sac_params.copy(),
     env_params.copy(),
-    gnn_params.copy(),
+    gcn_params.copy()
 )
 
 m.train_and_validate(train_ep, eval_ep)
 
+env_params["env_path"] = "l2rpn_idf_2023"
 
-m = GAT_SAC(
+m = GCN_SAC(
     seed,
-    "gat_sac/9",
+    "gcn_sac/10/118",
     1,
     sac_params.copy(),
     env_params.copy(),
-    gnn_params.copy(),
-)
-
-m.train_and_validate(train_ep, eval_ep)
-
-m = SAGE_SAC(
-    seed,
-    "sage_sac/9",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-    gnn_params.copy(),
+    gcn_params.copy()
 )
 
 m.train_and_validate(train_ep, eval_ep)
