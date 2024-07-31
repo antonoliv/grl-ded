@@ -39,7 +39,7 @@ sac_params = {
 gnn_params = {
     "in_channels": 6,
     "hidden_channels": tune.grid_search([6, 18]),
-    "num_layers": tune.grid_search([2, 6]),
+    "num_layers": tune.grid_search([1, 2]),
     "out_channels": 6,
     "dropout": 0.1,
     "act": "relu",
@@ -103,7 +103,7 @@ tuner = tune.Tuner(
     param_space=params,
     run_config=train.RunConfig(stop={"training_iteration": 1}),
     tune_config=tune.TuneConfig(
-        num_samples=20, max_concurrent_trials=5, scheduler=scheduler
+        num_samples=1, max_concurrent_trials=5, scheduler=scheduler
     ),
 )
 
