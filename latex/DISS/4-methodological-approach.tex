@@ -253,7 +253,7 @@ In this section, the \ac{DED} problem is formalized in the as a sequential decis
 		X_i = o_i
 	\end{equation}
 	
-	\item[Reward] description
+	\item[Reward] Considering the reward function, a def
 	
 	\begin{equation}
 		r(t) = r_1(t) + r_2(t)
@@ -280,7 +280,7 @@ In this section, the \ac{DED} problem is formalized in the as a sequential decis
 \end{comment}
 
 
-\section{Architecture} \label{sec:arch}
+\section{Solution Architecture} \label{sec:arch}
 
 Considering the conclusions taken from the reviewed literature, in chapter \ref{chap:literature-review}, our proposed solution combines efficient \acf{DRL} approaches with \acfp{GNN}, the state-of-the-art approach for graph representation learning. Generally, the system receives graph-based representations of the environment and encodes them using the \ac{GNN} algorithm. By also leveraging deep learning techniques, \ac{DRL} maps the encoded embeddings to optimal action sequences with the goal of meeting the real-time load demand and reducing the operating cost of the power distribution grid. The general architecture of the solution can be observed in figure \ref{fig:arch}.
 
@@ -292,8 +292,9 @@ Considering the conclusions taken from the reviewed literature, in chapter \ref{
 \end{figure}
 
 
-To fulfil this, the agent adjusts the generator power output and voltage levels and manages the \ac{ESS} operation in real-time. \par
-The solution is executed in the context of a power grid simulation that models the appropriate elements, properties, constraints and operating of the power distribution grid. This method is further described in the upcoming subsection \ref{sec:method}.
+To fulfil this, the agent adjusts the generator power output and voltage levels and manages the \ac{ESS} operation in real-time. The proposed solution is trained and tested in a power grid simulation that models the appropriate elements, properties, constraints and operation of the power distribution grid. \par
+In order to achieve this purpose, the \ac{GRL} models were implemented using \textit{stable-baselines3} \ac{DRL} implementations and \textit{torch\_geometric} \ac{GNN} models. Beyond having several different implementations available for both their respective types of algorithms, utilizing these two technologies simplifies the integration of models from each, allowing for more straightforward testing of various combinations. \par
+Although stable-baselines3 allows for the implementation of custom feature extractors, this method was not computationally optimal. \ac{DRL} models of this library that use mini-batching have an increased complexity due to the extractor being called on each batch observation at every step. This issue is derived from another problem which is obviously the storage of raw observations in the replay buffer, where the data is batched from, instead of the extracted features.To solve this, the \ac{GNN} feature extraction layer was included directly in the observation space which ensured the execution of module only once per step. \par
 
 
 
