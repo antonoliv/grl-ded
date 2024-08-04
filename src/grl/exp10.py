@@ -87,6 +87,7 @@ m = SAC(
 m.train_and_validate(train_ep, eval_ep)
 
 env_params["env_path"] = "l2rpn_idf_2023"
+eval_ep = 83
 
 m = SAC(
     seed,
@@ -99,6 +100,7 @@ m = SAC(
 m.train_and_validate(train_ep, eval_ep)
 
 env_params["env_path"] = "l2rpn_icaps_2021_large"
+eval_ep = 295
 
 m = GCN_SAC(
     seed,
@@ -112,6 +114,7 @@ m = GCN_SAC(
 m.train_and_validate(train_ep, eval_ep)
 
 env_params["env_path"] = "l2rpn_idf_2023"
+eval_ep = 83
 
 m = GCN_SAC(
     seed,
