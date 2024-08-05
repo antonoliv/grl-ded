@@ -1,11 +1,19 @@
+import ray
+from ray import tune
+from ray.tune.schedulers import ASHAScheduler
+
 import stable_baselines3
 import torch as th
 import torch_geometric
+from grl.model import GAT_SAC
 
 from grl.environment.reward.res_penalty_reward import RESPenaltyReward
 
+import settings
+
+EXPERIMENTS = settings.EXPERIMENTS
+
 sac_params = {
-    "class": stable_baselines3.SAC,
     "policy": "MultiInputPolicy",
     "learning_rate": 1e-4,
     "gamma": 0.85,
@@ -31,7 +39,7 @@ sac_params = {
 gnn_params = {
     "in_channels": 6,
     "hidden_channels": 18,
-    "num_layers": 1,
+    "num_layers": 2,
     "out_channels": 6,
     "dropout": 0.1,
     "act": "relu",
@@ -40,94 +48,71 @@ gnn_params = {
     "norm": None,
     "norm_kwargs": None,
     "jk": None,
-    "aggr": "mul",
+    "aggr": "sum",
     "aggr_kwargs": None,
     "flow": "source_to_target",
-    "node_dim": -2,
+    # "node_dim": -2,
     "decomposed_layers": 1,
-}
 
-gcn_params = {
-    "improved": False,
-    "cached": False,
-    "add_self_loops": None,
-    "normalize": True,
-    "bias": True,
-}
-
-gat_params = {
-    "heads": 3,
-    "v2": True,
+    "heads": tune.grid_search([1, 2, 3]),
+    "v2": tune.grid_search([False, True]),
     "concat": True,
     "negative_slope": 0.2,
-    "dropout": 0.0,
     "add_self_loops": True,
     "edge_dim": None,
     "fill_value": "mean",
     "bias": True,
 }
 
-sage_params = {
-    "aggr": "mean",
-    "normalize": False,
-    "root_weight": True,
-    "project": False,
-    "bias": True,
-}
-
 env_params = {
-    "env_path": "l2rpn_case14_sandbox",
+    "env_path": "l2rpn_icaps_2021_large",
     "reward": RESPenaltyReward(0.4),
     "obs_scaled": False,
     "obs_step": True,
     "act_no_curtail": False,
     "act_limit_inf": True,
     "climit_type": "sqrt",
-    "climit_end": 7200,
+    "climit_end": 1,
     "climit_low": 0.4,
     "climit_factor": 3,
 }
 
-gcn_params.update(gnn_params)
-gat_params.update(gnn_params)
-sage_params.update(gnn_params)
+params = {
+    "name": "gat_sac/gnn_tune",
+    "class": GAT_SAC,
+    "seed": 123433334,
+    "verbose": 1,
+    "train_episodes": 1,
+    "eval_episodes": 1,
+    "sac_params": sac_params,
+    "gnn_params": gnn_params,
+    "env_params": env_params,
+}
 
-train_ep = 10000
-eval_ep = 295
 
-seed = 123433334
-from grl.model import SAC, GCN_SAC, GAT_SAC, SAGE_SAC
 
-# m = GCN_SAC(
-#     seed,
-#     "gcn_sac/9",
-#     1,
-#     sac_params.copy(),
-#     env_params.copy(),
-#     gnn_params.copy(),
-# )
-#
-# m.train_and_validate(train_ep, eval_ep)
 
-#
-# m = GAT_SAC(
-#     seed,
-#     "gat_sac/9",
-#     1,
-#     sac_params.copy(),
-#     env_params.copy(),
-#     gnn_params.copy(),
-# )
-#
-# m.train_and_validate(train_ep, eval_ep)
+ray.init()
 
-m = SAGE_SAC(
-    seed,
-    "sage_sac/9",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-    sage_params.copy(),
+# Define the scheduler
+scheduler = ASHAScheduler(
+    metric="mean_reward", mode="max", max_t=10, grace_period=5, reduction_factor=2
 )
 
-m.train_and_validate(train_ep, eval_ep)
+from grl.experiment import Experiment
+from ray import train, tune
+
+tuner = tune.Tuner(
+    tune.with_resources(Experiment, resources={"cpu": 1, "gpu": 1}),
+    param_space=params,
+    run_config=train.RunConfig(stop={"training_iteration": 1}),
+    tune_config=tune.TuneConfig(
+        num_samples=1, max_concurrent_trials=5, scheduler=scheduler
+    ),
+)
+
+results = tuner.fit()
+
+print(results.get_dataframe())
+
+results.get_dataframe().to_csv(settings.EXPERIMENTS + params['name'] + "/parameters.csv", index=False)
