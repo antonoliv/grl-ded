@@ -141,50 +141,26 @@ Results revealed that the proposed implementations were superior to the already 
 
 \section{\acp{GNN} Hyperparameter Tuning} \label{sec:gnn-hypertune}
 
-As a key area of this research work, the \ac{GNN} component of the proposed algorithm was given a particular focus in what accounts for hyperparameter tuning. Concrete experiments were devised to assess the performance of different parameter combinations, mainly using the GCN-SAC algorithm. 
+As a key area of this research work, the \ac{GNN} component of the proposed algorithm was given a particular focus in what accounts for hyperparameter tuning. Concrete experiments were devised to assess the performance of different parameter combinations, mainly using the GCN-SAC algorithm. \par
 
-Regarding the parameters analyzed, they can be observed in the table bellow:
+The \ac{GNN} aggregation function plays a fundamental role in the architecture of the solution so the tuning process first focused on this parameter. There are five available types of aggregation schemes:
+\begin{itemize}
+\item \textbf{Sum} - 
+\item \textbf{Max} -
+\item \textbf{Min} - 
+\item \textbf{Mean} - 
+\item \textbf{Mul} - 
+\end{itemize}
+
+\begin{comment}
+	Validation episodes 295
+	119 -> 83
+\end{comment}
+In a first experiment, five models each with the different types of aggregation functions were trained for 5000 episodes. The main parameters and results can be observed in appendix \ref{appendix}, section \ref{appendix:aggr}. The function that obtained the best average accumulative reward during validation was \texttt{max}, achieving around $4\%$ more than the second placed \texttt{sum} function. Furthermore, this model managed to do better than average in most metrics while simultaneously being outperformed in all of them, which shows the balance between the importance of cost saving while considering the maximization of renewable energy. \par
+
+Regarding the number of \ac{GNN} layers, section \ref{appendix:layers} of appendix \ref{appendix} represents the results from the conducted experiment with this scope. This test considered the \texttt{max} aggregation function and a number of \ac{GCN} layers between $[1,6]$. In contrast with the last experiment, the best model which used a 6-layer \ac{GNN} outperformed the second place with a significant difference of $22.4\%$. This results led to the use of these two parameters in the \ac{GCN} model.
 
 
-\begin{table}
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Parameter} & \textbf{Values} \\
-		\hline
-		Aggregation Function & \{'sum','mean', 'min', 'max', 'mul'\} \\
-		\hline
-		Number of Layers & \{1,2,3,4,5\} \\
-		\hline
-		Hidden Channels & \{6, 12, 18, 24, 36\} \\
-		\hline
-		Ouput Channels & \{3, 6, 12, 18, 24, 36\} \\
-		\hline 
-		Dropout Rate & [0.1, 0.4] \\
-		\hline
-		Activation First & {True, False} \\
-		\hline 
-		Heads & {1,2,3,6} \\
-		\hline
-		GATv2 & {True, False} \\
-		\hline
-	\end{tabular}
-	\caption{General \ac{GNN} Parameters Tuned}
-\end{table}
-
-\begin{table}
-	\begin{tabular}{|l|l|l|}
-		\hline
-		\textbf{Implementation} & \textbf{Parameter} & \textbf{Values} \\
-		\hline
-		GCN & Improved & {True, False} \\
-		\hline 
-		GAT & Heads & {1,2,3,6} \\
-		\hline
-		GAT & GATv2 & {True, False} \\
-		\hline
-	\end{tabular}
-	\caption{Model-Specific Parameters Tuned}
-\end{table}
 
 
 \section{GNN Implementation Comparison} \label{sec:gnn-comparison}
