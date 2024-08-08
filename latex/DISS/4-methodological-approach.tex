@@ -156,10 +156,8 @@ In any case, when a powerline is disconnected for safety reasons, it's affected 
 
 In this section, the \ac{DED} problem is formalized in the as a sequential decision-making problem and its \ac{MDP} is uncovered. 
 
-\subsubsection{Simple}
-
 \begin{description}
-	\item[Action] The considered action space includes the change in conventional generator redispatching $\Delta P^G_i$, renewable energy curtailment $P^\text{RES}_i$ and \ac{ESS} absorption/production power $P^\text{ESS}_i$.
+	\item[Action] The considered action space includes the change in conventional generator redispatching $\Delta P^G_i$, renewable energy curtailment $P^\text{RES}_i$ and \ac{ESS} absorption/production power $P^\text{ESS}_i$. The first concerns only to non-renewable dispatchable generators and is done in increments and decrements, while the second is the ratio of curtailment applied to the total amount of generation ouput of a renewable generator. \par
 	
 	\item[Observation] The observation space is composed of four components regarding Generators, \ac{RES}, Loads and Powerlines, highlighted in the following equations:
 	
@@ -198,48 +196,20 @@ In this section, the \ac{DED} problem is formalized in the as a sequential decis
 		o(t)= \{ o_{1}(t), o_{2}(t), o_{3}(t), o_{4}(t) \}
 	\end{equation}
 	
-	This tuple encompasses the main elements of the powergrid an their characteristics, without capturing their topology.
-	
-	\item[Reward] 
-	
-	\begin{equation}
-		r(t) = r_1(t) + r_2(t)
-	\end{equation}
-	
-	\begin{equation}
-		\begin{split}
-			r_1(t) &= \overline{F_\text{NRES}} - F_\text{NRES}(t) \\
-			&= \overline{F_\text{NRES}} - \sum^N_{i=0} c^\text{NRES}_i P^\text{NRES}_i(t) \Delta t
-		\end{split}
-	\end{equation}
-	
-	\begin{equation}
-		\begin{split}
-			r_2(t) &= - F_\text{RES}(t) \\
-			&= \beta_\text{RES} \sum^M_{i=0} (\overline{P^\text{RES}_i}(t) - P^\text{RES}_i(t)) \Delta t
-		\end{split}
-	\end{equation}
-\end{description}
-
-
-\subsubsection{Graph}
-
-\begin{description}
-	\item[Action] The considered action space includes the change in conventional generator redispatching $\Delta P^G_i$, renewable energy curtailment $P^\text{RES}_i$ and \ac{ESS} absorption/production power $P^\text{ESS}_i$.
-	
-	\item[Observation] The observation space includes the current active and reactive load power, conventional and \ac{RES} generator active power, \ac{RES} power before curtailment, state-of-charge of \ac{ESS} and the current timestep for each node of the grid, respectively represented as a tuple in equation \ref{eq:graph-obs-space}.
+	This tuple encompasses the main elements of the powergrid an their characteristics, without capturing their topology. This is the space considered for pure-\ac{DRL} baselines. \par 
+	Concerning the topology of the network, for \ac{GRL} algorithms this tuple was replaced by a graph structure representing the power grid configuration. This graph is defined by its adjacency matrix, weight matrix and feature matrix. In equation \ref{eq:graph-obs-space}, the tuple of features for node $i$ at timestep $t$ can be observed. 
 	
 	\begin{equation} \label{eq:graph-obs-space}
 		o_i(t) = \{P^\text{LOAD}_i, Q^\text{LOAD}_i, P^\text{NRES}_i, P^\text{RES}_i, \overline{P^\text{RES}_i}, t\}
 	\end{equation}
 	
-	Beyond that, the observation also includes the topology of the power grid as a graph structure, considering the current powerline status as edges connecting substations and their respective relative flow as their weights. In this manner, the full observation is represented as:
+	The adjacency matrix is derived from \textit{line status} and the weight matrix corresponds to th \textit{rho} value of each line. Finally, a graph representation is obtained from the initial equation \ref{eq:simple-obs-space}, enabling their exploit and posterior study by \ac{GRL} algorithms.
 	
 	\begin{equation}
 		o(t) = G(\text{Adj}, W, X)
 	\end{equation}
 	
-	where 
+	where,
 	
 	\begin{equation}
 		\text{Adj}_{i,j} = F_{i,j}
@@ -253,26 +223,35 @@ In this section, the \ac{DED} problem is formalized in the as a sequential decis
 		X_i = o_i
 	\end{equation}
 	
-	\item[Reward] Considering the reward function, a def
+	\item[Reward] Considering reward functions, three formalizations were considered. The initial implementation can be described by equation \ref{eq:reward1} and corresponds to the total amount of cost saved at time step $t$, with the maximum cost, $\overline{F_\text{NRES}}$, representing the total cost of running the power system for the current step with all generators running at maximum output. \par
 	
-	\begin{equation}
-		r(t) = r_1(t) + r_2(t)
-	\end{equation}
 	
-	\begin{equation}
+	\begin{equation} \label{eq:reward1}
 		\begin{split}
 			r_1(t) &= \overline{F_\text{NRES}} - F_\text{NRES}(t) \\
 			&= \overline{F_\text{NRES}} - \sum^N_{i=0} c^\text{NRES}_i P^\text{NRES}_i(t) \Delta t
 		\end{split}
 	\end{equation}
 	
-	\begin{equation}
+	This definition fully encompasses the main objective of \ac{DED} directly tying reward maximization and the reduction of operation cost. However, it disregards a secondary objective concerning the maximization of \ac{RES} generated energy. \par
+	In this context, another component is added to consider the cost of wasted \ac{RES} energy, depicted in equation \ref{eq:reward2-pen}. This cost is calculated using the average cost per MW of all non-renewable generators of the system, $\overline{c^\text{NRES}}$, and a penalty factor, $\beta_\text{RES}$, to control the impact of wasted energy in reward value. \par
+	
+	\begin{equation} \label{eq:reward2-pen}
 		\begin{split}
 			r_2(t) &= - F_\text{RES}(t) \\
-			&= \beta_\text{RES} \sum^M_{i=0} (\overline{P^\text{RES}_i}(t) - P^\text{RES}_i(t)) \Delta t
+			&= \overline{c^\text{NRES}} \beta_\text{RES} \sum^M_{i=0} (\overline{P^\text{RES}_i}(t) - P^\text{RES}_i(t)) \Delta t 
 		\end{split}
 	\end{equation}
+	In addition, this component was also idealized as a bonus instead of a penalty. In contrast with the last definition, the maximization of renewable energy can also be considered through a positive reward for its utilization instead of penalizing its waste. This second version of the \ac{RES} component can be observed in equation \ref{eq:reward2-bon}\par
 	
+	\begin{equation} \label{eq:reward2-bon}
+			r_2(t) = \overline{c^\text{NRES}} \beta_\text{RES} \sum^M_{i=0} P^\text{RES}_i(t) \Delta t 
+	\end{equation}
+	
+	
+	\begin{equation}
+		r(t) = r_1(t) + r_2(t)
+	\end{equation}
 \end{description}
 
 \begin{comment}
