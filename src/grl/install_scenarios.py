@@ -1,6 +1,9 @@
 from grl.environment.make import split_dataset
+from torch_geometric.seed import seed_everything
 
 val_pct = 10  # % of the dataset to use for validation
+
+seed_everything(42)
 
 envs = [
     "l2rpn_case14_sandbox",

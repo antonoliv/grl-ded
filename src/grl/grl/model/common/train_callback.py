@@ -179,12 +179,13 @@ class TrainCallback(BaseCallback):
 
         # Prepare data for CSV
         data = {
-            "time": [time.time() - self.start_time],
-            "episodes": [self.episodes],
-            "avg_length": [np.mean(self.lengths) if self.episodes > 0 else 0],
             "avg_reward": [np.mean(self.acc_rewards) if self.episodes > 0 else 0],
+            "avg_length": [np.mean(self.lengths) if self.episodes > 0 else 0],
             "avg_cost": [np.mean(self.avg_cost) if self.episodes > 0 else 0],
             "avg_res_wasted": [np.mean(self.avg_res_waste) if self.episodes > 0 else 0],
+            "time": [time.time() - self.start_time],
+            "episodes": [self.episodes],
+            "total_steps": [self.total_steps],
         }
 
         episode = {
