@@ -19,21 +19,14 @@ This dissertation will focus on studying this problem in the context of single-a
 
 \section{Problem Formalization}
 
-In this section, the main problem of study of this dissertation is formally introduced. Firstly, the problem is approached from an application domain perspective, uncovering the details of the \ac{DED} problem and its main features. In the sequent subsection, the \ac{DED} problem is formalized as a dynamic sequential decision-making problem, and its characteristics are presented under the form of its corresponding \ac{MDP}.
+In this section, the main problem of study of this dissertation is formally introduced. Firstly, the problem is approached from an application domain perspective concerning the \ac{DED} problem and its considered features and characteristics. In the second subsection \ref{sec:mdp}, the \ac{DED} problem is formalized as a dynamic sequential decision-making problem, and its characteristics are presented under the form of its corresponding \ac{MDP}. \par
+These two formalizations are crucial for giving the appropriate view on how the \ac{GRL} algorithms and their environment will be approached and studied.
 
 \subsection{Dynamic Economic Dispatch}
 
 \begin{comment}
 	* Citation Needed (?)
 	* Revise
-	* Constraints
-	
-	
-	
-	
-	
-	
-	
 \end{comment}
 
 \begin{center}
@@ -92,13 +85,13 @@ In this section, the main problem of study of this dissertation is formally intr
 
 The \ac{DED} problem addresses the issue of balancing the necessity for ensuring stability, security and reliability of a power grid while also minimizing its operating cost. This problem is hardened by the paradigm observed in current power systems where \ac{ESS} and \ac{RES} are available and also need to be taken in consideration when studying solutions for this problem. \par
 In the idealized power system, the main components taken into account are renewable and non-renewable generators, loads, powerlines, substations and storage systems.
-Equation \ref{eq:ded-function} highlights the main objective function for the \ac{DED} problem and is composed of three main components: $F_\text{NRES}(t)$ represents the cost of energy produced by conventional generators, $F_\text{RES}(t)$ is the term that depicts the cost of wasted energy from \ac{RES} and $F_{\text{ESS}}(t)$ the \ac{ESS} operation cost. \par
+Equation \ref{eq:ded-function} highlights the main objective function for the \ac{DED} problem and is composed of three main components: $F_\text{NRES}(t)$ represents the cost of energy produced by conventional generators, $F_\text{RES}(t)$ is the term that depicts the cost of wasted energy from \ac{RES}. \par
 
 \begin{equation} \label{eq:ded-function}
- \min\sum^T_{t=1}(F_\text{NRES}(t) + F_{\text{RES}}(t) + F_{\text{ESS}}(t))
+ \min\sum^T_{t=1}(F_\text{NRES}(t) + F_{\text{RES}}(t)
 \end{equation}
 
-Conventional generation cost calculation is presented in equation \ref{eq:conv-cost}. For the sake of simplicity, this component is reduced to a linear equation and represented by a static $c_i$ term for generator $i$ in €/MWh . Regarding the cost of wasted \ac{RES} energy, a penalty term $\beta_\text{RES}$ is introduced that defines a cost for the abandoned renewable energy. Lastly, concerning \acp{ESS}, the cost is directly related to its operation cost $c^\text{ESS}_i$ in €/MW and to its current discharging/charging power $P^\text{ESS}_i$ with a positive power meaning that energy is being absorbed.
+Conventional generation cost calculation is presented in equation \ref{eq:conv-cost}. For the sake of simplicity, this component is reduced to a linear equation and represented by a static $c_i$ term for generator $i$ in €/MWh . Regarding the cost of wasted \ac{RES} energy, a penalty term $\beta_\text{RES}$ is introduced that defines a cost for the abandoned renewable energy.
 
 \begin{equation} \label{eq:conv-cost}
 	F_\text{NRES}(t) = \sum^N_{i=0} c^\text{NRES}_i P^\text{NRES}_i(t) \Delta t
@@ -108,17 +101,11 @@ Conventional generation cost calculation is presented in equation \ref{eq:conv-c
 	F_\text{RES}(t) = \beta_\text{RES} \sum^M_{i=0}  (\overline{P^\text{RES}_i}(t) - P^\text{RES}_i(t)) \Delta t 
 \end{equation}
 
-\begin{equation} \label{eq:ess-cost}
-	F_\text{ESS}(t) = \sum^O_{i=0} c^\text{ESS}_i P^\text{ESS}_i(t) 
-\end{equation}
-
-
-
 \subsubsection{Constraints}
 
 In order to maintain stability and reliable power distribution, the system must follow several operational constraints. These restrictions are related to generators, voltage, powerlines and its overall stability.  \par
 
-The main rule in a power system environment consists in the compliance with power balance. This  implies that, at all times, the sum of production output of all generators must surpass the total system load demand, as portrayed by equation \ref{eq:c-power-balance}. 
+The main rule in a power system environment consists in the compliance with power balance. This implies that, at all times, the sum of production output of all generators must surpass the total system load demand, as portrayed by equation \ref{eq:c-power-balance}. 
 
 \begin{equation} \label{eq:c-power-balance}
 	\sum^N_i P^\text{NRES}_i(t) + \sum^M_i P^\text{RES}_i(t) = \sum^L_i P^\text{LOAD}_i(t) + \delta, \delta > 0
@@ -157,9 +144,14 @@ In any case, when a powerline is disconnected for safety reasons, it's affected 
 In this section, the \ac{DED} problem is formalized in the as a sequential decision-making problem and its \ac{MDP} is uncovered. 
 
 \begin{description}
-	\item[Action] The considered action space includes the change in conventional generator redispatching $\Delta P^G_i$, renewable energy curtailment $P^\text{RES}_i$ and \ac{ESS} absorption/production power $P^\text{ESS}_i$. The first concerns only to non-renewable dispatchable generators and is done in increments and decrements, while the second is the ratio of curtailment applied to the total amount of generation ouput of a renewable generator. \par
+	\item[Action] The considered action space includes the change in conventional generator redispatching $\Delta P^\text{NRES}_i$, renewable energy curtailment $P^\text{RES}_i$ and \ac{ESS} absorption/production power $P^\text{ESS}_i$. The first concerns only to non-renewable dispatchable generators and is done in increments and decrements, while the second is the ratio of curtailment applied to the total amount of generation ouput of a renewable generator. \par
+	This second type of actions refers to the energy discarded from \ac{RES} for grid stability and security purposes, but they're represented as the upper bound on a renewable generator's output level. In this manner, while positive redispatch actions are directly tied with a higher energy output and, consequently, operational cost of the system, curtailment actions have the opposite effect, given that they are represented as the upper bound on a renewable generator output levels. Therefore, higher curtailment values result in a reduction of the wasted energy provided from \ac{RES}, which makes these actions crucial for an optimal grid operation.
 	
-	\item[Observation] The observation space is composed of four components regarding Generators, \ac{RES}, Loads and Powerlines, highlighted in the following equations:
+	\begin{equation} \label{eq:action-space}
+		A = \{P^\text{NRES}_1, P^\text{NRES}_2, \dots, P^\text{NRES}_N, P^\text{RES}_1, P^\text{RES}_2, \dots, P^\text{RES}_M\}
+	\end{equation}
+	
+	\item[Observation] The observation space is composed of four components concerning Generators, \ac{RES}, Loads and Powerlines, highlighted by the following equations:
 	
 	\begin{comment}
 		* Voltage
@@ -196,7 +188,7 @@ In this section, the \ac{DED} problem is formalized in the as a sequential decis
 		o(t)= \{ o_{1}(t), o_{2}(t), o_{3}(t), o_{4}(t) \}
 	\end{equation}
 	
-	This tuple encompasses the main elements of the powergrid an their characteristics, without capturing their topology. This is the space considered for pure-\ac{DRL} baselines. \par 
+	This tuple encompasses the main elements of the powergrid an their characteristics, without capturing their topology. This is the space considered for pure-\ac{DRL} baselines and it was taken from similar literature that addresses \ac{DED} with equivalent considerations. \par 
 	Concerning the topology of the network, for \ac{GRL} algorithms this tuple was replaced by a graph structure representing the power grid configuration. This graph is defined by its adjacency matrix, weight matrix and feature matrix. In equation \ref{eq:graph-obs-space}, the tuple of features for node $i$ at timestep $t$ can be observed. 
 	
 	\begin{equation} \label{eq:graph-obs-space}
@@ -223,6 +215,11 @@ In this section, the \ac{DED} problem is formalized in the as a sequential decis
 		X_i = o_i
 	\end{equation}
 	
+	\begin{comment}
+		* REFERENCE
+		* GNN Equations
+	\end{comment}
+	
 	\item[Reward] Considering reward functions, three formalizations were considered. The initial implementation can be described by equation \ref{eq:reward1} and corresponds to the total amount of cost saved at time step $t$, with the maximum cost, $\overline{F_\text{NRES}}$, representing the total cost of running the power system for the current step with all generators running at maximum output. \par
 	
 	
@@ -242,12 +239,12 @@ In this section, the \ac{DED} problem is formalized in the as a sequential decis
 			&= \overline{c^\text{NRES}} \beta_\text{RES} \sum^M_{i=0} (\overline{P^\text{RES}_i}(t) - P^\text{RES}_i(t)) \Delta t 
 		\end{split}
 	\end{equation}
+	
 	In addition, this component was also idealized as a bonus instead of a penalty. In contrast with the last definition, the maximization of renewable energy can also be considered through a positive reward for its utilization instead of penalizing its waste. This second version of the \ac{RES} component can be observed in equation \ref{eq:reward2-bon}\par
 	
 	\begin{equation} \label{eq:reward2-bon}
 			r_2(t) = \overline{c^\text{NRES}} \beta_\text{RES} \sum^M_{i=0} P^\text{RES}_i(t) \Delta t 
 	\end{equation}
-	
 	
 	\begin{equation}
 		r(t) = r_1(t) + r_2(t)
@@ -257,48 +254,6 @@ In this section, the \ac{DED} problem is formalized in the as a sequential decis
 \begin{comment}
 	* TODO
 \end{comment}
-
-
-\section{Solution Architecture} \label{sec:arch}
-
-Considering the conclusions taken from the reviewed literature, in chapter \ref{chap:literature-review}, our proposed solution combines efficient \acf{DRL} approaches with \acfp{GNN}, the state-of-the-art approach for graph representation learning. Generally, the system receives graph-based representations of the environment and encodes them using the \ac{GNN} algorithm. By also leveraging deep learning techniques, \ac{DRL} maps the encoded embeddings to optimal action sequences with the goal of meeting the real-time load demand and reducing the operating cost of the power distribution grid. The general architecture of the solution can be observed in figure \ref{fig:arch}.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.85\linewidth]{./figures/arch.png}
-	\caption{Solution Architecture}
-	\label{fig:arch}
-\end{figure}
-
-
-To fulfil this, the agent adjusts the generator power output and voltage levels and manages the \ac{ESS} operation in real-time. The proposed solution is trained and tested in a power grid simulation that models the appropriate elements, properties, constraints and operation of the power distribution grid. \par
-In order to achieve this purpose, the \ac{GRL} models were implemented using \textit{stable-baselines3} \ac{DRL} implementations and \textit{torch\_geometric} \ac{GNN} models. Beyond having several different implementations available for both their respective types of algorithms, utilizing these two technologies simplifies the integration of models from each, allowing for more straightforward testing of various combinations. \par
-Although stable-baselines3 allows for the implementation of custom feature extractors, this method was not computationally optimal. \ac{DRL} models of this library that use mini-batching have an increased complexity due to the extractor being called on each batch observation at every step. This issue is derived from another problem which is obviously the storage of raw observations in the replay buffer, where the data is batched from, instead of the extracted features.To solve this, the \ac{GNN} feature extraction layer was included directly in the observation space which ensured the execution of module only once per step. \par
-
-
-
-\section{Evaluation Metrics} \label{sec:eval-methods}
-
-\begin{comment}
-	* Sample Efficiency
-	* Other methods
-	* Equations
-	* TODO
-\end{comment}
-
-
-The solution described in the previous subsections \ref{sec:arch} and \ref{sec:method} clearly involves intricate operational mechanisms, something that calls for a sophisticated evaluative process. Furthermore, given the comparative nature of this dissertation the evaluation and analysis methods will be key factors in studying and confronting the different combinations of \acp{GNN} and \ac{DRL}, as well as possible improvements in the integration of these techniques.
-In this manner, we define the four dimensions for evaluating and analysing the different \ac{GRL} models:
-
-\begin{description}
-	\item[Learning efficiency] This dimension assesses how effectively the models learn and improve their decision-making process over time. It involves evaluating how quickly they converge to optimal or near-optimal dispatch strategies through the convergence rate. 
-	
-	\item[Computational Efficiency] It's crucial that the solution is able to perform well on real-time execution. In this context, not only it's important to assess the solution's decision computation performance but also to measure the time necessary for the model offline training, as well as the observed CPU/GPU resource utilization.
-	
-	\item[Dispatch Efficiency] The performance of the \ac{GRL} model in managing power distribution from the various generators will be mainly measured by the average operating cost (in \textit{Euros}) derived from the agent's sequence. Furthermore, other system behaviours will be analysed such as Renewable Energy Source Penetration, through the average ratio of maximum power and real power output, and \ac{ESS} utilization, through the average energy stored.
-	
-	\item[Scalability and Adaptation]  The solution will be applied to scenarios of several sizes for analysing its scalability. Furthermore, we will induce variations in the simulation scenarios to test the model's ability to handle topology changes.
-\end{description}
 
 
 \begin{comment}
@@ -402,25 +357,114 @@ The main elements that are modelled by the simulation environment are presented 
 Beyond \textit{grid2op} to build and run the test cases and \textit{gymnasium} as the RL framework, this project will use \textit{PyTorch} \cite{pytorchPyTorch} with \textit{PyTorch Geometric} \cite{pygteamPyGPytorch_geometric} library for developing the \ac{GNN} because of its extensive list of available implemented models. The different combinations of algorithms will be applied to a set of modified scenarios that fulfil the settled requirements. For Deep Reinforcement Learning algorithms, solutions with plain \ac{SAC}, \ac{DDPG} and \ac{PPO} approaches and combined with the \ac{GCN}, \ac{GAT} and \ac{GIN} architectures.  \par
 Concerning result analysis, it's also important to point out the use of quantitative methods for evaluating the different implemented models, a topic that is further explored in the following section \ref{sec:eval-methods}.
 
+\section{Parameters}
+
+Grid2Op also defines a number of customizable environment parameters that control some very important grid properties and settle some bounds on the agent-envrionment interaction. As there is a significant number of parameters that consider details that are out of the scope of this project, only the relevant parameters are exposed in table \ref{tab:grid-params}.
+
+\begin{table}[H] 
+	\centering
+	\caption{Grid2Op Relevant Parameters}
+	\begin{tabular}{|p{6.5cm}|p{6cm} | p{2cm} |}
+		\hline
+		\textbf{Parameter} & \textbf{Description} & \textbf{Default} \\
+		\hline
+		\texttt{NO\_OVERFLOW\_DISCONNECTION} & If \texttt{true}, the powerlines over their thermal limit will never be disconnected & \texttt{false} \\
+		\hline
+		\texttt{NB\_TIMESTEP\_OVERFLOW\_ALLOWED} & Number of timesteps a powerline is allowed to be in a soft overflow before it gets disconnected by time overcurrent & 2 \\
+		\hline
+		\texttt{NB\_TIMESTEP\_RECONNECTION} & Number of timesteps that a line disconnected for security reasons will stay disconnected & 10 \\
+		\hline
+		\texttt{HARD\_OVERFLOW\_THRESHOLD} & If the power flow of a line is above the settled hard overflow threshold it's instantaneously and automatically disconnected & 2.0 \\
+		\hline
+		\texttt{SOFT\_OVERFLOW\_THRESHOLD} & If the power flow of a line is above the defined soft overflow threshold for over \texttt{NB\_TIMESTEP\_OVERFLOW\_ALLOWED} steps, it's automatically disconnected & 1.0 \\
+		\hline
+		\texttt{ENV\_DC} & If \texttt{true}, the environment will use direct current approximations instead of alternative current & \texttt{false} \\
+		\hline
+		\texttt{LIMIT\_INFEASIBLE\_CURTAILMENT\_ STORAGE\_ACTION} & If set to \texttt{true}, the environment will automatically limit curtailment (and storage) actions that otherwise would lead to an infeasible system state. Might help the training and learning process of the model and significantly increases the survivability of the agent & \texttt{false} \\
+		\hline
+	\end{tabular}
+	\label{tab:grid-params}
+\end{table}
+
+Most of the parameters, with the exception of one, were left at their default values depicted in table \ref{tab:grid-params}. This includes the overflow thresholds, all of the timestep limits mentioned and direct current flag, whose values were found to be sensible enough to maintain a realistic yet feasible model of the environment. The only parameter that was tampered was \texttt{LIMIT\_INFEASIBLE\_CURTAILMENT\_STORAGE\_ACTION} with the goal of improving the learning efficency of the algorithms during training.
+
 \section{Scenarios}
 
 \begin{table}[H] 
 	\centering
 	\caption{Test Case Sizes}
-	\begin{tabular}{|P{2cm}|P{3.5cm}|P{3.5cm}|  }
+	\begin{tabular}{|P{2cm}|P{3.5cm}|P{4cm}|P{3.5cm}| }
 		\hline
-		& \textbf{l2rpn\_icaps\_2021} & \textbf{l2rpn\_idf\_2023} \\
+		& \textbf{l2rpn\_case14\_sanbox} & \textbf{l2rpn\_icaps\_2021\_large} & \textbf{l2rpn\_idf\_2023} \\
 		\hline
-		\textbf{Buses} & 36 & 118 \\
+		\textbf{Buses} & 14 & 36 & 118 \\
 		\hline
-		\textbf{Powerlines} & 59  & 186  \\
+		\textbf{Powerlines} & 20 & 59  & 186  \\
 		\hline
-		\textbf{Generators} & 22 & 62  \\
+		\textbf{Generators} & 6 & 22 & 62  \\
 		\hline
-		\textbf{Loads} & 37 & 99 \\
+		\textbf{Loads} & 11 & 37 & 99 \\
 		\hline
+		\textbf{Episodes} & 1004 & 2952 & 832 \\
+		\hline 
 	\end{tabular}
 	\label{tab:test-case}
 \end{table}
 
-This work will use the pre-defined \textit{grid2op} \textit{l2rpn\_icaps\_2021} and \textit{l2rpn\_idf\_2023} test environments, a modified case studies based on the original IEEE 118-bus system test case \cite{christiePowerSystemsTesta} of 36 and 118 buses, respectively. The first test case is a subset of the original 118-bus system with 50 years worth of data divided into independent \footnote{non-consecutive} weekly scenarios, while in the second case the system was modified to accommodate the \textit{possible energy mix} of France in 2035, containing 16 years of data \cite{rtefranceGrid2OpDocumentation}. The scenarios document the loads and productions at each time step, the grid layout (for display purposes), generator and \ac{ESS} characteristics \cite{rtefranceGrid2OpDocumentation} for a weekly episode, the sizes of test cases can be further observed in table \ref{tab:test-case}. In addition, the test cases data will be modified to reflect the defined requirements of this work. \par
+This work will use the pre-defined \textit{grid2op} \textit{l2rpn\_case14\_sandbox}, \textit{l2rpn\_icaps\_2021\_large} and \textit{l2rpn\_idf\_2023} test environments. The scenarios define the properties and characteristics of loads and generators at each time step, as well as the grid layout \cite{rtefranceGrid2OpDocumentation} for a weekly episodes. Its sizes of test cases can be further observed in table \ref{tab:test-case}. \par
+The first case was used for the main implementation and development of the algorithms given its small grid size. Motivated by its considerable grid size and amount of training data, the second test case was mainly used for the calibration of the model's main parameters. It's a subset of the original 118-bus system \cite{christiePowerSystemsTesta} with 50 years worth of data divided into independent \footnote{non-consecutive} weekly scenarios. Finally, the third scenario, is based on the same original test case as the previous one and it includes modifications that aim to accommodate the \textit{possible energy mix} of France in 2035, containing 16 years of data \cite{rtefranceGrid2OpDocumentation}. It was mainly used to study the algorithm's scalability and performance in larger scenarios in comparison with the baseline plain-\ac{DRL} model. \par
+
+
+
+\section{Solution Architecture} \label{sec:arch}
+
+Considering the conclusions taken from the reviewed literature, in chapter \ref{chap:literature-review}, our proposed solution combines efficient \acf{DRL} approaches with \acfp{GNN}, the state-of-the-art approach for graph representation learning. Generally, the system receives graph-based representations of the environment and encodes them using the \ac{GNN} algorithm. By also leveraging deep learning techniques, \ac{DRL} maps the encoded embeddings to optimal action sequences with the goal of meeting the real-time load demand and reducing the operating cost of the power distribution grid. The general architecture of the solution can be observed in figure \ref{fig:arch}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.85\linewidth]{./figures/arch.png}
+	\caption{Solution Architecture}
+	\label{fig:arch}
+\end{figure}
+
+
+To fulfil this, the agent adjusts the generator power output and voltage levels and manages the \ac{ESS} operation in real-time. The proposed solution is trained and tested in a power grid simulation that models the appropriate elements, properties, constraints and operation of the power distribution grid. \par
+In order to achieve this purpose, the \ac{GRL} models were implemented using \textit{stable-baselines3} \ac{DRL} implementations and \textit{torch\_geometric} \ac{GNN} models. Beyond having several different implementations available for both their respective types of algorithms, utilizing these two technologies simplifies the integration of models from each, allowing for more straightforward testing of various combinations. \par
+Although stable-baselines3 allows for the implementation of custom feature extractors, this method was not computationally optimal. \ac{DRL} models of this library that use mini-batching have an increased complexity due to the extractor being called on each batch observation at every step. This issue is derived from another problem which is obviously the storage of raw observations in the replay buffer, where the data is batched from, instead of the extracted features.To solve this, the \ac{GNN} feature extraction layer was included directly in the observation space which ensured the execution of module only once per step. \par
+
+
+
+\section{Evaluation Metrics} \label{sec:eval-methods}
+
+\begin{comment}
+	* Sample Efficiency
+	* Other methods
+	* Equations
+	* TODO
+\end{comment}
+
+
+The solution described in the previous subsections \ref{sec:arch} and \ref{sec:method} clearly involves intricate operational mechanisms, something that calls for a sophisticated evaluative process. Furthermore, given the comparative nature of this dissertation the evaluation and analysis methods will be key factors in studying and confronting the different combinations of \acp{GNN} and \ac{DRL}, as well as possible improvements in the integration of these techniques.
+In this manner, we define the four dimensions for evaluating and analysing the different \ac{GRL} models:
+
+\begin{description}
+	\item[Learning efficiency] This dimension assesses how effectively the models learn and improve their decision-making process over time. It involves evaluating how quickly they converge to optimal or near-optimal dispatch strategies through the convergence rate. 
+	
+	\item[Computational Efficiency] It's crucial that the solution is able to perform well on real-time execution. In this context, not only it's important to assess the solution's decision computation performance but also to measure the time necessary for the model offline training, as well as the observed CPU/GPU resource utilization.
+	
+	\item[Dispatch Efficiency] The performance of the \ac{GRL} model in managing power distribution from the various generators will be mainly measured by the average operating cost (in \textit{Euros}) derived from the agent's sequence. Furthermore, other system behaviours will be analysed such as Renewable Energy Source Penetration, through the average ratio of maximum power and real power output, and \ac{ESS} utilization, through the average energy stored.
+	
+	\begin{equation}
+		\text{Daily Operating Cost} = 
+	\end{equation}
+	
+	\begin{equation}
+		P^\text{RES}_\text{Wasted} = 
+	\end{equation}
+	
+	\item[Survivability]  Almost as important
+	
+	\item[Scalability and Adaptation]  The solution will be applied to scenarios of several sizes for analysing its scalability. Furthermore, we will induce variations in the simulation scenarios to test the model's ability to handle topology changes.
+\end{description}
+
+To ensure a proper and unbiased evaluation of the proposed models, the data provided by the used scenarios is splitted into train and test samples with a ratio of $90\%$ and $10\%$, respectively. Cross-validation was considered, but discarded because of the slow performance of the algorithms and apparent reduced learning efficiency.
