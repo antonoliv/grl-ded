@@ -102,7 +102,7 @@ env_params = {
     "act_no_curtail": False,
     "act_limit_inf": True,
     "climit_type": "sqrt",
-    "climit_end": 1,
+    "climit_end": 7200,
     "climit_low": 0.4,
     "climit_factor": 3,
 }
@@ -111,8 +111,8 @@ gcn_params.update(gnn_params)
 gat_params.update(gnn_params)
 sage_params.update(gnn_params)
 
-train_ep = 1
-eval_ep = 1
+train_ep = 10000
+eval_ep = 295
 
 seed = 123433334
 from grl.model import SAC, GCN_SAC, GAT_SAC, SAGE_SAC
@@ -140,7 +140,8 @@ m = GCN_SAC(
 )
 
 m.train_and_validate(train_ep, eval_ep)
-
+train_ep = 7000
+env_params['climit_end'] = 5800
 ####################################################################################################
 # NO CURTAILMENT
 ####################################################################################################
@@ -309,6 +310,8 @@ env_params['reward'] = RESPenaltyReward(0.4)
 ####################################################################################################
 # GNN COMPARISON
 ####################################################################################################
+train_ep = 10000
+env_params['climit_end'] = 7200
 
 # GAT
 m = GAT_SAC(
@@ -350,9 +353,6 @@ m = SAC(
 )
 
 m.train_and_validate(train_ep, eval_ep)
-
-
-env_params["env_path"] = "l2rpn_idf_2023"
 
 m = GCN_SAC(
     seed,

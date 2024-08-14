@@ -3,6 +3,7 @@ import time
 
 import numpy as np
 import pandas as pd
+from grl.environment.action.no_curtail_action_space import NoCurtailActionSpace
 from stable_baselines3.common.base_class import BaseAlgorithm
 from stable_baselines3.common.callbacks import BaseCallback
 
@@ -77,12 +78,17 @@ class TrainCallback(BaseCallback):
             "init_env"
         )  # Grid2op Environment
 
-        # Curtailment Limit
+
+
         self.climit_type = climit_type  # Type of curtailment limit update
         self.climit_end = climit_end  # End episode for curtailment limit update
         self.climit_low = climit_low  # Lower bound of curtailment limit
         self.climit_factor = climit_factor  # Factor for curtailment limit update
         self.climit_done = False  # Flag to check if climit update is done
+
+        # Curtailment Limit
+        if isinstance(self.training_env.action_space, NoCurtailActionSpace):
+            self.climit_type = None
 
         # Global Metrics
         self.start_time = time.time()  # Start Time
