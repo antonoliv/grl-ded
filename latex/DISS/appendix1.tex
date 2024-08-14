@@ -337,7 +337,7 @@
 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gnns/daily_cost.png}} \hskip1ex
 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gnns/res_wasted.png}} 
 	\caption{Training Results of models with 1, 2 and 3 \ac{GAT} Heads}
-	\label{fig:gat-heads-train}
+	\label{fig:gnns-train}
 \end{figure}
 
 	\begin{table}[ht]
@@ -347,8 +347,8 @@
 			\textbf{Model} & \textbf{Avg. Accumulative Reward}& \textbf{Avg. Length (Steps)} & \textbf{Avg Daily Operating Cost (€)} & \textbf{Avg. Renewables Wasted (MW/day)} & \textbf{Total Time (Seconds)}\\
 			\hline
 			sac & 342.84 & 1118.24 & 601896.44 & 5443.64 & 741.23 \\
-			gcn_sac & 23.38 & 573.73 & 549592.13 & 9885.84 & 467.29 \\
-			gat_sac & 55.80 & 481.72  & 553388.36 & 6064.43 & 603.91 \\
+			gcn\_sac & 23.38 & 573.73 & 549592.13 & 9885.84 & 467.29 \\
+			gat\_sac & 55.80 & 481.72  & 553388.36 & 6064.43 & 603.91 \\
 			\hline
 		\end{tabularx}
 		\caption{Validation Results of the Experiments concerning Limit Infeasible Curtail Actions.}
@@ -356,6 +356,7 @@
 	\end{table}
 
 
+\begin{comment}
 \section{Experiments on 118-bus scenario}
 
 \begin{figure}[H]
@@ -367,7 +368,7 @@
 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/daily_cost.png}} \hskip1ex
 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/res_wasted.png}} 
 	\caption{Training Results of models with 1, 2 and 3 \ac{GAT} Heads}
-	\label{fig:gat-heads-train}
+	\label{fig:118-train}
 \end{figure}
 
 
@@ -379,9 +380,12 @@
 			\hline
 			sac & 81.98 & 361.917 & 2788763.38 & 4740.03 & 186.48 \\
 			2
-			gcn_sac & 11.74 & 815.64 & 2679050.39 & 6567.22 & 318.94 \\
+			gcn\_sac & 11.74 & 815.64 & 2679050.39 & 6567.22 & 318.94 \\
 			\hline
 		\end{tabularx}
 		\caption{Validation Results of the Experiments concerning Limit Infeasible Curtail Actions.}
 		\label{fig:curtail-val}
 	\end{table}
+	
+	content...
+	\end{comment}
