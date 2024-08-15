@@ -3,9 +3,10 @@ import time
 
 import numpy as np
 import pandas as pd
-from grl.environment.action.no_curtail_action_space import NoCurtailActionSpace
 from stable_baselines3.common.base_class import BaseAlgorithm
 from stable_baselines3.common.callbacks import BaseCallback
+
+from grl.environment.action.no_curtail_action_space import NoCurtailActionSpace
 
 
 class TrainCallback(BaseCallback):
@@ -63,7 +64,7 @@ class TrainCallback(BaseCallback):
             if climit_type != "fixed":
                 if climit_end is None or climit_end > max_episodes:
                     raise ValueError(
-                        "Curtailment End must be greater than Max Episodes"
+                        "Curtailment End is greater than Max Episodes"
                     )
                 if climit_factor is None or climit_factor <= 0.0:
                     raise ValueError("Curtailment Factor must be greater than 0")
@@ -190,8 +191,8 @@ class TrainCallback(BaseCallback):
             "avg_cost": [np.mean(self.avg_cost) if self.episodes > 0 else 0],
             "avg_res_wasted": [np.mean(self.avg_res_waste) if self.episodes > 0 else 0],
             "time": [time.time() - self.start_time],
-            "episodes": [self.episodes],
             "total_steps": [self.total_steps],
+            "episodes": [self.episodes],
         }
 
         episode = {

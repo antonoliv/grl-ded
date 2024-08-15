@@ -1,6 +1,5 @@
 import stable_baselines3
 from torch_geometric.nn.models.basic_gnn import GCN, GAT, GraphSAGE
-from torch_geometric.seed import seed_everything
 
 from .common import BaseModel, GraphExtractor
 
@@ -124,7 +123,7 @@ class GCN_SAC(SAC):
 
         gnn_params = gnn_params.copy()
 
-        seed_everything(seed)
+
         self._env_kwargs["gnn"] = GCN(**gnn_params)
         self._model_params["policy_kwargs"]["features_extractor_class"] = GraphExtractor
 
@@ -159,7 +158,6 @@ class GAT_SAC(SAC):
 
         gnn_params = gnn_params.copy()
 
-        seed_everything(seed)
         self._env_kwargs["gnn"] = GAT(**gnn_params)
         self._model_params["policy_kwargs"]["features_extractor_class"] = GraphExtractor
 
@@ -193,6 +191,5 @@ class SAGE_SAC(SAC):
 
         gnn_params = gnn_params.copy()
 
-        seed_everything(seed)
         self._env_kwargs["gnn"] = GraphSAGE(**gnn_params)
         self._model_params["policy_kwargs"]["features_extractor_class"] = GraphExtractor

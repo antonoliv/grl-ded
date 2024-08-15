@@ -7,3 +7,5 @@ pandas==1.5.3
 LightSim2Grid==0.8.2
 gymnasium==0.29.1
 stable_baselines3==2.3.2
+# torch-scatter torch-2.3.0-cu121
+# numba

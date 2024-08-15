@@ -6,7 +6,9 @@ import gymnasium as gym
 import numpy as np
 import pandas as pd
 import stable_baselines3
+import torch as th
 from stable_baselines3.common.utils import get_device
+from torch_geometric.seed import seed_everything
 
 import settings
 from grl.environment import make_env
@@ -29,6 +31,9 @@ def set_seed(seed, path):
     with open(path + "seed.txt", "w+", encoding="utf-8") as file:
         file.write(f"Seed: {seed}\n")
 
+    seed_everything(seed)
+    os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
+    th.use_deterministic_algorithms(True)
     return seed
 
 
@@ -284,6 +289,7 @@ class BaseModel(ABC):
         res_waste = 0  # Episode renewable energy wasted
         acc_reward = 0  # Accumulated reward of episode
         length = 0  # Length of episode
+        total_steps = 0  # Total number of iterations
         avg_cost = []  # Average cost of each episode
         avg_res_waste = []  # Average renewable energy wasted of each episode
         acc_rewards = []  # Accumulated reward of each episode
@@ -309,6 +315,7 @@ class BaseModel(ABC):
                 # Predict and execute the action
                 action, _states = model.predict(obs, deterministic=1)
                 obs, reward, terminated, info = env.step(action)
+                total_steps += 1
 
                 acc_reward += reward[0]
                 length += 1
@@ -353,12 +360,13 @@ class BaseModel(ABC):
         avg_len = np.mean(lengths)
 
         data = {
-            "time": [time_elapsed],
-            "episodes": [eval_episodes],
-            "avg_length": [avg_len],
             "avg_reward": [avg_reward],
+            "avg_length": [avg_len],
             "avg_cost": [daily_cost],
             "avg_res_wasted": avg_res_wasted,
+            "time": [time_elapsed],
+            "total_steps": [total_steps],
+            "episodes": [eval_episodes],
         }
 
         df_info = pd.DataFrame(data)

@@ -257,9 +257,9 @@ class GraphObservationSpace(spaces.Dict):
             # if there is active edges, get the feature matrix and pass it through the GNN
             x = self._get_x(observation)
             x = self.gnn.forward(
-                torch.tensor(x, device=self.device),
-                torch.tensor(edge_idx, device=self.device),
-                torch.tensor(edge_weight, device=self.device),
+                torch.tensor(x, device=self.device, dtype=torch.float32),
+                torch.tensor(edge_idx, device=self.device, dtype=torch.int64),
+                torch.tensor(edge_weight, device=self.device, dtype=torch.float32),
             )
         else:
             # else set the feature matrix to zeros

@@ -2,8 +2,6 @@ from typing import Optional, Dict
 
 from ray import tune
 
-from grl.model.sac import GCN_SAC
-
 
 class Experiment(tune.Trainable):
 
