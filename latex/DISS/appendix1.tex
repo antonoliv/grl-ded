@@ -20,9 +20,9 @@
 		\hline
 		\textbf{Model} & \textbf{Avg. Accumulative Reward}& \textbf{Avg. Length (Steps)} & \textbf{Avg Daily Operating Cost (€)} & \textbf{Avg. Renewables Wasted (MW/day)} & \textbf{Total Time (Seconds)}\\
 		\hline
-		no\_curtail & 68.87 & 225.46 & 533238.32 & 0.0 & 812.81\\
-		curtail & 60.81 & 108.27 & 551028.29 & 4565.01 & 510.97 \\
-		limit\_curtail & 78.62 & 759.82 & 575798.57 & 7640.76 & 2329.76 \\
+		no\_curtail & 133.564 & 515.807  & 531470.223 & 0.0 & 692.832\\
+		no\_limit & 128.173 & 403.515 & 585853.240 & 6564.428 & 569.376 \\
+		limit\_curtail & 127.951 &  492.732 & 572004.947 & 8877.733 & 678.717 \\
 		\hline
 	\end{tabularx}
 	\caption{Validation Results of the Experiments concerning Limit Infeasible Curtail Actions.}
@@ -49,8 +49,10 @@
 		\hline
 		\textbf{Model} & \textbf{Avg. Accumulative Reward}& \textbf{Avg. Length (Steps)} & \textbf{Avg Daily Operating Cost (€)} & \textbf{Avg. Renewables Wasted (MW/day)} & \textbf{Total Time (Seconds)}\\
 		\hline
-		no\_smoothing & 94.91 & 476.48 & 565094.39 & 10106.84 & 3011.93 \\
-		smoothing & 78.62 & 759.82 & 575798.57 & 7640.76 & 2329.76 \\
+		none & 111.495 & 544.295 & 577960.425 & 12111.066 & 730.146 \\
+		fixed & 185.698 & 761.281 & 574382.241 & 7081.859 & 1007.278 \\
+		linear & 176.919 & 806.186 & 569758.273 & 5400.686 & 1052.257 \\
+		sqrt & 127.951 &  492.732 & 572004.947 & 8877.733 & 678.717 \\
 		\hline
 	\end{tabularx}
 	\caption{Validation Results of the Experiments concerning Limit Infeasible Curtail Actions.}
@@ -356,17 +358,17 @@
 	\end{table}
 
 
-\begin{comment}
+
 \section{Experiments on 118-bus scenario}
 
 \begin{figure}[H]
 	\centering
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/training_performance.png}}
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/118/training_performance.png}}
 	\hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/survival_rate.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/118/survival_rate.png}} 
 	\vfill
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/daily_cost.png}} \hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/res_wasted.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/118/daily_cost.png}} \hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/118/res_wasted.png}} 
 	\caption{Training Results of models with 1, 2 and 3 \ac{GAT} Heads}
 	\label{fig:118-train}
 \end{figure}
@@ -378,8 +380,7 @@
 			\hline
 			\textbf{Model} & \textbf{Avg. Accumulative Reward}& \textbf{Avg. Length (Steps)} & \textbf{Avg Daily Operating Cost (€)} & \textbf{Avg. Renewables Wasted (MW/day)} & \textbf{Total Time (Seconds)}\\
 			\hline
-			sac & 81.98 & 361.917 & 2788763.38 & 4740.03 & 186.48 \\
-			2
+			sac & 342.838 & 1118.241 & 601896.445 & 5443.649 & 756.142 \\
 			gcn\_sac & 11.74 & 815.64 & 2679050.39 & 6567.22 & 318.94 \\
 			\hline
 		\end{tabularx}
@@ -387,5 +388,3 @@
 		\label{fig:curtail-val}
 	\end{table}
 	
-	content...
-	\end{comment}
