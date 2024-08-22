@@ -4,109 +4,89 @@ In this chapter, the obtained results are thoroughly analysed and discussed. The
 
 \begin{comment}
 	* Best SAC and GNN parameters
-	* Environment Parameters
 	* Explain that SAC was used for most experiments as a baseline
-	* Explain the non-reproducability of experiements (https://github.com/pytorch/pytorch/issues/50469)
 \end{comment}
 
-\begin{table}
-	\begin{tabular}{|l | l|}
-		\hline
-		Learning Rate & 1e-4 \\
-		\hline
-		Gamma & 0.85 \\
-		\hline
-		Entropy Coefficient & 'auto' \\
-		\hline
-		Gradient Steps & 1 \\
-		\hline
-		Buffer Size & 1e6 \\
-		\hline
-		Batch Size & 256 \\
-		\hline
-		Tau & 0.001 \\
-		\hline
-		Target Update Interval & 1 \\
-		\hline
-		Training Frequency & 1 \\
-		\hline
-		Target Entropy & 'auto' \\
-		\hline 
-		Optimizer & Adam \\
-		\hline
-		Activation Function & ReLU \\
-		\hline
-		Number of Units per Hidden Layer & 128 \\
-		\hline
-		Number of Hidden Layers & 6 \\
-		\hline
-		\end{tabular}
-		\caption{Soft Actor-Critic Parameters}
-\end{table}
+\section{Observation Space}
 
-\begin{table}
-	\begin{tabular}{|l|l|}
-		\hline
-		Input Channels & 6 \\
-		\hline
-		Hidden Channels & 18 \\
-		\hline
-		Number of Layers & 2 \\
-		\hline
-		Output Channels & 6 \\
-		\hline
-		Dropout Rate & 0.1 \\
-		\hline
-		Activation Function & ReLu \\
-		 \hline
-		Aggregation Function & 'sum' \\
-		\hline
-		act\_first & True \\
-		\hline
-		Flow & Source to Target \\
-		\hline
-		Node Dimension & -2 \\
-		\hline 
-		Decomposed Layers & -1 \\
-		\hline
-		Improved & False \\
-		\hline
-		Cached & False \\
-		\hline
-		Normalize & True \\
-		\hline
-		Bias & True \\		
-		\hline
-	\end{tabular}
-	\caption{\ac{GCN} Parameters}
-\end{table}
+\
+204.76815605163574,500,65.262,40.00237062805891,559046.9067760558,2302.7692077946244
 
-\section{Limit Infeasible Curtailment Actions} \label{sec:limit-infeasible}
+\section{Issues with Curtailment Actions} \label{sec:limit-infeasible}
 
-\section{Curtailment Lower Limit} \label{sec:curtailment-lower-limit}
+The initial exploratory experiments and posterior training performance analysis showed significant instability and lack of convergence of \ac{DRL} models. During the experimentation phase, the developed implementations, SAC and GCN-SAC, showed a significantly reduced survival rate. This posed a substantial problem since models failed to survive enough steps to appropriately learn economic policies, leading to relatively short results in their test phase. \par
+Upon further research, the root of this problem was found to be related to the inclusion of curtailment actions, which made the action space more complex and, in turn, severely affected the models' performance. More specifically, during the exploratory phase, the abrupt changes in curtailment caused infeasible states of the system and, consequently, an early episode truncation.
+Two methods were experimented to mitigate this problem, which are described in the following subsections.
 
-The initial exploratory experiments and posterior analysis of training performance showed significant instability and lack of convergence of \ac{DRL} models. This is aggravated by the inclusion of curtailment actions in the action space, which in turn introduced additional complexity to the decision process and severely affected the model's survivability. 
-\par
-Considering the secondary goal of maximization of generated renewable energy, the idealization of a lower bound to restrict the curtailment action space became a potential solution to aid in the model's convergence. Additionally, two methods of 
+\subsection{Limit Curtailment Infeasible States}
+
+The first method that was analysing the effect of using the grid2op  \texttt{LIMIT\_INFEASIBLE\_CURTAILMENT\_STORAGE\_ACTION} parameter, which according to its own long name and documentation limits infeasible system states derivative from curtailment (and storage) actions. \par
+For this purpose, three models were trained with the SAC and GCN-SAC models: 
+\begin{itemize}
+	\item Without curtailment
+	\item With curtailment and without the parameter
+	\item With curtailment and the parameter
+\end{itemize}
 
 \begin{comment}
-	Graph:
-	- No limit
-	- Fixed Limit
-	- Linear Limit
-	- Sqrt Limit
+	TODO -> LIMIT Experiements Graphs and tables
 \end{comment}
+
+The training results confirmed the initial suspicions, confirming that performance is significantly and negatively affected when including curtailment actions. However, when setting the \texttt{LIMIT\_INFEASIBLE\_CURTAILMENT\_STORAGE\_ACTION} the model was able to achieve notoriously higher results than any of the others on both training and test results. In table \ref{}, the results from the test phase can be observed.
+
+\begin{figure}[H]
+	\centering
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/obs/training_performance.png}}
+	\hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/obs/survival_rate.png}} 
+	\vfill
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/obs/daily_cost.png}} \hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/obs/res_wasted.png}} 
+	\caption{Training Results of the Experiments concerning Observation Space.}
+	\label{fig:exp-train-obs}
+\end{figure}
+
+\begin{table}[ht]
+	\centering
+	\begin{tabularx}{\textwidth}{|l|X|X|X|X|X|}
+		\hline
+		\textbf{Model} & \textbf{Avg. Accumulative Reward}& \textbf{Avg. Length (Steps)} & \textbf{Avg Daily Operating Cost (€)} & \textbf{Avg. Renewables Wasted (MW/day)} & \textbf{Total Time (Seconds)}\\
+		\hline
+		no\_curtail & 133.564 & 515.807  & 531470.223 & 0.0 & 692.832\\
+		no\_limit & 128.173 & 403.515 & 585853.240 & 6564.428 & 569.376 \\
+		limit\_curtail & 127.951 &  492.732 & 572004.947 & 8877.733 & 678.717 \\
+		\hline
+	\end{tabularx}
+	\caption{Validation Results of the Experiments concerning Limit Infeasible Curtail Actions.}
+	\label{fig:exp-val-obs}
+\end{table}
+
+\subsection{Curtailment Lower Limit} \label{sec:curtailment-lower-limit}
+
+Beyond the method described in the past subsection, another showed great potential in mitigating the problem related to action space complexity. \par
+Remembering the secondary goal of maximising generated renewable energy, the idealisation of a lower bound to restrict the curtailment action space became a possible solution to aid in the model's convergence. In this manner, this condition was included in the implementation in three possible strategies applied solely in the training stage:
+
+\begin{itemize}
+	\item No lower bound
+	\item Fixed lower bound
+	\item Linear decreasing lower bound
+	\item Square Root decreasing lower bound
+\end{itemize}
+
+
+\begin{equation}
+	y = 1 - \frac{(1 - \underline{P^\text{RES}}) E_\text{train}}{E_\text{decay\_end}}
+\end{equation}
+
+\begin{equation}
+	y = (1 - \underline{P^\text{RES}}) \sqrt[\alpha]{\frac{E_\text{decay\_end} - E_\text{train}}{E_\text{train}}}
+\end{equation}
+
 
 \begin{comment}
-	Validation Table
-	Graph:
-	- No limit
-	- Fixed Limit
-	- Linear Limit
-	- Sqrt Limit
 \end{comment}
 
-Results showed in graph GRAPH proved that the introduced curtailment lower bounds considerably increased the models training performance and convergence, with the square root decay method achieving the overall highest average accumulated reward during validation. Introducing a decay in the lower bound limit implies an enhanced overall performance and survivability of the algorithm.
+Results showed in graph GRAPH proved that the introduced curtailment lower bounds considerably increased the model's training performance and convergence, with the square root decay method achieving the overall highest average accumulated reward during validation. Introducing a decay in the lower bound limit implies an enhanced overall performance and survivability of the algorithm.
 
 \section{Rewards Tests} \label{sec:rewards}
 

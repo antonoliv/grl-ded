@@ -34,36 +34,36 @@ Since the early 20th century, the improvement of power distribution grids has gr
 \begin{center}
 	\begin{tabular}{ | m{2cm} | m{10cm}| } 
 		\hline
-		$F(t)$ & Total Operational Cost \\ 
+		$F(t)$ & Total Operational Cost at timestep $t$ \\ 
 		\hline
-		$F_\text{NRES}(t)$ & Total Non-Renewable Generators Operational Cost \\
+		$F_\text{NRES}(t)$ & Total Non-Renewable Generators Operational Cost at timestep $t$ \\
 		\hline
-		$F_\text{NRES}(t)$ & Total Renewable Generators Operational Cost \\
-		\hline
-		$F_\text{ESS}(t)$ & Total ESS Operational Cost \\
+		$F_\text{RES}(t)$ & Total Renewable Generators Operational Cost at timestep $t$  \\
 		\hline
 		$T$ & Terminal Timestep \\
 		\hline
 		$t$ & Timestep \\
 		\hline
-		$c^\text{NRES}_i$ & Cost of conventinal generator $i$ in €/MWh \\
-		\hline
-		$P^\text{NRES}_i(t)$ & Current generated power of non-renewable generator $i$ in MW \\
+		$c^\text{NRES}_i$ & Cost of conventional generator $i$ in €/MWh \\
+		\hline7
+		$P^\text{NRES}_i(t)$ & Current generated power of non-renewable generator $i$ at timestep $t$ in MW \\
 		\hline
 		$\beta_\text{RES}$ & \ac{RES} wasted energy penalty term \\
 		\hline
-		$P^\text{RES}_i(t)$ & Current generated power of renewable generator $i$ in MW \\
+		$P^\text{RES}_i(t)$ & Current generated power of renewable generator $i$ at timestep $t$ in MW \\
 		\hline
-		$\overline{P^\text{RES}_i}(t)$ &  Current power of renewable generator $i$ before curtailmentin MW \\
+		$\overline{P^\text{NRES}}$, $\underline{P^\text{NRES}}$ &  Current maximum and minimum output power of non-renewable generator $i$ \\
+		$\overline{P^\text{RES}_i}(t)$ &  Current maximum output power of renewable generator $i$ at timestep $t$ and before curtailment in MW \\
 		\hline
-		$P^\text{LOAD}_i(t)$ & Active Power demand of load $i$ \\
+		$P^\text{LOAD}_i(t)$ & Active Power demand of load $i$ at timestep $t$ \\
 		\hline
-		$Q^\text{LOAD}_i(t)$ & Reactive Power demand of load $i$ \\
+		$Q^\text{LOAD}_i(t)$ & Reactive Power demand of load $i$ at timestep $t$ \\
 		\hline
-		$F_i$ or $F_{i,j}$ & Powerline $i$ status \\
+		$F_i$ or $F_{i,j}$ & Powerline $i$ status (connected or disconnected)\\
 		\hline
-		$\text{rho}_i$ or $\text{rho}_{i,j}$ & Relative flows of powerline $i$ or with origin in substation $i$ and destination in substation $j$. Ratio of the flow divided by its thermal limit. \\
+		$\text{rho}_i(t)$ or $\text{rho}_{i,j}(t)$ & Relative flows of powerline $i$ or with origin in substation $i$ and destination in substation $j$. Ratio of the flow divided by its thermal limit. \\
 		\hline
+		$\overline{\eta_i}$, $\underline{\eta_i}$ & Maximum ramp up and down limits for non-renewable generators \\
 		$P^\text{G}_i(t)$ & Current generated active power of generator $i$ in MW \\
 		\hline
 		$Q^\text{G}_i(t)$ & Current generated reactive power of generator $i$ in MW \\
@@ -75,6 +75,16 @@ Since the early 20th century, the improvement of power distribution grids has gr
 		$K$ & Number of loads \\
 		\hline
 		$L$ & Number of powerlines \\
+		\hline
+		$\theta_\text{soft}$,  $\theta_\text{hard}$ & Soft and Hard overflow thresholds \\
+		\hline
+		$T_\text{soft}$ & \\
+		\hline
+		$T_\text{reconnect}$ & \\
+		\hline 
+		$\overline{F_\text{NRES}}$ & \\
+		\hline 
+		$\overline{c^\text{NRES}}$ & \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -100,7 +110,7 @@ In this manner, as a means of maximising the \ac{RES} usage, a second component 
 Finally, the primary objective function of \ac{DED} can be defined by minimising the total sum of both components $F_\text{NRES}(t)$ and $F_\text{RES}(t)$ for the period $T$. This is clearly stated in equation \ref{eq:ded-function}.
 
 \begin{equation} \label{eq:ded-function}
-	\min F =  \min\sum^T_{t=1}(F_\text{NRES}(t) + F_{\text{RES}}(t)
+	\min F (t) =  \min\sum^T_{t=1}(F_\text{NRES}(t) + F_{\text{RES}}(t)
 \end{equation}
 
 \subsubsection{Constraints} \label{sec:constraints}
@@ -111,6 +121,14 @@ The primary constraint considered in \ac{DED} consists of compliance with power 
 
 \begin{equation} \label{eq:c-power-balance}
 	\sum^N_i P^\text{NRES}_i(t) + \sum^M_i P^\text{RES}_i(t) = \sum^L_i P^\text{LOAD}_i(t) + \delta, \delta > 0
+\end{equation}
+
+\begin{equation}
+	\sum_{k=1}^n  I_k = 0
+\end{equation}
+
+\begin{equation}
+	\sum_{k=1}^n  V_k = 0
 \end{equation}
 
 Regarding non-renewable generators, their output value is bounded by absolute maximum and minimum values respective to each generator, $\underline{P^\text{NRES}_i}$ and $\overline{P^\text{NRES}_i}$, as depicted in equation \ref{eq:prod-limits}. Furthermore, as illustrated by equation \ref{eq:ramp-limits}, the varying power between two different timesteps is also restricted by the maximum ramp-up and down limits, $\underline{\eta_i }$ and $\overline{\eta_i }$. \par
@@ -248,6 +266,10 @@ In this section, the \ac{DED} problem is formalized as a sequential decision-mak
 		r(t) = r_1(t) + r_2(t)
 	\end{equation}
 	
+	\item[Invalid Actions and Game Over] In the context of the power system simulation, there are some considerations accounting to invalid actions and errors that cause a terminal state of the system or a \textit{game over}. If at any timestep the power system reaches an infeasible state there is a game over and the episode ends. These happen any time there's no following action that conforms to the contraints of power balance and the Kirchoff's laws. In this case, the reward at the timestep it happens is minimum (-1). \par
+	At any other case when actions don't respect the other considered constraints related to the power output, ramp limits and powerlines, the action is considered invalid and the returned reward is zero.
+	
+	
 	\item[Episodes and Steps] Considering the time difference between the two steps, each timestep represents a five-minute period where the environmental characteristics remain constant. Furthermore, the length of an episode corresponds to a week of operation, which in turn translates into 2016 timesteps. \par
 
 	
@@ -261,10 +283,47 @@ In this section, the \ac{DED} problem is formalized as a sequential decision-mak
 	
 \end{description}
 
+\section{Device Specifications}
+
+The experiments were executed on two different machines, the author's own and a remote server made available by LIACC (\textit{Laboratório de Inteligência Artificial e Ciência de Computadores}). Tables \ref{tab:specs-msi} and \ref{tab:specs-liacc} highlight their hardware specifications.
+
+\begin{table} 
+	\label{tab:specs-msi}
+	\begin{tabular}{|l|l|}
+		\hline
+		OS & Arch Linux \\
+		Kernel & 6.10.6-zen1-1-zen \\
+		CPU & Intel i7-9750 @ 4.5 GHz \\
+		GPU & Nvidia GeForce GTX 1650 Mobile / Max-Q \\
+		GPU Memory & 4 GB  \\
+		Driver Version & 555.58.02 \\
+		CUDA Version & 12.5 \\
+		RAM & 16 GB \\
+		\hline
+\end{tabular}
+\caption{MSI Laptop Specifications}
+\end{table}
+
+\begin{table} 
+	\label{tab:specs-liacc}
+	\begin{tabular}{|l|l|}
+		\hline
+		OS & Ubuntu 20.04.1 \\
+		Kernel & 5.15.0-117-generic \\
+		CPU & 13th Gen Intel(R) Core i7-13700K @ 5.4 GHz \\
+		GPU & NVIDIA RTX A6000 \\
+		GPU Memory & 48 GB \\
+		Driver Version & 535.183.01 \\
+		CUDA Version & 12.2 \\
+		RAM & 62 GB \\
+		\hline
+\end{tabular}
+\caption{LIACC Server Specifications}
+\end{table}
+
 \section{Technologies}
 
-Beyond being a well-documented, fast, robust and modular language, \textit{Python} is an ubiquitous technology for implementing machine learning algorithms. Furthermore, the main libraries used to implement the simulation environment and algorithm are native to this language.
-\par
+Beyond being a well-documented, fast, robust and modular language, \textit{Python} is an ubiquitous technology for implementing machine learning algorithms. Furthermore, the main libraries used to implement the simulation environment and algorithm are native to this language. \par
 In table x, the main requirements for the project can be observed, along with their respective version number and a short description of their purpose and functionality.
 \par
 
