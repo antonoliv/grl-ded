@@ -4,7 +4,7 @@ In conclusion, this report establishes a solid foundation for implementing and p
 We concluded in the literature review, that \ac{GRL} is already a promising solution for \ac{DED}, yielding better performance than other approaches. In general, \acp{GNN} are an ubiquitous method, throughout the gathered literature, for extracting efficient environment topological representations. The identified limitations of existent implementations lie on their lack of: (1) scalability to larger environments, resulting in a significant decrease in computation performance; (2) a seamless integration between \ac{GNN} and \ac{DRL} algorithms and (3) adaptability to real-time topology changes. \par
 Moreover, we aim to study how to tackle these limitations by implementing different \ac{GRL} approaches for solving the \ac{DED} problem and conducting a comparative study between the different techniques. The implementations will be compromised of various combinations of \acp{GNN}, for efficiently extracting the relevant environment features, and \ac{DRL} algorithms for mapping the extracted representations into optimal action sequences. Case studies will be carried out within different size modified IEEE bus systems for testing the various models and confront their results. Lastly, the models will be analysed considering their training efficiency, computational performance, dispatch efficiency, scalability to large scenarios and adaptability to topological changes. Based on the conclusions drawn from the comparative study, we will propose a \ac{GRL} that implements concrete enhancements.
 
-\section{Expected Contributions}
+\section{Main Contributions}
 
 In this section, we list the expected contributions derived from this work on a Scientific, Technological and Application levels:
 \begin{description}
@@ -12,4 +12,14 @@ In this section, we list the expected contributions derived from this work on a 
 	\item[Technological] A model resulting from this study with concrete improvements over the current \ac{GRL} techniques proposed so far and tackling their limitations. Beyond this, 
 	\item[Application] An efficient solution for the \ac{DED} problem with \ac{GRL} algorithms, compromising significant contribution to the research on \ac{DED} systems in complex scenarios
 \end{description}
+
+\section{Future Work}
+
+While this work extensively explored potential improvements in \ac{GRL} techniques and their applications to the \ac{DED} problem, the scope of the issue is vast, and several areas for improvement were left unaddressed due to time and planning constraints. The main future concerns are aligned with improving the performance of the model and further investigating other potential enhancements to the \ac{GRL} techniques. \par
+
+Firstly, it would be valuable to explore additional \ac{DRL} and \ac{GNN} implementations to compare with the results obtained from the studied models. For example, alternative combinations of \ac{GNN} models like GraphSAGE and \ac{DRL} algorithms such as PPO and DDPG might yield better performance than those tested in this study. Additionally, the author is keen to compare the studied single-agent \ac{GRL} technique with multi-agent systems in the \ac{DED} problem. Given their distinct perspectives on the issue, such a comparison could provide valuable insights into the effectiveness of each approach. \par
+
+Given the complexity and diversity of modern power systems, it would also be worthwhile to consider additional elements, such as \acf{ESS} storage, which were excluded to avoid overly complicating the environmental dynamics. Moreover, investigating how voltage control could enhance the agent's reliability and, consequently, the survivability of models appears to be a relevant area for further study. \par
+
+Finally and most importantly, further experimentation and calibration, especially with larger scenarios, might be necessary to understand the failures of this work's approach on \ac{GRL} techniques. There is still promising evidence from the literature of their performance on graph-based scenarios, but the study and analysis that was conducted failed to reach that conclusion. 
 
