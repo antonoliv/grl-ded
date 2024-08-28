@@ -1,9 +1,13 @@
 % !TeX spellcheck = en_GB
-\chapter{Methodological Approach} \label{chap:method-approach}
+\chapter{Methodological Approach} \label{chap:method}
 
-In this chapter, the problem this work aims to address is formally stated, as well as the proposed solution. In section \ref{sec:problem} the problem statement is exposed, section \ref{sec:requirements} lists the solutions main functional, non-functional and structural requirements, section \ref{sec:arch} addresses the architecture of the solution, section \ref{sec:method} exposes the established methodology and section \ref{sec:work-plan} contains the proposed work plan.
+\begin{comment}
+	TODO -> Update
+\end{comment}
 
-\section{Problem Statement} \label{sec:problem}
+In this chapter, the problem this work aims to address is formally stated, as well as the proposed solution. In section \ref{sec:method-statement} the problem statement is exposed, section  lists the solutions main functional, non-functional and structural requirements, section \ref{sec:method-arch} addresses the architecture of the solution, section  exposes the established methodology and section  contains the proposed work plan.
+
+\section{Problem Statement} \label{sec:method-statement}
 
 \begin{displayquote}
 	 \textit{The reviewed literature addressing solutions to sequential decision-making problems in graph-based environments is sparse and scarce, leading to a research gap for comparative and systematic \ac{GRL} approaches analysing scalability under different sized scenarios and adaptability to topology variation.}
@@ -13,16 +17,16 @@ As addressed in the previous chapter, graphs are ubiquitous representations that
 By conducting a thorough literature review of the relevant studies in this context, we observed that current \ac{RL} algorithms are not as efficient as \ac{GRL} techniques in handling such complex environments, because of not considering and generalizing environment topology features in the decision-making process. This deeply affects the performance of decision systems inserted in network-oriented domains where the intricate relationships between the objects may be relevant for mapping the observable environment states to optimal action policies. \par
 More and more \ac{GRL} attracts the curiosity of academics, only increasing the relevance of this problem. With the recent advancements of \acp{GNN}, the popularity around \ac{GRL} has risen because of their excellent efficiency in creating optimal graph representations and other graph machine learning problems. However, with \ac{GRL} being a field whose research is still in initial phase, the gathered literature is very sparse, with a lack of works addressing the benefits, disadvantages and performance of the various proposed models. Moreover, the literature also highlights the importance of studying \ac{GRL} models in scenarios under topology variations and of different sizes for analysing their scalability. \par
 
-\subsection{Scope}
+\subsection{Scope} 
 
 This dissertation will focus on studying this problem in the context of single-agent \ac{RL} algorithms, given that multi-agent systems are significantly more complex to implement. Furthermore, in the context of the dissertation's application domain, which is smart grid services, the possible improvements in \ac{GRL} techniques will be implemented to the \acf{DED} problem that studies solutions that optimize power generation cost while maintaining reliable grid stability. Additionally, the \ac{GRL} proposed models may be also implemented to solve other smart grid systems such as Undervoltage Load Shedding and Volt-VAR Regulation. \par
 
-\section{Problem Formalization}
+\section{Problem Formalization} \label{sec:method-formal}
 
-In this section, the main problem addressed by this dissertation is formally introduced. Firstly, it's approached from an application domain perspective concerning the \ac{DED} problem and its considered features and characteristics. In the second subsection \ref{sec:mdp}, the \ac{DED} problem is formalized as a dynamic sequential decision-making problem, and its characteristics are presented under the form of its corresponding \ac{MDP}. \par
+In this section, the main problem addressed by this dissertation is formally introduced. Firstly, it's approached from an application domain perspective concerning the \ac{DED} problem and its considered features and characteristics. In the second subsection \ref{sec:method-mdp}, the \ac{DED} problem is formalized as a dynamic sequential decision-making problem, and its characteristics are presented under the form of its corresponding \ac{MDP}. \par
 These two formalizations are crucial for giving the appropriate view on how the \ac{GRL} algorithms and their environment will be approached and studied.
 
-\subsection{Dynamic Economic Dispatch}
+\subsection{Dynamic Economic Dispatch} \label{sec:method-ded}
 
 Since the early 20th century, the improvement of power distribution grids has greatly improved society's well-being and enabled countless technological advancements. The issue of optimally distributing and accommodating customers' load demands among available power generators in an economic and reliable manner has been studied early on by academics. \cite{xiaOptimalDynamicEconomic2010}. The \acf{DED} problem addresses this concern, with a special focus on the economic factor of power systems operation. The main objective of this problem is to find the optimal dispatch strategy for the available generators that minimizes the total operating cost over a dispatch period while conforming to a particular set of constraints, such as fulfilling the total load demand of the power system. In the next subsections \ref{sec:objective-func} and \ref{sec:constraints}, the objective function and constraints considered for the \ac{DED} problem are formally introduced and further discussed.
 
@@ -159,7 +163,7 @@ Regardless of the scenario, when a powerline is disconnected for safety reasons,
 	Voltage Constraints ? 
 \end{comment}
 
-\subsection{\acf{MDP}}
+\subsection{\acf{MDP}} \label{sec:method-mdp}
 
 In this section, the \ac{DED} problem is formalized as a sequential decision-making problem and its \ac{MDP} is uncovered. This is necessary to approach \ac{DED} as a \ac{RL} problem and propose an appropriate solution. 
 
@@ -283,12 +287,11 @@ In this section, the \ac{DED} problem is formalized as a sequential decision-mak
 	
 \end{description}
 
-\section{Device Specifications}
+\section{Device Specifications} \label{sec:method-specs}
 
 The experiments were executed on two different machines, the author's own and a remote server made available by LIACC (\textit{Laboratório de Inteligência Artificial e Ciência de Computadores}). Tables \ref{tab:specs-msi} and \ref{tab:specs-liacc} highlight their hardware specifications.
 
 \begin{table} 
-	\label{tab:specs-msi}
 	\begin{tabular}{|l|l|}
 		\hline
 		OS & Arch Linux \\
@@ -300,12 +303,12 @@ The experiments were executed on two different machines, the author's own and a 
 		CUDA Version & 12.5 \\
 		RAM & 16 GB \\
 		\hline
-\end{tabular}
+	\end{tabular}
 \caption{MSI Laptop Specifications}
+\label{tab:specs-msi}
 \end{table}
 
 \begin{table} 
-	\label{tab:specs-liacc}
 	\begin{tabular}{|l|l|}
 		\hline
 		OS & Ubuntu 20.04.1 \\
@@ -319,9 +322,10 @@ The experiments were executed on two different machines, the author's own and a 
 		\hline
 \end{tabular}
 \caption{LIACC Server Specifications}
+\label{tab:specs-liacc}
 \end{table}
 
-\section{Technologies}
+\section{Technologies} \label{sec:method-technologies}
 
 Beyond being a well-documented, fast, robust and modular language, \textit{Python} is an ubiquitous technology for implementing machine learning algorithms. Furthermore, the main libraries used to implement the simulation environment and algorithm are native to this language. \par
 In table x, the main requirements for the project can be observed, along with their respective version number and a short description of their purpose and functionality.
@@ -356,11 +360,11 @@ In table x, the main requirements for the project can be observed, along with th
 	\caption{Project Requirements}
 \end{table}
 
-Grid2Op is a critical requirement used to simulate the power grid operation in different manageable scenarios. This is further discussed in the next subsection \ref{sec:simulation-env}. Stable-Baselines3 was chosen for its performance, customization and descriptive documentation, while PyTorch Geometric was favoured because of the wide variety of \acp{GNN} Implementations included. Additionally, these libraries mix well because stable-baselines3 already uses PyTorch in its \ac{DRL} implementations.
+Grid2Op is a critical requirement used to simulate the power grid operation in different manageable scenarios. This is further discussed in the next subsection \ref{sec:method-environment}. Stable-Baselines3 was chosen for its performance, customization and descriptive documentation, while PyTorch Geometric was favoured because of the wide variety of \acp{GNN} Implementations included. Additionally, these libraries mix well because stable-baselines3 already uses PyTorch in its \ac{DRL} implementations.
 \par
 Lastly, \textit{Gymnasium} is used as the standard \ac{RL} single-agent API in the entirety of the project, adding robustness, scalability and flexibility to agent-environment interaction process in the implementation.  \par
 
-\section{Simulation Environment} \label{sec:simulation-env}
+\section{Simulation Environment} \label{sec:method-environment}
 
 The \textit{Grid2Op} framework \cite{rtefranceGrid2OpDocumentation} will be used for modelling the sequential decision-making process on simulated power distribution grids. \textit{Grid2Op} is designed by RTE (\textit{Réseau de Transport d'Électricité}), the electricity transmission system operator of France, and is equipped with a variety of pre-defined scenarios used in coding competitions and based on real-world data \cite{rtefranceGrid2OpDocumentation}. \par
 This \textit{python} library implements the creation of power grid environments that emulate a subset of the elements and physical constraints of real power systems. On one hand, the main objects and their interactions are captured realistically, while on the other, the abstraction level used to model the fundamental elements of a power grid facilitates the implementation of intelligent systems in safe and controllable scenarios. \par
@@ -415,7 +419,7 @@ The main elements that are modelled by the simulation environment are presented 
 
 
 Beyond \textit{grid2op} to build and run the test cases and \textit{gymnasium} as the RL framework, this project will use \textit{PyTorch} \cite{pytorchPyTorch} with \textit{PyTorch Geometric} \cite{pygteamPyGPytorch_geometric} library for developing the \ac{GNN} because of its extensive list of available implemented models. The different combinations of algorithms will be applied to a set of modified scenarios that fulfil the settled requirements. For Deep Reinforcement Learning algorithms, solutions with plain \ac{SAC}, \ac{DDPG} and \ac{PPO} approaches and combined with the \ac{GCN}, \ac{GAT} and \ac{GIN} architectures.  \par
-Concerning result analysis, it's also important to point out the use of quantitative methods for evaluating the different implemented models, a topic that is further explored in the following section \ref{sec:eval-methods}.
+Concerning result analysis, it's also important to point out the use of quantitative methods for evaluating the different implemented models, a topic that is further explored in the following section \ref{sec:method-eval}.
 
 \subsection{Parameters}
 
@@ -448,7 +452,7 @@ Grid2Op also defines a number of customizable environment parameters that contro
 
 Most of the parameters, with the exception of one, were left at their default values depicted in table \ref{tab:grid-params}. This includes the overflow thresholds, all of the timestep limits mentioned and direct current flag, whose values were found to be sensible enough to maintain a realistic yet feasible model of the environment. The only parameter that was tampered was \texttt{LIMIT\_INFEASIBLE\_CURTAILMENT\_STORAGE\_ACTION} with the goal of improving the learning efficency of the algorithms during training.
 
-\subsection{Scenarios}
+\subsection{Scenarios} 
 
 \begin{table}[H] 
 	\centering
@@ -475,9 +479,9 @@ This work will use the pre-defined \textit{grid2op} \textit{l2rpn\_case14\_sandb
 The first case was used for the primary implementation and development of the algorithms, given its small grid size. Motivated by its considerable grid size and amount of training data, the second test case was mainly used for the calibration of the model's main parameters. It's a subset of the original 118-bus system \cite{christiePowerSystemsTesta} with 50 years' worth of data divided into independent \footnote{non-consecutive} weekly scenarios. Finally, the third scenario is based on the same original test case as the previous one, and it includes modifications that aim to accommodate the \textit{possible energy mix} of France in 2035, containing 16 years of data \cite{rtefranceGrid2OpDocumentation}. It was mainly used to study the algorithm's scalability and performance in larger scenarios in comparison with the baseline plain-\ac{DRL} model. \par
 
 
-\section{Solution Architecture} \label{sec:arch}
+\section{Solution Architecture} \label{sec:method-arch}
 
-Considering the conclusions taken from the reviewed literature, in chapter \ref{chap:literature-review}, our proposed solution combines efficient \acf{DRL} approaches with \acfp{GNN}, the state-of-the-art approach for graph representation learning. Generally, the system receives graph-based representations of the environment and encodes them using the \ac{GNN} algorithm. By also leveraging deep learning techniques, \ac{DRL} maps the encoded embeddings to optimal action sequences with the goal of meeting the real-time load demand and reducing the operating cost of the power distribution grid. The general architecture of the solution can be observed in figure \ref{fig:arch}.
+Considering the conclusions taken from the reviewed literature, in chapter \ref{chap:review}, our proposed solution combines efficient \acf{DRL} approaches with \acfp{GNN}, the state-of-the-art approach for graph representation learning. Generally, the system receives graph-based representations of the environment and encodes them using the \ac{GNN} algorithm. By also leveraging deep learning techniques, \ac{DRL} maps the encoded embeddings to optimal action sequences with the goal of meeting the real-time load demand and reducing the operating cost of the power distribution grid. The general architecture of the solution can be observed in figure \ref{fig:arch}.
 
 \begin{figure}
 	\centering
@@ -493,10 +497,10 @@ Although stable-baselines3 allows for the implementation of custom feature extra
 
 
 
-\section{Evaluation Metrics} \label{sec:eval-methods}
+\section{Evaluation Metrics} \label{sec:method-eval}
 
 
-The solution described in the previous subsections \ref{sec:arch} and \ref{sec:method} involves intricate operational mechanisms, something that calls for a sophisticated evaluative and test process. Furthermore, given this dissertation's comparative nature, the evaluation and analysis methods will be critical factors in studying and confronting the different combinations of \acp{GNN} and \ac{DRL}, as well as possible improvements in integrating these techniques. In this manner, we define the six dimensions for evaluating and analysing the different \ac{GRL} models:
+The solution described in the previous subsection \ref{sec:method-arch} involves intricate operational mechanisms, something that calls for a sophisticated evaluative and test process. Furthermore, given this dissertation's comparative nature, the evaluation and analysis methods will be critical factors in studying and confronting the different combinations of \acp{GNN} and \ac{DRL}, as well as possible improvements in integrating these techniques. In this manner, we define the six dimensions for evaluating and analysing the different \ac{GRL} models:
 
 \begin{description}
 	\item[Learning efficiency] This dimension assesses how effectively the models learn and improve their decision-making process over time. It involves evaluating how quickly they converge to optimal or near-optimal dispatch strategies through the convergence rate. This is mainly assessed by analysing the evolution of episodic accumulative reward over the training process.

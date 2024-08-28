@@ -1,13 +1,13 @@
-\chapter{Background Knowledge} \label{chap:background-knowledge}
+\chapter{Background Knowledge} \label{chap:back}
 
 In this chapter, we will present the underlying concepts related to this dissertation. This knowledge consists in important context for the rest of this work by explaining the its background concepts. \par
-This chapter is divided into section \ref{sec:ann} addressing Artificial Neural Networks, section \ref{sec:rl} regarding Reinforcement Learning problem and algorithms, \ref{sec:g-rep-l} explaining Graph Representation Learning, \ref{sec:gnn} exposing the current \ac{GNN} approaches and \ref{sec:smart-grid-services} addressing Smart Grid Services..
+This chapter is divided into section \ref{sec:back-ann} addressing Artificial Neural Networks, section \ref{sec:back-rl} regarding Reinforcement Learning problem and algorithms, \ref{sec:back-grl} explaining Graph Representation Learning, \ref{sec:back-gnn} exposing the current \ac{GNN} approaches and \ref{sec:back-smart-grid} addressing Smart Grid Services..
 
-\section{Artificial Neural Networks} \label{sec:ann}
+\section{Artificial Neural Networks} \label{sec:back-ann}
 
 \textbf{\acp{ANN}} are a class of machine learning algorithms based on the neural process of biological learning. The simplest form of an \ac{ANN} is a \ac{MLP}, also called a feedforward network, whose main objective is to approximate to function $f$ that models relationships between input data $x$ and output data $y$ of considerate complexity \cite{charniakIntroductionDeepLearning2018, goodfellowDeepLearning2016}. It defines a mapping $y=f(x;\theta)$ and learns the best composition of parameters $\theta$ to approximate it to the unknown model. The \ac{MLP} serves as a fundamental part of developing the other more complex types of neural networks \cite{charniakIntroductionDeepLearning2018}. \par
 
-\subsection{Feedforward Neural Networks}
+\subsection{Feedforward Neural Networks} \label{sec:back-mlp}
 
 \begin{comment}
 	* Explain Loss Function
@@ -23,7 +23,7 @@ This chapter is divided into section \ref{sec:ann} addressing Artificial Neural 
 
 The main building block of a \ac{MLP} is the \textit{Perceptron}, pictured in figure \ref{fig:perceptron}, a simple computational model initially designed as a binary classificator that mimics biological neurons' behaviour \cite{charniakIntroductionDeepLearning2018}. A neuron might have many inputs $x$ and has a single output $y$. It contains a vector of \textit{weights} $w = (w_1 ... w_m)$, each associated with a single input, and a special weight $b$ called the \textit{bias}. In this context, a perceptron defines a computational operation formulated as equation \ref{eq:perceptron} portrays \cite{charniakIntroductionDeepLearning2018}. \par
 
-\begin{equation}\label{eq:perceptron}
+\begin{equation} \label{eq:perceptron}
 	f(x) =
 	\left\{ \begin{aligned} 
 		1 &\quad \text{ if } b + \textbf{w} \cdot \textbf{x} > 0\\
@@ -43,7 +43,7 @@ On its own, the model amounts only to a complex function. Still, with real-world
 \end{figure}
 
 
-\section{Reinforcement Learning} \label{sec:rl}
+\section{Reinforcement Learning} \label{sec:back-rl}
 
 \begin{comment}
 	* SAC
@@ -51,7 +51,7 @@ On its own, the model amounts only to a complex function. Still, with real-world
 	* DQN
 \end{comment}
 
-\textbf{\ac{RL}} consists of a field and a class of machine learning algorithms that study how to learn to take good sequences of actions to achieve a goal associated with a maximizing received numerical reward \cite{brunskillCS234ReinforcementLearning}. The main objective is to maximize the received cumulative reward by trying between the available actions and discovering which ones yield the most reward \cite{suttonReinforcementLearningIntroduction2014}. This sequential decision-making process becomes more complex when a delayed reward is considered, given that an action with immediate reward may not always reflect the delayed consequences of that decision \cite{suttonReinforcementLearningIntroduction2014}. It's also the learner's job to consider this during the learning process. These concepts of \textit{delayed reward} and \textit{trial-and-error search} make up the most important characteristics of Reinforcement Learning \cite{suttonReinforcementLearningIntroduction2014}. The classic formalisation of this problem is the \ac{MDP} through defining the agent-environment interaction process, explained in the following subsection \ref{section:mpd}. \par 
+\textbf{\ac{RL}} consists of a field and a class of machine learning algorithms that study how to learn to take good sequences of actions to achieve a goal associated with a maximizing received numerical reward \cite{brunskillCS234ReinforcementLearning}. The main objective is to maximize the received cumulative reward by trying between the available actions and discovering which ones yield the most reward \cite{suttonReinforcementLearningIntroduction2014}. This sequential decision-making process becomes more complex when a delayed reward is considered, given that an action with immediate reward may not always reflect the delayed consequences of that decision \cite{suttonReinforcementLearningIntroduction2014}. It's also the learner's job to consider this during the learning process. These concepts of \textit{delayed reward} and \textit{trial-and-error search} make up the most important characteristics of Reinforcement Learning \cite{suttonReinforcementLearningIntroduction2014}. The classic formalisation of this problem is the \ac{MDP} through defining the agent-environment interaction process, explained in the following subsection \ref{sec:back-mpd}. \par 
 
 A major challenge in this machine learning paradigm is the trade-off between \textit{exploring} new unknown actions and \textit{exploiting} the already known "good" actions \cite{suttonReinforcementLearningIntroduction2014}. To choose the sequence of actions that return the highest reward, the agent must choose actions it found effective in similar past situations or *exploit* what it learned from experience. Furthermore, given that the agent may not know the action-reward mappings initially, it has to \textit{explore} possible actions that were not selected previously or may initially seem to yield a low reward to compute accurate reward estimates. The main problem is that neither exploitation nor exploration can be favoured exclusively without failing at the task \cite{suttonReinforcementLearningIntroduction2014}. Additionally, an agent's environment is uncertain, and changes in the environment's dynamics may also involve re-estimating action rewards. \par
 
@@ -60,7 +60,7 @@ In conclusion, \ac{RL} techniques enable the implementation of sequential decisi
 
 
 
-\subsection{Markov Decision Process} \label{section:mpd}
+\subsection{Markov Decision Process} \label{sec:back-mpd}
 \acfp{MDP} are a classical formalization of a sequential decision-making process, constituting the mathematical definition of the \ac{RL} problem \cite{suttonReinforcementLearningIntroduction2014, moralesGrokkingDeepReinforcement2020}. Beyond estimating potential rewards for the available actions, the problem defined by \acp{MDP} involves learning which actions are optimal in specific situations, i.e. learning a mapping between states of the environment and actions \cite{suttonReinforcementLearningIntroduction2014}. 
 
 The central component of \acp{MDP} is the agent, which acts as a decision-maker and learns from interactions with the environment it's inserted. In a continuous process, the agent takes actions that affect the environment's state, which in turn presents new situations \cite{suttonReinforcementLearningIntroduction2014}. The environment also responds with the reward signals which the agent aims to maximize over time through its decision process.
@@ -167,7 +167,7 @@ Regarding \ac{RL} algorithms, they can be divided into model-free and model-base
 Furthermore, algorithms can also be subdivided into on-policy and off-policy methods. \cite{moralesGrokkingDeepReinforcement2020} On-policy algorithms evaluate and improve a single policy used to determine the agent's behaviour \cite{moralesGrokkingDeepReinforcement2020}. The methods under the policy optimization category such as A2C and A3C \cite{mnihAsynchronousMethodsDeep2016} or the \ac{PPO} \cite{schulmanProximalPolicyOptimization2017} almost always fall into this label. In contrast, off-policy algorithms learn how to improve a different target policy based on the results that arise from the policy used to determine the system behaviour initially \cite{moralesGrokkingDeepReinforcement2020}. Such approaches include Q-Learning algorithms such as \acp{DQN} \cite{mnihHumanlevelControlDeep2015, openaiSpinningDocumentation}. \ac{DDPG} \cite{lillicrapContinuousControlDeep2019} combines policy optimization with q-learning, consisting of an off-policy method that learns both a q-function and a policy. \ac{DDPG} constitutes the adaption of q-learning methods to continuous action spaces \cite{openaiSpinningDocumentation}. Another example of an off-policy algorithm is the \ac{SAC} \cite{haarnojaSoftActorCriticOffPolicy2018} method, which bridges stochastic policy optimization with the \ac{DDPG} approach and has entropy regularization as one of its central features, which translates into training a policy that maximizes the expected return and entropy, a measure of randomness in the policy \cite{openaiSpinningDocumentation}. \par
 Lastly, with the advent of deep learning becoming one of the most ubiquitous techniques in machine learning, \ac{RL} algorithms have evolved beyond the traditional tabular methods \cite{moralesGrokkingDeepReinforcement2020}. Traditional \ac{RL} has evolved to \ac{DRL}, which studies how to use deep neural networks in \ac{RL} problems to leverage their generalization abilities for solving more complex problems.
 
-\section{Graph Representation Learning} \label{sec:g-rep-l}
+\section{Graph Representation Learning} \label{sec:back-grl}
 
 Several objects and problems can be naturally expressed in the real world using graphs, such as social networks, power grids, transportation networks, recommendation systems or drug discovery. The usefulness of such representations is tied to how they instinctively represent the complex relationships between objects. However, graph data is often very sparse and complex, and their sophisticated structure is difficult to deal with \cite{liuIntroductionGraphNeural2020, zhaoRepresentationLearning2022}. \par
 
@@ -175,7 +175,7 @@ Furthermore, the performance of machine learning models strongly relies not only
 
 In this context, \textbf{Graph Representation Learning} studies how to learn the underlying features of graphs to extract a minimal but sufficient representation of the graph attributes and structure \cite{hamiltonGraphRepresentationLearning, zhaoRepresentationLearning2022, cuiGraphRepresentationLearning2022}. Currently, the improvements in deep learning allow representation learning techniques consisting of the composition of multiple non-linear transformations that yield more abstract and, ultimately, more useful representations of graph data \cite{cuiGraphRepresentationLearning2022}. 
 
-\section{Graph Neural Networks} \label{sec:gnn}
+\section{Graph Neural Networks} \label{sec:back-gnn}
  
 \begin{comment}
 	* GraphSAGE
@@ -331,7 +331,7 @@ Lastly, the author also mentions that other pooling techniques can be used in th
 \end{equation}
 
 
-\section{Smart Grid Services} \label{sec:smart-grid-services}
+\section{Smart Grid Services} \label{sec:back-smart-grid}
 
 Given the global ecological emergency and the increasing energetic crisis, there is a necessity for advancements in energy distribution and transmission systems now more than ever. To fulfil the need for energy sustainability, traditional centralized distribution grids must be adapted to, on the one hand, accommodate the rise of distributed renewable energy sources in corporate and domestic consumers and, on the other, to make more efficient and reliable distribution of energy resources \cite{farhangiPathSmartGrid2010, vijayapriyaSmartGridOverview2011}. \par
 

@@ -1,15 +1,232 @@
 \chapter{Appendix} \label{appendix}
 
+\section{\ac{SAC} Parameters}
+
+\begin{table}[ht!]
+	\centering
+	\caption{\ac{SAC} Parameters Description}
+	\rowcolors{2}{gray!15}{white}
+	\begin{tabular}{lp{8cm}}
+		\toprule
+		\textbf{Name} & \textbf{Description} \\
+		\midrule
+		\texttt{policy} & The policy model to use  \\
+		\texttt{learning\_rate} & Learning rate applied in Q-Values, Actor and Value functions \\
+		\texttt{buffer\_size} & Size of the replay buffer \\
+		\texttt{learning\_starts} & Number of transitions to collect before the start of training \\
+		\texttt{batch\_size} &  Minibatch size for each gradient update\\
+		\texttt{tau} &  Soft update coefficient or Polyak Update \\
+		\texttt{gamma} & Discount factor \\
+		\texttt{train\_freq} &  Update frequency in training \\
+		\texttt{gradient\_steps} & Number of gradient steps per rollout \\
+		\texttt{action\_noise} & Type of action noise \\
+		\texttt{ent\_coef} & Entropy regularization coefficient \\
+		\texttt{target\_update\_interval} &  Step period to update the target network \\
+		\texttt{target\_entropy} & Target entropy during learning of \texttt{ent\_coef} \\
+		\texttt{use\_sde} &  Use generalized State Dependent Exploration (gSDE) \\
+		\texttt{sde\_sample\_freq} & Step period to sample new noise matrix for gSDE \\
+		\texttt{use\_sde\_at\_warmup} &  Use gSDE instead of uniform sampling before learning starts \\
+		\texttt{optimize\_memory\_usage} & Enable a memory efficient variant of the replay buffer
+		at a cost of more complexity \\
+		\texttt{replay\_buffer\_class} & Class of replay buffer \\
+		\texttt{replay\_buffer\_kwargs} & Additional keyword arguments to pass to replay buffer \\
+		\texttt{stats\_window\_size} & Size of statistics output window \\
+		\texttt{tensorboard\_log} & Log location for tensorboard \\
+		\texttt{verbose} & Verbosity level \\
+		\texttt{seed} & Seed for the pseudo random generators \\
+		\texttt{device} & Device which the code will be executed in \\
+		\texttt{\_init\_setup\_model} & Wether to build the network at the creation of the instance \\
+		\texttt{env} & Gymnasium Environment \\
+		\texttt{policy\_kwargs} & Additional arguments for policy \\
+		
+		\bottomrule
+	\end{tabular}
+	\label{tab:sac-params}
+\end{table}
+
+\begin{table}[ht!]
+	\centering
+	\rowcolors{2}{gray!15}{white}
+	\caption{\ac{SAC} Policy Parameters Description}
+	\begin{tabular}{lp{8cm}}
+		\toprule
+		\textbf{Name} & \textbf{Description} \\
+		\midrule
+		\texttt{net\_arch} & Architecture of policy and value networks \\
+		\texttt{optimizer\_class} & Optimizer to use \\
+		\texttt{optimizer\_kwargs} & Additional keyword arguments for optimizer \\
+		\texttt{activation\_fn} & Activation function \\
+		\texttt{n\_critics} & Number of critic networks \\
+		\texttt{features\_extractor\_class} & Features extractor for the minibatches  \\
+		\texttt{features\_extractor\_kwargs} & Additional keyword arguments for feature extractor \\
+		\bottomrule
+	\end{tabular}
+	\label{tab:sac-pol-params}
+\end{table}
+
+\section{\ac{GNN} Parameters}
+
+\begin{table}[ht!]
+	\centering
+	\caption{\ac{GNN} Parameters description}
+	\rowcolors{2}{gray!15}{white}
+	\begin{tabular}{lp{8cm}}
+		\toprule
+		\textbf{Name} & \textbf{Description} \\
+		\midrule
+		\texttt{in\_channels} & Input sample size \\
+		\texttt{hidden\_channels} & Hidden sample size\\
+		\texttt{num\_layers} & Number of message passing layers  \\
+		\texttt{out\_channels} & Output size \\
+		\texttt{dropout} & Dropout probability \\
+		\texttt{act} & Non-linear activation function \\
+		\texttt{act\_first} & Apply activation before normalization \\
+		\texttt{act\_kwargs} & Additional keyword arguments for activation function \\
+		\texttt{norm} & Normalization function \\
+		\texttt{norm\_kwargs} & Additional arguments passed to normalization function \\
+		\texttt{jk} & Jumping knowledge mode \\
+		\texttt{aggr} & Aggregation scheme \\
+		\texttt{aggr\_kwargs} & Additional keyword arguments for aggregation scheme \\
+		\texttt{flow} & Message passing flow direction \\
+		\texttt{node\_dim} & The axis along which to propagate \\
+		\texttt{decomposed\_layers} & Number of feature decomposition layers\\
+		
+		\texttt{improved} & If \texttt{True}, layer computes $\mathbf{\hat{A}}$ as $\mathbf{A} + 2\mathbf{I}$ \\
+		\texttt{cached} & If \texttt{True}, layer will cache $\mathbf{\hat{D}}^{-1/2} \mathbf{\hat{A}} \mathbf{\hat{D}}^{-1/2}$ (only for transductive scenarios) \\
+		\texttt{add\_self\_loops} & Add self-loops to the input graph \\
+		\texttt{normalize} & Add self-loops and compute symmetric normalization coefficients \\
+		\texttt{bias} & Learn additive bias \\
+	
+		\texttt{heads} & Number of heads for multi-head attention \\
+		\texttt{v2} & Use \textit{GATv2Conv} instead of \textit{GATConv} \\
+		\texttt{concat} & Concatenate multi-head attentions instead of averaging \\
+		\texttt{negative\_slope} & LeakyReLU angle of the negative slope \\
+		\texttt{edge\_dim} & Edge feature dimensionality \\
+		\texttt{fill\_value} & How to fill edge features of self-loops \\
+		\bottomrule
+	\end{tabular}
+	\label{tab:gnn-params}
+\end{table}
+
+\begin{table}[ht!]
+	\centering
+	\rowcolors{2}{gray!15}{white}
+	\caption{\ac{GCN}-Specific Parameters description}
+	\begin{tabular}{lp{8cm}}
+		\toprule
+		\textbf{Name} & \textbf{Description} \\
+		\midrule
+		\texttt{improved} & If \texttt{True}, layer computes $\mathbf{\hat{A}}$ as $\mathbf{A} + 2\mathbf{I}$ \\
+		\texttt{cached} & If \texttt{True}, layer will cache $\mathbf{\hat{D}}^{-1/2} \mathbf{\hat{A}} \mathbf{\hat{D}}^{-1/2}$ (only for transductive scenarios) \\
+		\texttt{add\_self\_loops} & Add self-loops to the input graph \\
+		\texttt{bias} & Learn additive bias \\
+		\bottomrule
+	\end{tabular}
+	\label{tab:gcn-params}
+\end{table}
+
+\begin{table}[ht!]
+	\centering
+	\caption{\ac{GAT}-Specific Parameters description}
+	\rowcolors{2}{gray!15}{white}
+	\begin{tabular}{lp{8cm}}
+		\toprule
+		\textbf{Name} & \textbf{Description} \\
+		\midrule
+				
+		\texttt{heads} & Number of heads for multi-head attention \\
+		\texttt{bias} & Learn additive bias \\
+		\texttt{add\_self\_loops} & Add self-loops to the input graph \\
+		\texttt{v2} & Use \textit{GATv2Conv} instead of \textit{GATConv} \\
+		\texttt{concat} & Concatenate multi-head attentions instead of averaging \\
+		\texttt{negative\_slope} & LeakyReLU angle of the negative slope \\
+		\texttt{edge\_dim} & Edge feature dimensionality \\
+		\texttt{fill\_value} & How to fill edge features of self-loops \\
+		\bottomrule
+	\end{tabular}
+	\label{tab:gat-params}
+\end{table}
+
+
+\section{Environment Parameters}
+
+\begin{table}[ht!]
+	\centering
+	\rowcolors{2}{gray!15}{white}
+	\caption{\ac{GNN} Parameters description}
+	\begin{tabular}{lp{8cm}}
+		\toprule
+		\textbf{Name} & \textbf{Description} \\
+		\midrule
+		\texttt{env\_path} & \\
+		\texttt{reward} & \\
+		\texttt{obs\_scaled} & \\
+		\texttt{obs\_step} & \\
+		\texttt{act\_no\_curtail} & \\
+		\texttt{act\_limit\_inf} & \\
+		\texttt{climit\_type} & \\
+		\texttt{climit\_end} & \\
+		\texttt{climit\_low} & \\
+		\texttt{climit\_factor} & \\
+		\bottomrule
+	\end{tabular}
+	\label{tab:env-params}
+\end{table}
+
+\section{Reward Experiments}
+
+\begin{figure}[H]
+	\centering
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/training_performance.png}}
+	\hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/survival_rate.png}} 
+	\vfill
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/daily_cost.png}} \hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/res_wasted.png}} 
+	\caption{Training Results of the best Penalty and Bonus Factor Rewards.}
+	\label{fig:reward-best-train}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/penalty/training_performance.png}}
+	\hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/penalty/survival_rate.png}} 
+	\vfill
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/daily_cost.png}} \hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/res_wasted.png}} 
+	\caption{Training Results of the Penalty Factor Rewards.}
+	\label{fig:reward-pen-train}
+\end{figure}
+
+\begin{table}[ht]
+	\centering
+	\begin{tabularx}{\textwidth}{|l|X|X|X|X|X|}
+		\hline
+		\textbf{Model} & \textbf{Avg. Accumulative Reward}& \textbf{Avg. Length (Steps)} & \textbf{Avg Daily Operating Cost (€)} & \textbf{Avg. Renewables Wasted (MW/day)} & \textbf{Total Time (Seconds)}\\
+		\hline
+		pen\_4 & 40.57 & 80.75 & 565893.63 & 4100.20 & 230.99 \\
+		pen\_6 & 37.54 & 81.40 & 558362.82 & 2570.71 & 231.09 \\
+		pen\_8 & 38.22 & 76.35 & 555582.14 & 2612.34 & 222.58 \\
+		bon\_4 & 40.13 & 76.23 & 565757.16 & 3723.72 & 223.90 \\
+		bon\_6 & 30.78 & 55.06 & 566786.07 & 2750.34 & 189.01 \\
+		bon\_8 & 40.88 & 96.43 & 560927.60 & 3115.18 & 256.59 \\
+		\hline
+	\end{tabularx}
+	\caption{Validation Results of the Experiments concerning Limit Infeasible Curtail Actions.}
+	\label{fig:curtail-val}
+\end{table}
+
+
 \section{Limit Infeasible Curtail Action Experiment Results}
 
 \begin{figure}[H]
 	\centering
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/curtail_limit/training_performance.png}}
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/limit/training_performance.png}}
 	\hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/curtail_limit/survival_rate.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/limit/survival_rate.png}} 
 	\vfill
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/curtail_limit/daily_cost.png}} \hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/curtail_limit/res_wasted.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/limit/daily_cost.png}} \hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/limit/res_wasted.png}} 
 	\caption{Training Results of the Experiments concerning Limit Infeasible Curtail Actions.}
 	\label{fig:curtail-train}
 \end{figure}
@@ -33,12 +250,12 @@
 
 \begin{figure}[H]
 	\centering
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/curtail_smooth/training_performance.png}}
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/lower/training_performance.png}}
 	\hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/curtail_smooth/survival_rate.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/lower/survival_rate.png}} 
 	\vfill
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/curtail_smooth/daily_cost.png}} \hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/curtail_smooth/res_wasted.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/lower/daily_cost.png}} \hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/lower/res_wasted.png}} 
 	\caption{Training Results of the Experiments concerning Curtailment Lower Limit Smoothing.}
 	\label{fig:curtail-smooth-train}
 \end{figure}
@@ -59,60 +276,18 @@
 	\label{fig:curtail-val}
 \end{table}
 
-\section{Reward Experiments}
-
 \begin{figure}[H]
 	\centering
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/training_performance.png}}
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/curtail_method/training_performance.png}}
 	\hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/survival_rate.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/curtail_method/survival_rate.png}} 
 	\vfill
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/daily_cost.png}} \hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/res_wasted.png}} 
-	\caption{Training Results of the best Penalty and Bonus Factor Rewards.}
-	\label{fig:reward-best-train}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/penalty/training_performance.png}}
-	\hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/penalty/survival_rate.png}} 
-	\vfill
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/penalty/daily_cost.png}} \hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/penalty/res_wasted.png}} 
-	\caption{Training Results of the Penalty Factor Rewards.}
-	\label{fig:reward-pen-train}
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/curtail_method/daily_cost.png}} \hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/curtail_method/res_wasted.png}} 
+	\caption{Training Results of the Experiments concerning Curtailment Lower Limit Smoothing.}
+	\label{fig:curtail-smooth-train}
 \end{figure}
 
-\begin{figure}[H]
-	\centering
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/bonus/training_performance.png}}
-	\hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/bonus/survival_rate.png}} 
-	\vfill
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/bonus/daily_cost.png}} \hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/reward/bonus/res_wasted.png}} 
-	\caption{Training Results of the Bonus Factor Rewards.}
-	\label{fig:reward-bon-train}
-\end{figure}
-
-\begin{table}[ht]
-	\centering
-	\begin{tabularx}{\textwidth}{|l|X|X|X|X|X|}
-		\hline
-		\textbf{Model} & \textbf{Avg. Accumulative Reward}& \textbf{Avg. Length (Steps)} & \textbf{Avg Daily Operating Cost (€)} & \textbf{Avg. Renewables Wasted (MW/day)} & \textbf{Total Time (Seconds)}\\
-		\hline
-		pen\_4 & 40.57 & 80.75 & 565893.63 & 4100.20 & 230.99 \\
-		pen\_6 & 37.54 & 81.40 & 558362.82 & 2570.71 & 231.09 \\
-		pen\_8 & 38.22 & 76.35 & 555582.14 & 2612.34 & 222.58 \\
-		bon\_4 & 40.13 & 76.23 & 565757.16 & 3723.72 & 223.90 \\
-		bon\_6 & 30.78 & 55.06 & 566786.07 & 2750.34 & 189.01 \\
-		bon\_8 & 40.88 & 96.43 & 560927.60 & 3115.18 & 256.59 \\
-		\hline
-	\end{tabularx}
-	\caption{Validation Results of the Experiments concerning Limit Infeasible Curtail Actions.}
-	\label{fig:curtail-val}
-\end{table}
 
 \section{Experiments on the \ac{GNN} Tuning}
 
@@ -156,37 +331,7 @@
 	\caption{Model-Specific Parameters Tuned}
 \end{table}
 
-\section{Experiments on the \ac{GNN} Parameters \textit{act\_first} and \textit{improved}}
 
-\begin{figure}[H]
-	\centering
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/act_first_improved/training_performance.png}}
-	\hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/act_first_improved/survival_rate.png}} 
-	\vfill
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/act_first_improved/daily_cost.png}} \hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/act_first_improved/res_wasted.png}} 
-	\caption{Training Results of the act\_first and improved Parameter Tests.}
-	\label{fig:act-first-improved-train}
-\end{figure}
-
-\begin{comment}
-\begin{table}[ht]
-	\centering
-	\begin{tabularx}{\textwidth}{|l|X|X|X|X|X|}
-		\hline
-		\textbf{Model} & \textbf{Avg. Accumulative Reward}& \textbf{Avg. Length (Steps)} & \textbf{Avg Daily Operating Cost (€)} & \textbf{Avg. Renewables Wasted (MW/day)} & \textbf{Total Time (Seconds)}\\
-		\hline
-		none & & & & & \\
-		act\_first & & & & & \\
-		improved & & & & & \\
-		act\_first\_improved & & & & &  \\
-		\hline
-	\end{tabularx}
-	\caption{Validation Results of the Experiments concerning Limit Infeasible Curtail Actions.}
-	\label{fig:curtail-val}
-\end{table}
-\end{comment}
 
 \section{Experiments on the \ac{GCN} Aggregation Function} \label{appendix:aggr}
 
@@ -296,17 +441,48 @@
 	\label{fig:curtail-val}
 \end{table}
 
+\section{Experiments on the \ac{GNN} Parameters \textit{act\_first} and \textit{improved}}
+
+\begin{figure}[H]
+	\centering
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gcn_param/training_performance.png}}
+	\hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gcn_param/survival_rate.png}} 
+	\vfill
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gcn_param/daily_cost.png}} \hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gcn_param/res_wasted.png}} 
+	\caption{Training Results of the act\_first and improved Parameter Tests.}
+	\label{fig:act-first-improved-train}
+\end{figure}
+
+\begin{comment}
+	\begin{table}[ht]
+		\centering
+		\begin{tabularx}{\textwidth}{|l|X|X|X|X|X|}
+			\hline
+			\textbf{Model} & \textbf{Avg. Accumulative Reward}& \textbf{Avg. Length (Steps)} & \textbf{Avg Daily Operating Cost (€)} & \textbf{Avg. Renewables Wasted (MW/day)} & \textbf{Total Time (Seconds)}\\
+			\hline
+			none & & & & & \\
+			act\_first & & & & & \\
+			improved & & & & & \\
+			act\_first\_improved & & & & &  \\
+			\hline
+		\end{tabularx}
+		\caption{Validation Results of the Experiments concerning Limit Infeasible Curtail Actions.}
+		\label{fig:curtail-val}
+	\end{table}
+\end{comment}
 
 \section{Experiments on the number of \ac{GAT} Heads}
 
 \begin{figure}[H]
 	\centering
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/layers/training_performance.png}}
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gat_param/training_performance.png}}
 	\hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/layers/survival_rate.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gat_param/survival_rate.png}} 
 	\vfill
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/layers/daily_cost.png}} \hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/layers/res_wasted.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gat_param/daily_cost.png}} \hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gat_param/res_wasted.png}} 
 	\caption{Training Results of models with 1, 2 and 3 \ac{GAT} Heads}
 	\label{fig:gat-heads-train}
 \end{figure}
@@ -332,12 +508,12 @@
 
 \begin{figure}[H]
 	\centering
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gnns/training_performance.png}}
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/36/training_performance.png}}
 	\hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gnns/survival_rate.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/36/survival_rate.png}} 
 	\vfill
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gnns/daily_cost.png}} \hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gnns/res_wasted.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/36/daily_cost.png}} \hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/36/res_wasted.png}} 
 	\caption{Training Results of models with 1, 2 and 3 \ac{GAT} Heads}
 	\label{fig:gnns-train}
 \end{figure}
@@ -363,12 +539,12 @@
 
 \begin{figure}[H]
 	\centering
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/118/training_performance.png}}
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/118/training_performance.png}}
 	\hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/118/survival_rate.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/118/survival_rate.png}} 
 	\vfill
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/118/daily_cost.png}} \hskip1ex
-	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/scale/118/res_wasted.png}} 
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/118/daily_cost.png}} \hskip1ex
+	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/118/res_wasted.png}} 
 	\caption{Training Results of models with 1, 2 and 3 \ac{GAT} Heads}
 	\label{fig:118-train}
 \end{figure}

@@ -1,8 +1,8 @@
-\chapter{Literature Review} \label{chap:literature-review}
+\chapter{Literature Review} \label{chap:review}
 
 In this chapter, the literature review regarding \ac{GRL} approaches and \ac{DED} systems is documented. This unit is divided into three sections with the first exposing the research methodology and the others reviewing \ac{GRL} approaches and the \ac{DED} Systems, the second is further subdivided into plain \ac{GCN}, attention-based and other approaches.
 
-\section{Research Methodology}
+\section{Research Methodology} \label{sec:review-method}
 
 This literature review focuses on analysing the existent literature around the main objective of this dissertation, which is improving \ac{GRL} techniques in the context of this work's application domain, smart grid services. In this manner, the main research questions are presented as:
 
@@ -38,12 +38,12 @@ The research questions were translated into fundamental search queries where the
 
 
 
-\section{Graph Reinforcement Learning Approaches}
+\section{Graph Reinforcement Learning Approaches} \label{sec:review-grl}
 
 \ac{GRL} or Reinforcement Learning on Graphs is a relatively new area in the broader field of machine learning. \ac{GRL} techniques have shown significant progress in solving problems with underlying graph-based representations such as power grid management \cite{liNovelGraphReinforcement2022, chenGraphRepresentationLearningbased2023}, smart transport \cite{xingBilevelGraphReinforcement2023, almasanDeepReinforcementLearning2022} or task offloading \cite{gaoFastAdaptiveTask2023, liGraphReinforcementLearningbased2022}. In this work, the main focus lies on studying the development of \ac{GRL} techniques and subsequent application to smart grid services such as dynamic economic energy dispatch systems \cite{chenScalableGraphReinforcement2023, xingRealtimeOptimalScheduling2023}, residential electricity behaviour identification and energy management \cite{chenGraphRepresentationLearningbased2023}, or Volt-VAR regulation \cite{huMultiagentGraphReinforcement2024}.  \par
 Research on this topic has significantly increased in the last few years with the improvements of \ac{DRL} techniques and the developments in \acp{GNN} in the mid-2010s \cite{kipfSemiSupervisedClassificationGraph2017, velickovicGraphAttentionNetworks2018, liGatedGraphSequence2016, gaoGraphUNets2019}. \acp{GNN} became the state-of-the-art for solving numerous data mining tasks involving graph-structured data, excelling at classification, link prediction and representation learning \cite{xuHowPowerfulAre2019, nieReinforcementLearningGraphs2023}. This advancement brought more sophisticated \ac{RL} applications on graphs and the surge of a new field studying how to combine the improvements of graph mining and reinforcement learning techniques \cite{vesselinovaLearningCombinatorialOptimization2020, nieReinforcementLearningGraphs2023}. \par
 
-\subsection{Plain GCN-Based GRL} \label{sec:gcn-lit}
+\subsection{Plain GCN-Based GRL} \label{sec:review-gcn}
 
 A common approach in Graph Reinforcement Learning model implementation is the use of graph convolutions with the \acp{GCN} architecture for leveraging graph-based structures to extract and aggregate the essential features of data in hand and improve the performance of \ac{RL} agents in those environments. The techniques listed in this subsection constitute approaches that integrate a \ac{GCN} with \ac{RL} algorithms. The gathered literature can be observed in table \ref{tab:gcn-lit}. \par
 \cite{liNovelGraphReinforcement2022} implements a \ac{GRL} system to improve the decision quality of economic dispatch under high penetration of distributed energy generations. To accomplish this, a \ac{SAC} system is employed with the main objective of finding the optimal action policy for minimizing generation cost with the appropriate reliability concerns. This problem is represented by an undirected graph with nodes describing the power grid elements with their respective attributes and edges describing the underlying energy connections between those units. To extract the structural features of the graph, this work implements a full connected layer to perform feature transformation with a two-layer \ac{GCN} followed by three full connected layers for the non-linear mapping of state-to-action policy in both actor and critic modules. \cite{chenScalableGraphReinforcement2023} develops a similar approach, with both concluding that it significantly reduces learning time for achieving better training results in comparison to plain \ac{SAC} and showing significant improvement on economy and flexibility of the system on more complex and sparse state graphs. The use of \acp{GCN} enables the system to adapt to changes in the state space by leveraging the network's generalization ability.\par
@@ -75,7 +75,7 @@ The reviewed literature fails to consider methods for analysing the scalability 
 
 
 
-\subsection{Attention-based GRL}
+\subsection{Attention-based GRL} \label{sec:review-gat}
 
 Another effective approach in extracting relevant topology and graph features relies on using attention mechanisms to weigh different nodes' contributions dynamically. While this encompasses techniques that use the \ac{GAT} architecture, which is a \ac{GNN} design with the attention mechanism at its core, various scholars propose \ac{GCN} approaches integrated with attention mechanisms such as \cite{zhaoLearningSequentialDistribution2022} and \cite{fanAttentionBasedMultiAgentGraph2023}. In the top part of table \ref{tab:gat-lit} the single-agent reviewed attention-based approaches can be observed, while at the bottom some relevant multi-agent approaches are listed.  \par
 \cite{xingRealtimeOptimalScheduling2023} proposes a \ac{DDPG}-based algorithm improved with a \ac{GAT} block with three graph Attention Layers for extracting and learning the topology information for achieve real-time optimal scheduling for \acp{ADN}. This paper compares the obtained test results against a \ac{GCN}-\ac{DDPG} model and shows increased performance over the \ac{GCN} method in reducing cost and power loss. Beyond this, the work demonstrates that the \ac{GAT}'s attention mechanism enables the algorithm to focus on more important nodes and improve the signal-to-noise ratio compared to its \ac{GCN} counterpart. \cite{chenPhysicalassistedMultiagentGraph2023} and propose a multi-agent approach to the same domain but more focused on voltage regulation with a multi-agent \ac{SAC} instead of a single-agent \ac{DDPG} algorithm. \par
@@ -104,9 +104,9 @@ In general, the literature regarding attention-based approaches is a lot sparser
 \end{table}
 
 
-\subsection{Other Approaches}
+\subsection{Other Approaches} \label{sec:review-other-gnn}
 
-This subsection includes other relevant and promising \ac{GRL} approaches that combine of other \acp{GNN} architectures with \ac{RL} algorithms . In \cite{peiEmergencyControlStrategy2023}, a GraphSAGE network \cite{hamiltonInductiveRepresentationLearning2018} is used with a Deep Dueling Double Q-Network (D3QN) for emergency control of Undervoltage load shedding for power systems with various topologies. The author presents promising results for the GraphSAGE-D3QN model compared to a GCN-D3QN, achieving higher cumulative reward and faster voltage recovery speed, although it required longer decision times. The proposed model performed excellently in the application domain and successfully generalized the learned knowledge to new topology variation scenarios. Another approach that showed good performance with the GraphSAGE architecture was \cite{zhaoGraphbasedDeepReinforcement2022b} in the context of the dynamic economic dispatch problem. \par
+This subsection includes other relevant and promising \ac{GRL} approaches that combine of other \acp{GNN} architectures with \ac{RL} algorithms . In \cite{peiEmergencyControlStrategy2023}, a GraphSAGE network \cite{hamiltonInductiveRepresentationLearning2018} is used with a Deep Dueling Double Q-Network (D3QN) for emergency control of Undervoltage load shedding for power systems with various topologies. The author presents promising results for the GraphSAGE-D3QN model compared to a GCN-D3QN, achieving higher cumulative reward and faster voltage recovery speed, although it required longer decision times. The proposed model performed excellently in the application domain and successfully generalized the learned knowledge to new topology variation scenarios. Another approach that showed good performance with the GraphSAGE architecture was \cite{zhaoGraphbasedDeepReinforcement2022} in the context of the dynamic economic dispatch problem. \par
 \cite{zhangLearningDispatchJob2020} focused on solving the Job shop scheduling problem through a priority dispatching rule with a \ac{GIN} \cite{xuHowPowerfulAre2019} and an actor-critic \ac{PPO} algorithm where the \ac{GIN} is shared between actor and critic networks. The method showed superior performance against other traditional manually designed priority dispatching rule baselines, outperforming them by a large margin.
 
 \begin{table}[H] 
@@ -117,16 +117,16 @@ This subsection includes other relevant and promising \ac{GRL} approaches that c
 		\textbf{Reference} & \textbf{DRL Algorithm} & \textbf{GNN Algorithm} & \textbf{Application Domain} \\
 		\hline
 		\cite{peiEmergencyControlStrategy2023} & DQN & GraphSAGE & Undervoltage Load Shedding  \\ \hline
-		\cite{zhaoGraphbasedDeepReinforcement2022b} & PPO & GraphSAGE  & Dynamic Economic Dispatch \\ \hline
+		\cite{zhaoGraphbasedDeepReinforcement2022} & PPO & GraphSAGE  & Dynamic Economic Dispatch \\ \hline
 		\cite{zhangLearningDispatchJob2020} & PPO & GIN & Dispatch for Job Shop Scheduling \\ \hline 
 	\end{tabular}
 	\label{tab:other-lit}
 \end{table}
 
-\section{Dynamic Economic Dispatch Systems} \label{sec:ded}
+\section{Dynamic Economic Dispatch Systems} \label{sec:review-ded}
 
 \ac{RL} algorithms are already regarded as a well established potential solution for solving economic dispath problems \cite{pereraApplicationsReinforcementLearning2021}. In table \ref{tab:ded-lit} the relevant \ac{RL} approaches to the problem, including \ac{GRL} techniques, can be observed. In a general level, the reviewed literature regarding \ac{DED} solutions take into account a wide range of considerations and constraints. The recent works show an almost ubiquitous study of \acp{ESS} management and \ac{RES} curtailment, given the current global energetic issues and the relevance of these technologies for solving them. \par
-Some systems \cite{hanAutonomousControlTechnology2023, chenScalableGraphReinforcement2023, zhaoGraphbasedDeepReinforcement2022b} take further steps in ensuring grid stability by also considering voltage deviations while a notable paper considers battery degradation when calculating the cost of dispatch \cite{liuDistributedEconomicDispatch2018b}. In general, \ac{GRL} algorithms show superior performance in relation with plain \ac{DRL} approaches \cite{chenScalableGraphReinforcement2023, liNovelGraphReinforcement2022, zhaoGraphbasedDeepReinforcement2022b} as also concluded in section \ref{sec:gcn-lit}, with studies successfully ensuring adaptability of the \ac{GRL} models to variations in the scenario's topology \cite{chenScalableGraphReinforcement2023, zhaoGraphbasedDeepReinforcement2022b}. However, only \cite{baiAdaptiveActivePower2023b} conducts tests in test cases of different sizes, which shows a gap for studies addressing the scalability limitations of the developed models.
+Some systems \cite{chenScalableGraphReinforcement2023, hanAutonomousControlTechnology2023, zhaoGraphbasedDeepReinforcement2022} take further steps in ensuring grid stability by also considering voltage deviations while a notable paper considers battery degradation when calculating the cost of dispatch \cite{liuDistributedEconomicDispatch2018}. In general, \ac{GRL} algorithms show superior performance in relation with plain \ac{DRL} approaches \cite{chenScalableGraphReinforcement2023, liNovelGraphReinforcement2022, zhaoGraphbasedDeepReinforcement2022} as also concluded in section \ref{sec:review-gcn}, with studies successfully ensuring adaptability of the \ac{GRL} models to variations in the scenario's topology \cite{chenScalableGraphReinforcement2023, zhaoGraphbasedDeepReinforcement2022}. However, only \cite{baiAdaptiveActivePower2023b} conducts tests in test cases of different sizes, which shows a gap for studies addressing the scalability limitations of the developed models.
 
 
 \begin{table}[H] 
@@ -146,15 +146,15 @@ Some systems \cite{hanAutonomousControlTechnology2023, chenScalableGraphReinforc
 		\hline
 		\cite{liNovelGraphReinforcement2022} & GCN-SAC & Utility (Time-of-Use), Thermal Power, Renewable Energy Sources and \acp{ESS} \\
 		\hline
-		\cite{zhaoGraphbasedDeepReinforcement2022b} & GraphSAGE-PPO & Thermal Power, Renewable Energy Sources, \acp{ESS} and Voltage Deviation \\ \hline
- 		\cite{liuDistributedEconomicDispatch2018b} & Multi-Agent \ac{RL} with Function Approximation and Diffusion Mechanism & Utility (Time-of-Use), Thermal Power (Diesel) and \acp{ESS} (Considering degradation) \\ \hline
+		\cite{zhaoGraphbasedDeepReinforcement2022} & GraphSAGE-PPO & Thermal Power, Renewable Energy Sources, \acp{ESS} and Voltage Deviation \\ \hline
+ 		\cite{liuDistributedEconomicDispatch2018} & Multi-Agent \ac{RL} with Function Approximation and Diffusion Mechanism & Utility (Time-of-Use), Thermal Power (Diesel) and \acp{ESS} (Considering degradation) \\ \hline
  		\cite{baiAdaptiveActivePower2023b} & Multi-Agent GAT-DQN &Thermal Power, Renewable Energy Sources and \acp{ESS} \\ \hline
 	\end{tabular}
 	\label{tab:ded-lit}
 \end{table}
 
 
-\section{Conclusions}
+\section{Conclusions} \label{sec:review-conclusion}
 
 In this chapter, we reviewed relevant literature for this dissertation's main research topic, \ac{GRL} algorithms. \ac{GRL} is very promising field, where several different applications and techniques were already studied. \acp{GNN} architectures such as \ac{GCN} have been extensively applied with DRL algorithms for enabling feature extracting from graph-based state representations \cite{chenScalableGraphReinforcement2023, chenAutonomousExplorationUncertainty2020}. Architectures such as the GraphSAGE and other attention-based have also been successfully applied with very promising results \cite{peiEmergencyControlStrategy2023, xingRealtimeOptimalScheduling2023} in comparison with \acp{GCN}. However, less research regarding their integration with \ac{DRL} algorithms was discovered. This suggests that a possible improvement and research direction in the development of \ac{GRL} techniques might be connected with exploring the use of different \acp{GNN} architectures and using the rising attention-based techniques.
 
@@ -164,11 +164,11 @@ In this chapter, we reviewed relevant literature for this dissertation's main re
 		\item RQ1.1 - \textbf{What are the existent \ac{GRL} approaches?}
 		 Existent approaches ubiquitously use \acp{DRL} with \acp{GNN} for efficiently extract graph features. They can be divided into plain \ac{GCN} approaches, Attention-based approaches and others. \acp{GCN} compromise a popular method while attention-based approaches showed to be less researched but more promising \cite{xingRealtimeOptimalScheduling2023, zhaoLearningSequentialDistribution2022}. Tables \ref{tab:gcn-lit}, \ref{tab:gat-lit} and \ref{tab:other-lit} depict the reviewed \ac{GCN}, attention-based and other implementations, respectively. \\
 		\item RQ1.2 - \textbf{What are their limitations?}
-		 Research already depicts \ac{GRL} techniques as better performing in relation to plain \ac{RL} algorithms in graph-based environments, which portrays \ac{GRL} is a potential solution to this problem \cite{chenScalableGraphReinforcement2023, liNovelGraphReinforcement2022, zhaoGraphbasedDeepReinforcement2022b, xingBilevelGraphReinforcement2023, xingGraphReinforcementLearningBased2023, xuSimulationConstraintGraphReinforcement2020}. The reviewed literature proved to be quite scarce and sparse, probably due to the novelty of the field. After a thorough review, we failed to find works that listed specific limitations of \ac{GRL} algorithms. This suggests the existence of a research gap for works with a thorough and well-documented scientific process as well as comparative and systematic studies between the different approaches, highlighting models performance in large scenarios and under topology variation. Furthermore, some papers suggested the directly embedding of the \ac{GNN} into the \ac{RL} framework \cite{xingRealtimeOptimalScheduling2023, xingBilevelGraphReinforcement2023}. \\
+		 Research already depicts \ac{GRL} techniques as better performing in relation to plain \ac{RL} algorithms in graph-based environments, which portrays \ac{GRL} is a potential solution to this problem \cite{chenScalableGraphReinforcement2023, liNovelGraphReinforcement2022, zhaoGraphbasedDeepReinforcement2022, xingBilevelGraphReinforcement2023, xingGraphReinforcementLearningBased2023, xuSimulationConstraintGraphReinforcement2020}. The reviewed literature proved to be quite scarce and sparse, probably due to the novelty of the field. After a thorough review, we failed to find works that listed specific limitations of \ac{GRL} algorithms. This suggests the existence of a research gap for works with a thorough and well-documented scientific process as well as comparative and systematic studies between the different approaches, highlighting models performance in large scenarios and under topology variation. Furthermore, some papers suggested the directly embedding of the \ac{GNN} into the \ac{RL} framework \cite{xingRealtimeOptimalScheduling2023, xingBilevelGraphReinforcement2023}. \\
 	\end{itemize}
 	\item RQ2 - \textbf{How can \ac{GRL} algorithms improve smart grid services?}
 	\begin{itemize}
-		\item RQ2.1 - \textbf{How can \ac{GRL} algorithms improve \acf{DED} in power distribution grids?}  \ac{RL} algorithms are already regarded as a well established potential solution for solving economic dispath problems \cite{pereraApplicationsReinforcementLearning2021}. We were able to find evidence of \ac{GRL} being successfully implemented in \ac{DED} systems such as \cite{chenScalableGraphReinforcement2023} and \cite{liNovelGraphReinforcement2022} in a power grid simulation context, showing efficient performance and scalability in comparison with plain \ac{DRL} models in the same issue. However, as it was the case with \ac{GRL} algorithms, the sparseness of different considerations, constraints and formalizations of the \ac{DED} problem, highlighted in section \ref{sec:ded} bring added complexity when comparing different approaches, since models are build with different \ac{DED} requirements. 
+		\item RQ2.1 - \textbf{How can \ac{GRL} algorithms improve \acf{DED} in power distribution grids?}  \ac{RL} algorithms are already regarded as a well established potential solution for solving economic dispath problems \cite{pereraApplicationsReinforcementLearning2021}. We were able to find evidence of \ac{GRL} being successfully implemented in \ac{DED} systems such as \cite{chenScalableGraphReinforcement2023} and \cite{liNovelGraphReinforcement2022} in a power grid simulation context, showing efficient performance and scalability in comparison with plain \ac{DRL} models in the same issue. However, as it was the case with \ac{GRL} algorithms, the sparseness of different considerations, constraints and formalizations of the \ac{DED} problem, highlighted in section \ref{sec:review-ded} bring added complexity when comparing different approaches, since models are build with different \ac{DED} requirements. 
 	\end{itemize}
 \end{itemize}
 
