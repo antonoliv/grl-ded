@@ -140,8 +140,7 @@ m = GCN_SAC(
 )
 
 m.train_and_validate(train_ep, eval_ep)
-train_ep = 7000
-env_params['climit_end'] = 5800
+
 ####################################################################################################
 # NO CURTAILMENT
 ####################################################################################################
@@ -162,8 +161,32 @@ m.train_and_validate(train_ep, eval_ep)
 env_params['act_no_curtail'] = False
 
 ####################################################################################################
-# NO LIMIT
+# NO LIMIT + NO DECAY
 ####################################################################################################
+
+
+env_params['act_limit_inf'] = False
+env_params['climit_type'] = None
+
+m = GCN_SAC(
+    seed,
+    "final/gcn_sac/no_limit_decay",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gcn_params.copy(),
+)
+
+m.train_and_validate(train_ep, eval_ep)
+
+env_params['act_limit_inf'] = True
+env_params['climit_type'] = "sqrt"
+
+
+####################################################################################################
+# NO LIMIT 
+####################################################################################################
+
 
 env_params['act_limit_inf'] = False
 
@@ -230,8 +253,6 @@ env_params['climit_type'] = "sqrt"
 ####################################################################################################
 # GNN COMPARISON
 ####################################################################################################
-train_ep = 10000
-env_params['climit_end'] = 7200
 
 # GAT
 m = GAT_SAC(

@@ -267,3 +267,49 @@ for i in range(len(results)):
         max_i = i
 
 gcn_params['num_layers'] = max_i + 1
+
+####################################################################################################
+# GNN Output
+####################################################################################################
+
+gcn_params['num_layers'] = 6
+gcn_params['aggr'] = 'max'
+gcn_params['out_channels'] = 3
+
+m = GCN_SAC(
+    seed,
+    "final/gcn_sac/3_out",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gcn_params.copy(),
+)
+
+results.append(m.train_and_validate(train_ep, eval_ep))
+
+gcn_params['out_channels'] = 18
+
+m = GCN_SAC(
+    seed,
+    "final/gcn_sac/18_out",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gcn_params.copy(),
+)
+
+results.append(m.train_and_validate(train_ep, eval_ep))
+
+gcn_params['out_channels'] = 36
+
+m = GCN_SAC(
+    seed,
+    "final/gcn_sac/36_out",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gcn_params.copy(),
+)
+
+results.append(m.train_and_validate(train_ep, eval_ep))
+
