@@ -121,19 +121,22 @@ Finally, the primary objective function of \ac{DED} can be defined by minimising
 
 In order to maintain stability and reliable power distribution, the system must follow several operational constraints. These restrictions are related to generators, voltage, powerlines and overall stability.  \par
 
-The primary constraint considered in \ac{DED} consists of compliance with power balance. This implies that, at all times, the sum of the production output of all generators must surpass the total system load demand, as portrayed by equation \ref{eq:c-power-balance}. 
+The primary constraint considered in \ac{DED} consists of compliance with power balance. This implies that, at all times, the sum of the production output of all generators must surpass the total system load demand, as portrayed by equation \ref{eq:c-power-balance} \cite{}. 
 
 \begin{equation} \label{eq:c-power-balance}
 	\sum^N_i P^\text{NRES}_i(t) + \sum^M_i P^\text{RES}_i(t) = \sum^L_i P^\text{LOAD}_i(t) + \delta, \delta > 0
 \end{equation}
 
-\begin{equation}
+Another equally important group of constraints is the Kirchoff's Laws of current and voltage. These fundamental principles establish the foundational rules that govern the behaviour of electrical circuits and power networks. The Kirchoff's voltage law, represented by equation \ref{eq:kirchoff-volt}, determines that the sum of all electrical potentials around a closed circuit loop must equal zero, ensuring that all voltages are consistent and feasible. On the other hand, the Kirchoff's current law, illustrated in equation \ref{eq:kirchoff-curr}, dictates that the sum of all currents entering and leaving any node in a power networks must equal zero to guarantee that the conservation of energy is respected. 
+
+\begin{equation} \label{eq:kirchoff-volt}
+	\sum_{k=1}^n  V_k = 0
+\end{equation}
+
+\begin{equation} \label{eq:kirchoff-curr}
 	\sum_{k=1}^n  I_k = 0
 \end{equation}
 
-\begin{equation}
-	\sum_{k=1}^n  V_k = 0
-\end{equation}
 
 Regarding non-renewable generators, their output value is bounded by absolute maximum and minimum values respective to each generator, $\underline{P^\text{NRES}_i}$ and $\overline{P^\text{NRES}_i}$, as depicted in equation \ref{eq:prod-limits}. Furthermore, as illustrated by equation \ref{eq:ramp-limits}, the varying power between two different timesteps is also restricted by the maximum ramp-up and down limits, $\underline{\eta_i }$ and $\overline{\eta_i }$. \par
 

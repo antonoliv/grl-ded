@@ -268,16 +268,12 @@ As a key area of this research work, the \ac{GNN} component of the proposed algo
 
 The aggregation function is a crucial component of \ac{GNN} algorithms, and because of this fact, it was the first parameter investigated. An experiment was conducted to ascertain the best-performing aggregation function of the \ac{GCN} architecture, and the available schemes include the following:
 \begin{itemize}
-	\item \texttt{Sum}
-	\item \texttt{Max}
-	\item \texttt{Min}
-	\item \texttt{Mean}
-	\item \texttt{Mul}
+	\item \texttt{sum}
+	\item \texttt{max}
+	\item \texttt{min}
+	\item \texttt{mean}
+	\item \texttt{mul}
 \end{itemize}
-\begin{equation}
-	\max (\mathcal{X}) = \max_{x_i \in \mathcal{x}} x_i
-\end{equation}
-
 
 \begin{figure}[ht]
 	\includegraphics[width=0.75\textwidth]{graphs/aggr/training_performance.png}
