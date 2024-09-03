@@ -102,7 +102,7 @@ env_params = {
     "act_no_curtail": False,
     "act_limit_inf": True,
     "climit_type": "sqrt",
-    "climit_end": 7200,
+    "climit_end": 4200,
     "climit_low": 0.4,
     "climit_factor": 3,
 }
@@ -111,35 +111,11 @@ gcn_params.update(gnn_params)
 gat_params.update(gnn_params)
 sage_params.update(gnn_params)
 
-train_ep = 10000
+train_ep = 5000
 eval_ep = 295
 
 seed = 123433334
 from grl.model import SAC, GCN_SAC, GAT_SAC, SAGE_SAC
-
-####################################################################################################
-# BASE MODELS
-####################################################################################################
-m = SAC(
-    seed,
-    "final/sac/baser",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-)
-
-m.train_and_validate(train_ep, eval_ep)
-
-m = GCN_SAC(
-    seed,
-    "final/gcn_sac/baser",
-    1,
-    sac_params.copy(),
-    env_params.copy(),
-    gcn_params.copy(),
-)
-
-m.train_and_validate(train_ep, eval_ep)
 
 ####################################################################################################
 # REWARD
@@ -157,6 +133,8 @@ m = GCN_SAC(
     gcn_params.copy(),
 )
 
+m.train_and_validate(train_ep, eval_ep)
+
 # PENALTY 0.2
 env_params['reward'] = RESPenaltyReward(0.2)
 
@@ -168,6 +146,23 @@ m = GCN_SAC(
     env_params.copy(),
     gcn_params.copy(),
 )
+
+m.train_and_validate(train_ep, eval_ep)
+
+# PENALTY 0.4
+env_params['reward'] = RESPenaltyReward(0.4)
+
+m = GCN_SAC(
+    seed,
+    "final/gcn_sac/reward/penalty_4",
+    1,
+    sac_params.copy(),
+    env_params.copy(),
+    gcn_params.copy(),
+)
+
+m.train_and_validate(train_ep, eval_ep)
+
 
 # PENALTY 0.6
 env_params['reward'] = RESPenaltyReward(0.6)
@@ -181,6 +176,8 @@ m = GCN_SAC(
     gcn_params.copy(),
 )
 
+m.train_and_validate(train_ep, eval_ep)
+
 # BONUS 0.2
 env_params['reward'] = RESBonusReward(0.2)
 
@@ -193,6 +190,9 @@ m = GCN_SAC(
     gcn_params.copy(),
 )
 
+
+m.train_and_validate(train_ep, eval_ep)
+
 # BONUS 0.4
 env_params['reward'] = RESBonusReward(0.4)
 
@@ -204,6 +204,8 @@ m = GCN_SAC(
     env_params.copy(),
     gcn_params.copy(),
 )
+
+m.train_and_validate(train_ep, eval_ep)
 
 # BONUS 0.6
 env_params['reward'] = RESBonusReward(0.6)
