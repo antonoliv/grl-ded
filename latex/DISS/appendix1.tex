@@ -2,11 +2,11 @@
 
 \section{\ac{SAC} Parameters}
 
-\begin{table}[ht!]
+\begin{table}[H]
 	\centering
 	\caption{\ac{SAC} Parameters Description}
-	\rowcolors{2}{gray!15}{white}
-	\begin{tabular}{lp{8cm}}
+	\rowcolors{2}{white}{gray!15}
+	\begin{tabularx}{\textwidth}{lX}
 		\toprule
 		\textbf{Name} & \textbf{Description} \\
 		\midrule
@@ -38,17 +38,16 @@
 		\texttt{\_init\_setup\_model} & Wether to build the network at the creation of the instance \\
 		\texttt{env} & Gymnasium Environment \\
 		\texttt{policy\_kwargs} & Additional arguments for policy \\
-		
 		\bottomrule
-	\end{tabular}
+	\end{tabularx}
 	\label{tab:sac-params}
 \end{table}
 
-\begin{table}[ht!]
+\begin{table}[H]
 	\centering
-	\rowcolors{2}{gray!15}{white}
+	\rowcolors{2}{white}{gray!15}
 	\caption{\ac{SAC} Policy Parameters Description}
-	\begin{tabular}{lp{8cm}}
+	\begin{tabularx}{\textwidth}{lX}
 		\toprule
 		\textbf{Name} & \textbf{Description} \\
 		\midrule
@@ -60,17 +59,17 @@
 		\texttt{features\_extractor\_class} & Features extractor for the minibatches  \\
 		\texttt{features\_extractor\_kwargs} & Additional keyword arguments for feature extractor \\
 		\bottomrule
-	\end{tabular}
+	\end{tabularx}
 	\label{tab:sac-pol-params}
 \end{table}
 
 \section{\ac{GNN} Parameters}
 
-\begin{table}[ht!]
+\begin{table}[H]
 	\centering
 	\caption{\ac{GNN} Parameters description}
-	\rowcolors{2}{gray!15}{white}
-	\begin{tabular}{lp{8cm}}
+	\rowcolors{2}{white}{gray!15}
+	\begin{tabularx}{\textwidth}{lX}
 		\toprule
 		\textbf{Name} & \textbf{Description} \\
 		\midrule
@@ -90,29 +89,17 @@
 		\texttt{flow} & Message passing flow direction \\
 		\texttt{node\_dim} & The axis along which to propagate \\
 		\texttt{decomposed\_layers} & Number of feature decomposition layers\\
-		
-		\texttt{improved} & If \texttt{True}, layer computes $\mathbf{\hat{A}}$ as $\mathbf{A} + 2\mathbf{I}$ \\
-		\texttt{cached} & If \texttt{True}, layer will cache $\mathbf{\hat{D}}^{-1/2} \mathbf{\hat{A}} \mathbf{\hat{D}}^{-1/2}$ (only for transductive scenarios) \\
-		\texttt{add\_self\_loops} & Add self-loops to the input graph \\
 		\texttt{normalize} & Add self-loops and compute symmetric normalization coefficients \\
-		\texttt{bias} & Learn additive bias \\
-	
-		\texttt{heads} & Number of heads for multi-head attention \\
-		\texttt{v2} & Use \textit{GATv2Conv} instead of \textit{GATConv} \\
-		\texttt{concat} & Concatenate multi-head attentions instead of averaging \\
-		\texttt{negative\_slope} & LeakyReLU angle of the negative slope \\
-		\texttt{edge\_dim} & Edge feature dimensionality \\
-		\texttt{fill\_value} & How to fill edge features of self-loops \\
 		\bottomrule
-	\end{tabular}
+	\end{tabularx}
 	\label{tab:gnn-params}
 \end{table}
 
-\begin{table}[ht!]
+\begin{table}[H]
 	\centering
-	\rowcolors{2}{gray!15}{white}
+	\rowcolors{2}{white}{gray!15}
 	\caption{\ac{GCN}-Specific Parameters description}
-	\begin{tabular}{lp{8cm}}
+	\begin{tabularx}{\textwidth}{lX}
 		\toprule
 		\textbf{Name} & \textbf{Description} \\
 		\midrule
@@ -121,15 +108,15 @@
 		\texttt{add\_self\_loops} & Add self-loops to the input graph \\
 		\texttt{bias} & Learn additive bias \\
 		\bottomrule
-	\end{tabular}
+	\end{tabularx}
 	\label{tab:gcn-params}
 \end{table}
 
-\begin{table}[ht!]
+\begin{table}[H]
 	\centering
 	\caption{\ac{GAT}-Specific Parameters description}
-	\rowcolors{2}{gray!15}{white}
-	\begin{tabular}{lp{8cm}}
+	\rowcolors{2}{white}{gray!15}
+	\begin{tabularx}{\textwidth}{lX}
 		\toprule
 		\textbf{Name} & \textbf{Description} \\
 		\midrule
@@ -143,32 +130,33 @@
 		\texttt{edge\_dim} & Edge feature dimensionality \\
 		\texttt{fill\_value} & How to fill edge features of self-loops \\
 		\bottomrule
-	\end{tabular}
+	\end{tabularx}
 	\label{tab:gat-params}
 \end{table}
 
 
 \section{Environment Parameters}
 
-\begin{table}[ht!]
+\begin{table}[H]
 	\centering
-	\rowcolors{2}{gray!15}{white}
+	\rowcolors{2}{white}{gray!15}
 	\caption{\ac{GNN} Parameters description}
-	\begin{tabular}{lp{8cm}}
+	\begin{tabularx}{\textwidth}{lX}
 		\toprule
 		\textbf{Name} & \textbf{Description} \\
 		\midrule
-		\texttt{env\_path} & \\
-		\texttt{reward} & \\
-		\texttt{obs\_scaled} & \\
-		\texttt{obs\_step} & \\
-		\texttt{act\_no\_curtail} & \\
-		\texttt{act\_limit\_inf} & \\
-		\texttt{climit\_type} & \\
-		\texttt{climit\_end} & \\
-		\texttt{climit\_low} & \\
-		\texttt{climit\_factor} & \\
+		\texttt{env\_path} & Path to the grid2op dataset \\
+		\texttt{reward} & Reward function \\
+		\texttt{obs\_scaled} & If \texttt{True}, observation keys $P^\text{NRES}_i$, $P^\text{RES}_i$, and $\overline{P^\text{RES}_i}$ will be scaled \\
+		\texttt{obs\_step} & If \texttt{True}, observation will use current step instead of minute, hour and day of the week \\
+		\texttt{act\_no\_curtail} & If \texttt{True}, action space will not include curtailment actions \\
+		\texttt{act\_limit\_infeasible} & If \texttt{True}, the parameter \texttt{LIMIT\_INFEASIBLE\_CURTAILMENT\_ STORAGE\_ACTION} is set \\
+		\texttt{cbound\_type} & Type of curtailment lower bound, can be
+		 \texttt{None}, \texttt{fixed}, \texttt{linear}, and \texttt{sqrt} \\\\
+		 \texttt{cbound\_low} & Curtailment lower bound \\
+		\texttt{decay\_end} & End of lower bound decay, if type is \texttt{linear} or \texttt{sqrt} \\
+		\texttt{decay\_factor} & For if \texttt{sqrt} type, controls aggressiveness of decay \\
 		\bottomrule
-	\end{tabular}
+	\end{tabularx}
 	\label{tab:env-params}
 \end{table}

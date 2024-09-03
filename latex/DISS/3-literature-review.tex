@@ -153,6 +153,91 @@ Some systems \cite{chenScalableGraphReinforcement2023, hanAutonomousControlTechn
 	\label{tab:ded-lit}
 \end{table}
 
+\begin{table}[H] 
+	\centering
+	\caption{Dynamic Economic Dispatch \acs{RL} Systems}
+	\begin{tabular}{|P{2cm}|P{4cm}|p{6cm}|  }
+		\hline
+		\textbf{Reference} & \textbf{Approach} & \textbf{Application} \\
+		\hline
+		\cite{yangDynamicEnergyDispatch2021} & DDPG with Prioritized Experience Replay Mechanism and L2 Regularization& Integrated Energy Systems, Utility (Selling, Purchasing and Gas) and \acp{ESS} \\
+		\hline
+		\cite{leiDynamicEnergyDispatch2021} & DDPG & Thermal Power, Renewable Energy Sources and \acp{ESS} \\
+		\hline 
+		\cite{hanAutonomousControlTechnology2023} & SAC with Imitation learning & Thermal Power, Renewable Energy Sources and Voltage deviation\\
+		\hline
+		\cite{chenScalableGraphReinforcement2023} & GCN-SAC with Replay Buffer & Thermal Power, Renewable Energy Sources, \acp{ESS} and Voltage Deviation \\
+		\hline
+		\cite{liNovelGraphReinforcement2022} & GCN-SAC & Utility (Time-of-Use), Thermal Power, Renewable Energy Sources and \acp{ESS} \\
+		\hline
+		\cite{zhaoGraphbasedDeepReinforcement2022} & GraphSAGE-PPO & Thermal Power, Renewable Energy Sources, \acp{ESS} and Voltage Deviation \\ \hline
+		\cite{liuDistributedEconomicDispatch2018} & Multi-Agent \ac{RL} with Function Approximation and Diffusion Mechanism & Utility (Time-of-Use), Thermal Power (Diesel) and \acp{ESS} (Considering degradation) \\ \hline
+		\cite{baiAdaptiveActivePower2023b} & Multi-Agent GAT-DQN &Thermal Power, Renewable Energy Sources and \acp{ESS} \\ \hline
+	\end{tabular}
+	\label{tab:ded-lit}
+\end{table}
+
+  \begin{table}[h!]
+	\centering
+	\caption{}
+	\begin{tabular}{ccccccc}
+		\toprule
+		\multirow{2}{*}{\textbf{Reference}} & \multirow{2}{*}{\textbf{Model}} & \multicolumn{5}{c}{\textbf{Action Space}} \\ 
+		\cmidrule(lr){3-7}
+ 		&  &  \textbf{Dispatch} & \textbf{Curtail} & \textbf{ESS} & \textbf{Voltage} & \textbf{Others} \\ 
+		\midrule
+		\cite{zhaoGraphbasedDeepReinforcement2022} & SAGE-PPO & x & x & x & & \\
+		\cite{liNovelGraphReinforcement2022, chenScalableGraphReinforcement2023} & GCN-SAC & x & x & x & & \\
+		\cite{hanAutonomousControlTechnology2023} & LM-SAC \& IL-SAC & x & & & x & \\
+		\cite{liuDistributedEconomicDispatch2018} &  Cooperative Multi-Agent & x & & x & & \\
+		\cite{leiDynamicEnergyDispatch2021} & FH-DDPG and FH-RDPG & x & & & & \\
+		\cite{yangDynamicEnergyDispatch2021} & Improved DDPG & & & x & & (CHP + GB) \\
+		\cite{xingRealtimeOptimalScheduling2023} & GAT-DDPG & & x & x & (SVC) & (FL) \\
+		% Add more rows as needed
+		\bottomrule
+	\end{tabular}
+	\label{tab:ded-action}
+\end{table}
+
+  \begin{table}[h!]
+	\centering
+	\caption{}
+	\begin{tabular}{cccccc}
+		\toprule
+		\multirow{2}{*}{\textbf{Reference}} & \multirow{2}{*}{\textbf{Model}} & \multicolumn{4}{c}{\textbf{Action Space}} \\ 
+		\cmidrule(lr){3-6}
+		&  &  \textbf{Nodes} & \textbf{Edges} & \textbf{Weights} & \textbf{Pooling Function}\\ 
+		\midrule
+		\cite{zhaoGraphbasedDeepReinforcement2022} & SAGE-PPO & Buses & Powerlines & Active Flow & Max \\
+		\cite{liNovelGraphReinforcement2022, chenScalableGraphReinforcement2023} & GCN-SAC & Buses & Powerlines & - & Sum \\ 
+		\cite{xingRealtimeOptimalScheduling2023} & GAT-DDPG & Buses & Powerlies & - & Concat and Mean \\
+		% Add more rows as needed
+		\bottomrule
+	\end{tabular}
+	\label{tab:ded-action}
+\end{table}
+
+  \begin{sidewaystable}[h!]
+	\centering
+	\caption{}
+	\begin{tabular}{cccccccccc}
+		\toprule
+		\multirow{3}{*}{\textbf{Reference}} & \multirow{3}{*}{\textbf{Model}} & \multicolumn{8}{c}{\textbf{Observation Space}} \\ 
+		\cmidrule(lr){3-10}
+		&  &  \textbf{Generators} & \textbf{Loads} & \textbf{ESS} & \textbf{Nodes} & \textbf{Lines} & \textbf{Topology} & \textbf{Timestep} & \textbf{Others}\\ 
+		\midrule
+		\cite{zhaoGraphbasedDeepReinforcement2022} & SAGE-PPO & $P$ and $Q$  & $P$ and $Q$ & & $P$, $Q$, $v$, and $\theta$ & $P$ and $F$ & x & & \\
+		\cite{liNovelGraphReinforcement2022, chenScalableGraphReinforcement2023} & GCN-SAC & $P$ & $P$ and $Q$ & $\text{SOC}$ & & & x & x & \\
+		\cite{hanAutonomousControlTechnology2023} & LM-SAC \& IL-SAC & $P$, $Q$, and $v$ & $P$, $Q$, and $v$ & & & $\text{rho}$ and $F$ & & & Forecast of $P^\text{LOAD}$ and $\overline{P^\text{RES}}$\\
+		\cite{liuDistributedEconomicDispatch2018} &  Cooperative Multi-Agent & $P$ & $P$ & $\text{SOC}$ and $\text{SOH}$ & & & & & \\
+		\cite{leiDynamicEnergyDispatch2021} & FH-DDPG and FH-RDPG & $P^\text{RES}$ & $P$ & $\text{SOC}$ & & & & & \\
+		\cite{yangDynamicEnergyDispatch2021} & Improved DDPG & & $P$ & $\text{SOC}$ & & & & &  Price of purchasing energy and gas \\
+		\cite{xingRealtimeOptimalScheduling2023} & GAT-DDPG & $P$ and $Q$ & $P$ and $Q$ & & & & x &  & \\
+		% Add more rows as needed
+		\bottomrule
+	\end{tabular}
+	\label{tab:ded-obs}
+\end{sidewaystable}
 
 \section{Conclusions} \label{sec:review-conclusion}
 

@@ -95,7 +95,7 @@ Since the early 20th century, the improvement of power distribution grids has gr
 
 \subsubsection{Objective Function} \label{sec:objective-func}
 
-As stated previously, the main goal of the \ac{DED} problem is to minimise the total cost of a power grid operation while fulfilling the total load demand over a time period $T$. The operating cost of all dispatchable generators at a timestep $t$ can be described by equation \ref{eq:conv-cost} and comprises the first component of the \ac{DED} objective function. \par
+As stated previously, the main goal of the \ac{DED} problem is to minimise the total cost of a power grid operation while fulfilling the total load demand over a time period $T$. The operating cost of all dispatchable generators at a timestep $t$ can be described by equation \ref{eq:conv-cost} and comprises the first component of the \ac{DED} objective function. The chosen \ac{DED} formulation is heavily inspired by the works of \cite{chenScalableGraphReinforcement2023, liNovelGraphReinforcement2022, liNovelGraphReinforcement2022} without the considerations relative to \ac{ESS}. \par
 
 \begin{equation} \label{eq:conv-cost}
 	F_\text{NRES}(t) = \sum^N_{i=0} c^\text{NRES}_i P^\text{NRES}_i(t) \Delta t
@@ -105,7 +105,7 @@ In this context, conventional generation cost is described as the total sum of t
 
 However, more and more modern distribution grids include \acf{RES}, which also enable the manipulation of their output levels through curtailment actions. These acts allow the power system to adapt to its dynamic needs associated with reliability, stability, and security by adjusting the maximum output of \ac{RES}. Regardless of its contributions, curtailment does not come without its disadvantages, mainly connected with the hidden cost of curtailed (unused) \ac{RES} energy that might be transferred to other generators' operations for security reasons, such as preventing line overflow. \par
 
-In this manner, as a means of maximising the \ac{RES} usage, a second component of the objective function is considered that focuses on expressing this cost, represented in equation \ref{eq:res-cost}. A penalty factor $\beta_\text{RES}$ controls the influence of wasted \ac{RES} energy on the overall objective. Additionally, this work considered another element representing the average cost $\overline{c^\text{NRES}_i}$ of conventional generators as the cost of the abandoned \ac{RES} energy. This creates a more understandable and comparable definition of the total operating cost of renewable generators.  \par
+In this manner, as a means of maximizing the \ac{RES} usage, a second component of the objective function is considered that focuses on expressing this cost, represented in equation \ref{eq:res-cost}. A penalty factor $\beta_\text{RES}$ controls the influence of wasted \ac{RES} energy on the overall objective. Additionally, this work considered another element representing the average cost $\overline{c^\text{NRES}_i}$ of conventional generators as the cost of the abandoned \ac{RES} energy, also used in literature \cite{chenScalableGraphReinforcement2023, liNovelGraphReinforcement2022, liNovelGraphReinforcement2022}. This creates a more understandable and comparable definition of the total operating cost of renewable generators.  \par
 
 \begin{equation} \label{eq:res-cost}
 	F_\text{RES}(t) = \beta_\text{RES} \sum^M_{i=0}  (\overline{P^\text{RES}_i}(t) - P^\text{RES}_i(t)) \Delta t 
@@ -121,7 +121,7 @@ Finally, the primary objective function of \ac{DED} can be defined by minimising
 
 In order to maintain stability and reliable power distribution, the system must follow several operational constraints. These restrictions are related to generators, voltage, powerlines and overall stability.  \par
 
-The primary constraint considered in \ac{DED} consists of compliance with power balance. This implies that, at all times, the sum of the production output of all generators must surpass the total system load demand, as portrayed by equation \ref{eq:c-power-balance} \cite{}. 
+The primary constraint considered in \ac{DED} consists of compliance with power balance. This implies that, at all times, the sum of the production output of all generators must surpass the total system load demand, as portrayed by equation \ref{eq:c-power-balance} \cite{chenScalableGraphReinforcement2023, liNovelGraphReinforcement2022, leiDynamicEnergyDispatch2021}. 
 
 \begin{equation} \label{eq:c-power-balance}
 	\sum^N_i P^\text{NRES}_i(t) + \sum^M_i P^\text{RES}_i(t) = \sum^L_i P^\text{LOAD}_i(t) + \delta, \delta > 0
@@ -138,7 +138,7 @@ Another equally important group of constraints is the Kirchoff's Laws of current
 \end{equation}
 
 
-Regarding non-renewable generators, their output value is bounded by absolute maximum and minimum values respective to each generator, $\underline{P^\text{NRES}_i}$ and $\overline{P^\text{NRES}_i}$, as depicted in equation \ref{eq:prod-limits}. Furthermore, as illustrated by equation \ref{eq:ramp-limits}, the varying power between two different timesteps is also restricted by the maximum ramp-up and down limits, $\underline{\eta_i }$ and $\overline{\eta_i }$. \par
+Regarding non-renewable generators, their output value is bounded by absolute maximum and minimum values respective to each generator, $\underline{P^\text{NRES}_i}$ and $\overline{P^\text{NRES}_i}$, as depicted in equation \ref{eq:prod-limits} \cite{chenScalableGraphReinforcement2023, liNovelGraphReinforcement2022, liuDistributedEconomicDispatch2018}. Furthermore, as illustrated by equation \ref{eq:ramp-limits}, the varying power between two different timesteps is also restricted by the maximum ramp-up and down limits, $\underline{\eta_i }$ and $\overline{\eta_i }$ \cite{chenScalableGraphReinforcement2023, liNovelGraphReinforcement2022}. \par
 
 \begin{equation} \label{eq:prod-limits}
 	\forall t, i: \underline{P^\text{NRES}_i} \leq P^\text{NRES}_i(t) \leq \overline{P^\text{NRES}_i}
@@ -148,7 +148,7 @@ Regarding non-renewable generators, their output value is bounded by absolute ma
 	\forall t, i: \underline{\eta_i } \Delta t \leq P^\text{NRES}_i (t + 1) - P^\text{NRES}_i (t) \leq \overline{\eta_i} \Delta t
 \end{equation}
 
-In contrast with these static production limits, renewable generator production has a dynamic maximum output level and is not bounded by ramp rate limits. Depending on the type of \ac{RES}, its maximum generation output is inherently tied to the environmental conditions that support its operation. These conditions, such as the availability of natural inputs, climate and other local dynamic factors, determine the efficiency and capacity at which the renewable sources operate. In such manner and as equation \ref{eq:res-limits} portrays, the output value of renewable generations for any timestep $t$ is bounded by a maximum production value, $\overline{P^\text{RES}_i} (t)$ and 0.
+In contrast with these static production limits, renewable generator production has a dynamic maximum output level and is not bounded by ramp rate limits. Depending on the type of \ac{RES}, its maximum generation output is inherently tied to the environmental conditions that support its operation. These conditions, such as the availability of natural inputs, climate and other local dynamic factors, determine the efficiency and capacity at which the renewable sources operate. In such manner and as equation \ref{eq:res-limits} portrays, the output value of renewable generations for any timestep $t$ is bounded by a maximum production value, $\overline{P^\text{RES}_i} (t)$ and 0 \cite{chenScalableGraphReinforcement2023, liNovelGraphReinforcement2022}.
 
 \begin{equation} \label{eq:res-limits}
 	\forall t, i: 0 \leq P^\text{RES}_i (t) \leq \overline{P^\text{RES}_i} (t)
@@ -157,8 +157,8 @@ In contrast with these static production limits, renewable generator production 
 Regarding powerlines, there is several restrictions in their dynamic operation that aim to consider the real behaviour of power systems. There are two main thresholds associated with two real-world scenarios:
 
 \begin{itemize}
-	\item \textbf{Hard Overflow} - In case the relative flow of any powerline surpasses the hard overflow threshold, $\theta_\text{hard},$ it's instantly disconnected. This corresponds to a instantenous overcurrent and prevents the power system from operating in cases of extreme overflow;
-	\item \textbf{Soft Overflow} - A line is allowed to surpass the soft overflow threshold, $\theta_\text{soft}$, for $T_\text{soft}$ timesteps before being disconnected for safety reasons. This consists in an time overcurrent and describes the level at which a line is allowed to be in overflow for maximum amount of time;
+	\item \textbf{Hard Overflow} - In case the relative flow of any powerline surpasses the hard overflow threshold, $\theta_\text{hard},$ it's instantly disconnected. This corresponds to a instantenous overcurrent and prevents the power system from operating in cases of extreme overflow \cite{rtefranceGrid2OpDocumentation};
+	\item \textbf{Soft Overflow} - A line is allowed to surpass the soft overflow threshold, $\theta_\text{soft}$, for $T_\text{soft}$ timesteps before being disconnected for safety reasons. This consists in an time overcurrent and describes the level at which a line is allowed to be in overflow for maximum amount of time \cite{rtefranceGrid2OpDocumentation};
 \end{itemize}
 Regardless of the scenario, when a powerline is disconnected for safety reasons, it's always affected by a reconnection cooldown, $T_\text{reconnect}$.
 
@@ -171,7 +171,7 @@ Regardless of the scenario, when a powerline is disconnected for safety reasons,
 In this section, the \ac{DED} problem is formalized as a sequential decision-making problem and its \ac{MDP} is uncovered. This is necessary to approach \ac{DED} as a \ac{RL} problem and propose an appropriate solution. 
 
 \begin{description}
-	\item[Action] The considered action space includes the change in conventional generator redispatching $\Delta P^\text{NRES}_i$ and the renewable energy curtailment $P^\text{RES}_i$. The first concerns only non-renewable dispatchable generators and is done in increments and decrements. At the same time, the second is the ratio of curtailment applied to the total amount of generation output of a renewable generator. \par
+	\item[Action] The considered action space includes the change in conventional generator redispatching $\Delta P^\text{NRES}_i$ and the renewable energy curtailment $P^\text{RES}_i$. The first concerns only non-renewable dispatchable generators and is done in increments and decrements. At the same time, the second is the ratio of curtailment applied to the total amount of generation output of a renewable generator. This is the standard option throughout literature, used in \cite{zhaoGraphbasedDeepReinforcement2022, liNovelGraphReinforcement2022, chenScalableGraphReinforcement2023, hanAutonomousControlTechnology2023} together with the \ac{ESS} power setpoint. In this case, we don't consider the inclusion of \ac{ESS} elements to simplify the action space and scale both types o actions to $[-1,1]$ as required by the implementation. \par
 	This second type of action refers to the energy discarded from \ac{RES} for grid stability and security purposes. However, they're represented as the upper bound on a renewable generator's output level. In this manner, while positive dispatch actions are directly tied with higher energy output and, consequently, the operational cost of the system, curtailment actions have the opposite effect, given that they are represented as the upper bound on renewable generator output levels. Therefore, higher curtailment values reduce the wasted energy provided from \ac{RES}, making these actions crucial for an optimal grid operation.
 	
 	\begin{equation} \label{eq:action-space}
@@ -211,8 +211,8 @@ In this section, the \ac{DED} problem is formalized as a sequential decision-mak
 		o(t)= \{ o_{1}(t), o_{2}(t), o_{3}(t), o_{4}(t) \}
 	\end{equation}
 	
-	This tuple encompasses the main elements of the power grid and their characteristics without capturing their topology. This is the space considered for pure-\ac{DRL} baselines, and it was taken from similar literature that addresses \ac{DED} with equivalent considerations. \par 
-	Concerning the network's topology, for \ac{GRL} algorithms, this tuple was replaced by a graph structure representing the power grid configuration. This graph is defined by its adjacency, weight, and feature matrix and its feature tuple for node $i$ at timestep $t$ can be observed in equation \ref{eq:graph-obs-space}. 
+	This tuple encompasses the main elements of the power grid and their characteristics without capturing their topology, similarly to the features included in the observation space of \cite{hanAutonomousControlTechnology2023} without forecast keys. Additionally, reactive power was also only included for the loads, and voltage was not considered for any element as the observed in most literature \cite{liNovelGraphReinforcement2022, chenScalableGraphReinforcement2023, liuDistributedEconomicDispatch2018, leiDynamicEnergyDispatch2021, yangDynamicEnergyDispatch2021, xingRealtimeOptimalScheduling2023}. This space is considered for pure \ac{DRL} algorithms. \par 
+	Concerning the network's topology, for \ac{GRL} algorithms, this tuple was replaced by a graph structure representing the power grid configuration. This graph is defined by its adjacency, weight, and feature matrix and its feature tuple for node $i$ at timestep $t$ can be observed in equation \ref{eq:graph-obs-space}. This formulation is once again similar to the works of \cite{liNovelGraphReinforcement2022, chenScalableGraphReinforcement2023} but with the difference of aggregating non-renewable generated power and renewable generated power in two separate keys and without considering \ac{ESS} power setpoint.
 	
 	\begin{equation} \label{eq:graph-obs-space}
 		o_i(t) = \{P^\text{LOAD}_i, Q^\text{LOAD}_i, P^\text{NRES}_i, P^\text{RES}_i, \overline{P^\text{RES}_i}, t\}
@@ -243,7 +243,7 @@ In this section, the \ac{DED} problem is formalized as a sequential decision-mak
 		* GNN Equations
 	\end{comment}
 	
-	\item[Reward] Considering reward functions, three formalizations were considered. The initial implementation can be described by equation \ref{eq:reward1} and corresponds to the total amount of cost saved at time step $t$, with the maximum cost, $\overline{F_\text{NRES}}$, representing the total cost of running the power system for the current step with all generators running at maximum output. \par
+	\item[Reward] Considering reward functions, three formalizations were considered. The initial implementation can be described by equation \ref{eq:reward1} and corresponds to the total amount of cost saved at time step $t$, with the maximum cost, $\overline{F_\text{NRES}}$, representing the total cost of running the power system for the current step with all generators running at maximum output. This is similar to the implementation used in \cite{liNovelGraphReinforcement2022, chenScalableGraphReinforcement2023}, with the distinction that in this case it's scaled to $[-1,1]$. This addition allows better comparison along different sized scenarios which is facilitates the analysis of scalability . \par
 	
 	
 	\begin{equation} \label{eq:reward1}

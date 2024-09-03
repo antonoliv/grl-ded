@@ -157,6 +157,8 @@ For this purpose, another model was trained with this flag set to \texttt{True}.
 
 The training results confirmed the initial suspicions, demonstrating that while performance is significantly and negatively affected when curtailment actions are included, by setting the \texttt{LIMIT\_INFEASIBLE\_CURTAILMENT\_STORAGE\_ACTION} the model was able to achieve higher results than without the parameter. As observed in table \ref{tab:test-limit}, the usage of the parameter translated into an improvement of 346.63 \% in average cumulative reward and 1100.02 \% in survival rate compared with the worst model. \par
 
+\begin{comment}
+
 \begin{figure}[H]
 	\centering
 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/obs/training_performance.png}}
@@ -168,6 +170,8 @@ The training results confirmed the initial suspicions, demonstrating that while 
 	\caption{Training Results of the Experiments concerning Observation Space.}
 	\label{fig:train-obs}
 \end{figure}
+	
+\end{comment}
 
 \begin{table}[h!]
 	\centering
@@ -293,7 +297,7 @@ As observed in figure \ref{fig:train-perf-aggr}, training performance revealed a
 
 \begin{table}[h!]
 	\centering
-	\caption{Test Results for \texttt{aggr} \ac{GCN} Parameter Experiments}
+	\caption{Test Results for \texttt{aggr} \ac{GCN} Aggregation Function Experiments}
 	\begin{tabular}{ccccc}
 		\toprule
 		\multirow{2}{*}{\textbf{aggr}} & \multicolumn{4}{c}{\textbf{Metrics}} \\ 
@@ -373,10 +377,10 @@ Once again, the top-performing model in cumulative performance did not correspon
 		\cmidrule(lr){2-5}
 		&  \textbf{Avg. CR} & \textbf{Avg. Length} & \textbf{Avg. DOC} & \textbf{Avg. REW} \\ 
 		\midrule
-		3 & & & & \\
-		6 & & & & \\
-		18 & & & & \\
-		36 & & & & \\
+		6 & 135.75 & 487.09 & 560147.77 & 5862.49 \\
+		36 & 95.92 & 571.48 & 582984.75 & 7575.34 \\
+		18 & 88.47 & 777.78 & 562226.73 & 6874.71 \\
+		3 & 87.68 & 428.30 & 563134.93 & 9497.97 \\
 		% Add more rows as needed
 		\bottomrule
 	\end{tabular}
@@ -391,12 +395,12 @@ In this context, a grid search was conducted around these two parameters, whose 
  
  \begin{figure}[H]
  	\centering
- 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gnn_param/training_performance.png}}
+ 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gcn_param/training_performance.png}}
  	\hskip1ex
- 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gnn_param/survival_rate.png}} 
+ 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gcn_param/survival_rate.png}} 
  	\vfill
- 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gnn_param/daily_cost.png}} \hskip1ex
- 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gnn_param/res_wasted.png}} 
+ 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gcn_param/daily_cost.png}} \hskip1ex
+ 	\subfloat{}{\includegraphics[width=.45\textwidth]{graphs/gcn_param/res_wasted.png}} 
  	\caption{Training Results of models with 2, 3, 4 and 5 \ac{GNN} Layers}
  	\label{fig:train-gcn-param}
  
@@ -476,7 +480,20 @@ With regards to using the second version of the \ac{GAT} architecture, the resul
 
 Lastly, the \texttt{act\_first} parameter also showed acceptable performance, with three models in the top five best-performing and the being present best model. This conclusion closes the optimal combination of these parameters considered in the following comparison and scalability experiments.
 
-\section{GNN Implementation Comparison} \label{sec:results-gnn-comp}
+\section{36-bus Scenario Analysis} \label{sec:results-gnn-comp}
+
+In this section, a final performance analysis on the GCN-SAC and GAT-SAC algorithms is performed, comparing them with the baseline \ac{SAC} algorithm. The intermediate experiments allowed a deeper understanding on the relevant parameters of the proposed models, used to determine the optimal combination of parameters for both. \par
+
+The overall results indicate a significant superiority of the \ac{SAC} algorithm over the proposed implementations. This model was able to outperform the proposed GCN-SAC algorithm by over 122.16 \%, as observed in table \ref{tab:test-36} which depicts the test results. These results are only exacerbated with the fact that this model didn't have a focused calibration process as the proposed implementations. However, a trend observed particularly in this model and in the others as well is the high variability and instability of results, with standard deviations almost always surpassing 50 \% of the average values for all metrics with the exception of daily operating cost. \par
+
+\begin{figure}[ht]
+	\includegraphics[width=0.75\textwidth]{graphs/aggr/acc_reward_train.png}
+	\caption{Training Performance for 36-bus Scenario}
+	\label{fig:36-training-performance}
+\end{figure}
+
+
+In the case of the proposed \ac{GRL} techniques, the calibration process failed to improve on performance stability. As observed in the graph in figure \ref{fig:36-training-performance}, this instability is also present during training and shows that the models are failing to generalize the learned information to specific new scenarios. The baseline \ac{SAC} algorithm saw the highest variability of accumulative reward during both training and test phases which is expectable given the absence of a specialized tuning process for this algorithm. We believe the sample efficiency and inherent stability of \ac{SAC}  gave it an additional leverage in this optimization problem.
 
 \begin{table}[h!]
 	\centering
@@ -493,10 +510,22 @@ Lastly, the \texttt{act\_first} parameter also showed acceptable performance, wi
 		% Add more rows as needed
 		\bottomrule
 	\end{tabular}
-	\label{tab:test-gnn}
+	\label{tab:test-36}
 \end{table}
 
+Considering the average step processing time of the model, the \ac{SAC} algorithm also remarkably superior to the proposed models, with a processing time of 29 milliseconds in this scenario, against the average times of 97 and 71 milliseconds of GCN-SAC and GAT-SAC, respectively. The \ac{GRL} techniques were only able to surpass the \ac{SAC} model in training time, but even in this case the results are not positive, since this was mostly due to this algorithm surviving on average a significantly higher amount of steps than the other implementations. This caused the model to train for larger amount of steps than the \ac{GRL} techniques, which also demonstrates the importance of this metric for learning efficiency. By surviving longer into each episode, the \ac{SAC} algorithm was able to face more diverse situations and leverage its features into finding more relevant and generalizable patterns in them. 
+
 \section{Scalability Tests} \label{sec:results-scalability}
+
+To ascertain the scalability of the several implementations, is finally analysed by comparing their performance on the 118-bus scenario. The insights taken from relevant literature, beyond suggesting a promising performance of \ac{GRL}, showed the advantages of these techniques in larger and more complex scenarios. Although the first prospect was not verified in the last subsection, we were still hoping that the feature extraction capabilities of the \ac{GRL} implementations were exacerbated by larger and more complex scenarios. \par
+
+\begin{figure}[ht]
+	\includegraphics[width=0.75\textwidth]{graphs/118/acc_reward_train.png}
+	\caption{Training Performance for the 118-bus Scenario}
+	\label{fig:118-training-performance}
+\end{figure}
+
+Once more, the proposed implementations did not exceed the \ac{SAC} algortihm in overall performance, as demonstrated by table \ref{tab:test-118}. This model obtained the best average reward per episode and the best convergence, observable in figure \ref{fig:118-training-performance} but at the expense of a slightly shorter survivability than the second-placed GCN-SAC. In this context, the proposed implementations' performance was a lot closer to the baseline, with the GCN-SAC model even showing the best average survival rate in test phase, as shown by the graph in figure \ref{fig:118-sr-val}. However, the results of all models in this metric were generally bad, and this larger scenario aggravated this trend, which it's reflected in the best survival rate of only 19.34 \%. The GAT-SAC model was best in average renewable energy wasted and average daily operating cost. Nevertheless, its low average cumulative reward is mostly explained with its low survival rate. \par
 
 \begin{table}[h!]
 	\centering
@@ -509,9 +538,20 @@ Lastly, the \texttt{act\_first} parameter also showed acceptable performance, wi
 		\midrule
 		SAC & 81.98 & 361.92 & 2788763.38 & 4740.03 & 0.0067 & 14.82 \\
 		GCN-SAC & 67.85 & 389.82 & 2901439.28 & 5323.58 & 0.0096 & 13.67 \\
-		GAT-SAC & 54.31 & 240.28 & 2591733.60 & 4709.37 & 0.012 & 11.39 \\
+		GAT-SAC & 54.31 & 240.28 & 2591733.60 & 4709.37 & 0.0122 & 11.39 \\
 		% Add more rows as needed
 		\bottomrule
 	\end{tabular}
 	\label{tab:test-118}
 \end{table}
+
+The connection of bad survivability and higher times is also verified in this case although is not as apparent as in the last scenario. The GCN-SAC model had the highest average survival rate during test and also achieved a better training time than the \ac{SAC} algorithm. However, the former model did surpass the \ac{GRL} implementation in average survival rate during training, which explains the higher training time of the \ac{SAC} algorithm. \par
+
+\begin{figure}[ht]
+	\includegraphics[width=0.75\textwidth]{graphs/118/survival_rate_val.png}
+	\caption{Test Survival Rate for the 118-bus Scenario}
+	\label{fig:118-sr-val}
+\end{figure}
+
+Lastly, our proposed GCN-SAC was able to maintain a similar step processing time in both scenarios, which shows great scalability of this implementation. The \ac{SAC} Model was still superior again, but its step time more than doubled in comparison with the results observed in the 36-bus scenario. GAT-SAC wasn't as consistent as GCN-SAC in this metric, with its processing time considerably increasing.
+
