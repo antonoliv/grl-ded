@@ -1,4 +1,5 @@
 \chapter{Result Discussion} \label{chap:results}
+\begin{comment}
 \begin{equation}
 	\forall i \in N_\text{p}, \text{rho}_i (t_1) > \theta_\text{hard} \implies \forall t \in [t_1, t_1 + T_\text{reconnect}], F_i (t) = 0
 \end{equation}
@@ -6,11 +7,17 @@
 \begin{equation}
 	\forall i \in N_\text{p}, t \in [t_1, t_1 + T_\text{soft}], \text{rho}_i (t) > \theta_\text{soft} \implies \forall t \in [t_1 + T_\text{soft}, t + T_\text{reconnect}], F_i (t)= 0
 \end{equation}
-In this chapter, the obtained results are thoroughly analysed and discussed. The performed experiments can be subdivided into 6 categories: Curtail Lower Limit (section \ref{sec:results-lower}), Limit Infeasible Curtailment Actions \ref{sec:results-limit}, Reward Tests \ref{sec:results-rewards}, \acp{GNN} Hyperparameter Tuning, \ac{GNN} Implementation Comparison \ref{sec:results-gnn-comp} and Scability Tests \ref{sec:results-scalability}.
+
+content...
+\end{comment}
+
+In this chapter, the obtained results are thoroughly analysed and discussed. The performed research can be subdivided into intermediate calibration and final evaluation experiments. The first section \ref{sec:results-implementation} highlights some important implementation features and is followed by the intermediate experiments. \par
+The former category of studies is compromised of experiments that tackle: reward function, in section \ref{sec:results-rewards}; action space, in section \ref{sec:results-action}; and \ac{GNN} tuning, in section \ref{sec:results-gnn}. \par
+Lastly, the final results of the best models in the 36-bus and 118-bus environment are exposed in sections \ref{sec:results-gnn-comp} and \ref{sec:results-scalability}, respectively.
 
 \section{Implementation Details} \label{sec:results-implementation}
 
-The development of \ac{GRL} algorithms posed as a complex and difficult problem. As mentioned in the literature review and restated in the problem statement, there is a scarse availability of open-source implementations and frameworks that are implemented to accommodate the implementation of these techniques. 
+The development of \ac{GRL} algorithms posed as a complex and difficult problem. As mentioned in the literature review and restated in the problem statement, there is a scarce availability of open-source implementations and frameworks that are implemented to accommodate the implementation of these techniques. 
 
 \subsection{Reproducibility}
 
@@ -87,6 +94,7 @@ Results revealed that the proposed implementations were superior to the already 
 	* Explain that SAC was used for most experiments as a baseline
 \end{comment}
 
+\begin{comment}
 \section{Observation Space} \label{sec:results-obs}
 
 Regarding the observation space, two matters were found to be worth to analyse. 
@@ -116,7 +124,7 @@ Additionally, given the complexity of the problem at hand, a min-max scale was a
 	\end{tabular}
 	\label{tab:test-obs}
 \end{table}
-
+\end{comment}
 
 \section{Action Space} \label{sec:results-action}
 
@@ -525,7 +533,7 @@ To ascertain the scalability of the several implementations, is finally analysed
 	\label{fig:118-training-performance}
 \end{figure}
 
-Once more, the proposed implementations did not exceed the \ac{SAC} algortihm in overall performance, as demonstrated by table \ref{tab:test-118}. This model obtained the best average reward per episode and the best convergence, observable in figure \ref{fig:118-training-performance} but at the expense of a slightly shorter survivability than the second-placed GCN-SAC. In this context, the proposed implementations' performance was a lot closer to the baseline, with the GCN-SAC model even showing the best average survival rate in test phase, as shown by the graph in figure \ref{fig:118-sr-val}. However, the results of all models in this metric were generally bad, and this larger scenario aggravated this trend, which it's reflected in the best survival rate of only 19.34 \%. The GAT-SAC model was best in average renewable energy wasted and average daily operating cost. Nevertheless, its low average cumulative reward is mostly explained with its low survival rate. \par
+Once more, the proposed implementations did not exceed the \ac{SAC} algorithm in overall performance, as demonstrated by table \ref{tab:test-118}. This model obtained the best average reward per episode and the best convergence, observable in figure \ref{fig:118-training-performance} but at the expense of a slightly shorter survivability than the second-placed GCN-SAC. In this context, the proposed implementations' performance was a lot closer to the baseline, with the GCN-SAC model even showing the best average survival rate in test phase, as shown by the graph in figure \ref{fig:118-sr-val}. However, the results of all models in this metric were generally bad, and this larger scenario aggravated this trend, which it's reflected in the best survival rate of only 19.34 \%. The GAT-SAC model was best in average renewable energy wasted and average daily operating cost. Nevertheless, its low average cumulative reward is mostly explained with its low survival rate. \par
 
 \begin{table}[h!]
 	\centering

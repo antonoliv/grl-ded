@@ -1,10 +1,13 @@
+% !TeX spellcheck = en_GB
 \chapter{Literature Review} \label{chap:review}
 
-In this chapter, the literature review regarding \ac{GRL} approaches and \ac{DED} systems is documented. This unit is divided into three sections with the first exposing the research methodology and the others reviewing \ac{GRL} approaches and the \ac{DED} Systems, the second is further subdivided into plain \ac{GCN}, attention-based and other approaches.
+In this chapter, the literature review regarding \ac{GRL} approaches and \ac{DED} systems is documented. The structure of this unit is subdivided into sections that contain the several aspects of the review process, with section \ref{sec:review-method} exposing the methodology for this literature analysis. \par
+Sections \ref{sec:review-grl} and \ref{sec:review-ded} document the actual findings of the review process, with the first being illustrating \ac{GRL} approaches in general and the second focusing on \ac{RL} techniques for solving the \acf{DED} problem specifically. Section \ref{sec:review-grl} is also subdivided into the two most prominent and found approaches, which are \ac{GCN}-bases techniques, in section \ref{sec:review-gcn}, and attention-based techniques, in section \ref{sec:review-gat}. \par
+Finally, in the last section \ref{sec:review-conclusion}, the main considerations taken from this literature review are uncovered and reflected upon.
 
 \section{Research Methodology} \label{sec:review-method}
 
-This literature review focuses on analysing the existent literature around the main objective of this dissertation, which is improving \ac{GRL} techniques in the context of this work's application domain, smart grid services. In this manner, the main research questions are presented as:
+This literature review focuses on analysing the existent works around the main objective of this dissertation, which is improving \ac{GRL} techniques in the context of this work's application domain, smart grid services. In this manner, the main research questions are presented as:
 
 \begin{itemize}
 	\item RQ1 - \textit{How can \ac{RL} algorithms be adapted to effectively solve sequential decision-making problems on graph-based environments?} 
@@ -18,7 +21,7 @@ This literature review focuses on analysing the existent literature around the m
 	\end{itemize}
 \end{itemize}
 
-These interrogations aggregate the relevant topics we aim to address in this review. The main requirement on the analyzed literature was to only consider research from the past five years, with the exception of seminal works. We also exclusively considered literature published in scientific conferences and top-tier journals. \par
+These interrogations aggregate the relevant topics we aim to address in this review. The main requirement on the analysed literature was to only consider research from the past five years, except seminal works. We also exclusively considered literature published in scientific conferences and top-tier journals. \par
 In this manner, the initial exploratory research was conducted, primarily using \textit{Scopus} and \textit{Web of Science} for searching the published literature and alternatively using \textit{Google Scholar} for finding cross-references when necessary. 
 The research questions were translated into fundamental search queries where the research process was based.
 
@@ -53,21 +56,23 @@ The reviewed literature fails to consider methods for analysing the scalability 
 
 \begin{table}[H] 
 	\centering
-	\caption{\acs{GCN}-Based \acs{GRL} Literature}
-	\begin{tabular}{|P{2cm}|P{2cm}|P{2cm}|p{5cm}|  }
-		\hline
-		\textbf{Reference} & \textbf{DRL Algorithm} & \textbf{GNN Algorithm}& \textbf{Application Domain} \\
-		\hline
-		\cite{yuanXGNNModelLevelExplanations2020} & MDP & GCN & Interpret GNNs at model-level \\ \hline
-		\cite{wangGCNRLCircuitDesigner2020} & DDPG & GCN & Automatic transistor sizing \\ \hline
-		\cite{yanAutomaticVirtualNetwork2020} & A3C & GCN & Automatic Virtual Network Embeddings \\ \hline
-		\cite{tangDependentTaskOffloading2020} & Deep Q-Learning & GCN & Task Offloading in Edge Computing \\ \hline
-		\cite{xingGraphReinforcementLearningBased2023} & Rainbow  &  GCN & Electrical Vehicle Charging Guidance \\ \hline
-		\cite{liNovelGraphReinforcement2022}, \cite{chenScalableGraphReinforcement2023} & SAC & GCN & Dynamic economic energy dispatch \\ \hline
-		\cite{lengGraphConvolutionalNetworkbased2021} & SAC & GCN & Multi-access Edge Computing \\ \hline
-		\cite{xuSimulationConstraintGraphReinforcement2020} & DQN & GCN & Line flow control \\ \hline
-		\cite{chenAutonomousExplorationUncertainty2020} & DQN & GCN  & Autonomous Exploration under uncertainty \\  \hline
-		\cite{chenGraphRepresentationLearningbased2023} & DQN & GCN & Residential electricity behavior identification and energy management \\ \hline
+	\rowcolors{2}{gray!15}{white}
+	\caption{\acs{GCN}-based \acs{GRL} literature.}
+	\begin{tabular}{P{2cm}P{2cm}P{2cm}p{5cm}}
+		\toprule
+		\textbf{Reference} & \textbf{DRL} & \textbf{GNN}& \textbf{Application Domain} \\
+		\midrule
+		\cite{yuanXGNNModelLevelExplanations2020} & MDP & GCN & Interpret GNNs at model-level \\
+		\cite{wangGCNRLCircuitDesigner2020} & DDPG & GCN & Automatic transistor sizing \\
+		\cite{yanAutomaticVirtualNetwork2020} & A3C & GCN & Automatic Virtual Network Embeddings \\
+		\cite{tangDependentTaskOffloading2020} & Deep Q-Learning & GCN & Task Offloading in Edge Computing \\
+		\cite{xingGraphReinforcementLearningBased2023} & Rainbow  &  GCN & Electrical Vehicle Charging Guidance \\
+		\cite{liNovelGraphReinforcement2022}, \cite{chenScalableGraphReinforcement2023} & SAC & GCN & Dynamic economic energy dispatch \\
+		\cite{lengGraphConvolutionalNetworkbased2021} & SAC & GCN & Multi-access Edge Computing \\
+		\cite{xuSimulationConstraintGraphReinforcement2020} & DQN & GCN & Line flow control \\
+		\cite{chenAutonomousExplorationUncertainty2020} & DQN & GCN  & Autonomous Exploration under uncertainty \\ 
+		\cite{chenGraphRepresentationLearningbased2023} & DQN & GCN & Residential electricity behavior identification and energy management \\ 
+		\bottomrule
 	\end{tabular}
 	\label{tab:gcn-lit}
 \end{table}
@@ -86,19 +91,20 @@ In general, the literature regarding attention-based approaches is a lot sparser
 
 \begin{table}[H] 
 	\centering
-	\caption{Attention-Based \acs{GRL} Literature}
-	\begin{tabular}{|P{2cm}|P{2cm}|P{2cm}|p{5cm}|  }
-		\hline
-		\textbf{Reference} & \textbf{DRL Algorithm} & \textbf{GNN Algorithm} & \textbf{Application Domain} \\
-		\hline
-		\cite{xingRealtimeOptimalScheduling2023} & DDPG & GAT & Optimal Scheduling for ADNs  \\ \hline
-		\cite{xingBilevelGraphReinforcement2023} & Rainbow & GAT  & Electric Vehicle Charging Guidance \\ \hline
-		\cite{xuRealtimeFastCharging2022} & DQN & GAT & Electric Vehicle Charging Guidance \\ \hline 
-		\hline
-		\cite{zhaoLearningSequentialDistribution2022} & DQN & GCN & Multi-agent Sequential Distribution System Restoration \\ \hline
-		\cite{baiAdaptiveActivePower2023b} & DQN & GCN & Active Power Rolling Dispatch \\ \hline
-		\cite{fanAttentionBasedMultiAgentGraph2023} & AC & GCN & Multi-agent Service Restoration \\ \hline
-		\cite{chenPhysicalassistedMultiagentGraph2023}  & SAC & GAT  & Multi-agent Voltage Regulation \\ \hline 
+	\rowcolors{2}{gray!15}{white}
+	\caption{Attention-based \acs{GRL} literature.}
+	\begin{tabular}{P{2cm}P{2cm}P{2cm}p{5cm}}
+		\toprule
+		\textbf{Reference} & \textbf{DRL} & \textbf{GNN} & \textbf{Application Domain} \\
+		\midrule
+		\cite{xingRealtimeOptimalScheduling2023} & DDPG & GAT & Optimal Scheduling for ADNs  \\ 
+		\cite{xingBilevelGraphReinforcement2023} & Rainbow & GAT  & Electric Vehicle Charging Guidance \\
+		\cite{xuRealtimeFastCharging2022} & DQN & GAT & Electric Vehicle Charging Guidance \\
+		\cite{zhaoLearningSequentialDistribution2022} & DQN & GCN & Multi-agent Sequential Distribution System Restoration \\ 
+		\cite{baiAdaptiveActivePower2023b} & DQN & GCN & Active Power Rolling Dispatch \\ 
+		\cite{fanAttentionBasedMultiAgentGraph2023} & AC & GCN & Multi-agent Service Restoration \\ 
+		\cite{chenPhysicalassistedMultiagentGraph2023}  & SAC & GAT  & Multi-agent Voltage Regulation \\
+		\bottomrule
 	\end{tabular}
 	\label{tab:gat-lit}
 \end{table}
@@ -111,75 +117,54 @@ This subsection includes other relevant and promising \ac{GRL} approaches that c
 
 \begin{table}[H] 
 	\centering
-	\caption{Other \acs{GRL} Approaches}
-	\begin{tabular}{|P{2cm}|P{2cm}|P{2cm}|p{5cm}|  }
-		\hline
+	\rowcolors{2}{gray!15}{white}
+	\caption{Other \acs{GRL} approaches in literature.}
+	\begin{tabular}{P{2cm}P{2cm}P{2cm}p{5cm}}
+		\toprule
 		\textbf{Reference} & \textbf{DRL Algorithm} & \textbf{GNN Algorithm} & \textbf{Application Domain} \\
-		\hline
-		\cite{peiEmergencyControlStrategy2023} & DQN & GraphSAGE & Undervoltage Load Shedding  \\ \hline
-		\cite{zhaoGraphbasedDeepReinforcement2022} & PPO & GraphSAGE  & Dynamic Economic Dispatch \\ \hline
-		\cite{zhangLearningDispatchJob2020} & PPO & GIN & Dispatch for Job Shop Scheduling \\ \hline 
+		\midrule
+		\cite{peiEmergencyControlStrategy2023} & DQN & GraphSAGE & Undervoltage Load Shedding  \\ 
+		\cite{zhaoGraphbasedDeepReinforcement2022} & PPO & GraphSAGE  & Dynamic Economic Dispatch \\ 
+		\cite{zhangLearningDispatchJob2020} & PPO & GIN & Dispatch for Job Shop Scheduling \\ 
+		\bottomrule
 	\end{tabular}
 	\label{tab:other-lit}
 \end{table}
 
 \section{Dynamic Economic Dispatch Systems} \label{sec:review-ded}
 
-\ac{RL} algorithms are already regarded as a well established potential solution for solving economic dispath problems \cite{pereraApplicationsReinforcementLearning2021}. In table \ref{tab:ded-lit} the relevant \ac{RL} approaches to the problem, including \ac{GRL} techniques, can be observed. In a general level, the reviewed literature regarding \ac{DED} solutions take into account a wide range of considerations and constraints. The recent works show an almost ubiquitous study of \acp{ESS} management and \ac{RES} curtailment, given the current global energetic issues and the relevance of these technologies for solving them. \par
+\ac{RL} algorithms are already regarded as a well established potential solution for solving economic dispatch problems \cite{pereraApplicationsReinforcementLearning2021}. In table \ref{tab:ded-lit} the relevant \ac{RL} approaches to the problem, including \ac{GRL} techniques, can be observed. In a general level, the reviewed literature regarding \ac{DED} solutions take into account a wide range of considerations and constraints. The recent works seem to favour a focus around \acp{ESS} management and \ac{RES} curtailment, given the current global energetic issues and the relevance of these technologies for solving them. \par
 Some systems \cite{chenScalableGraphReinforcement2023, hanAutonomousControlTechnology2023, zhaoGraphbasedDeepReinforcement2022} take further steps in ensuring grid stability by also considering voltage deviations while a notable paper considers battery degradation when calculating the cost of dispatch \cite{liuDistributedEconomicDispatch2018}. In general, \ac{GRL} algorithms show superior performance in relation with plain \ac{DRL} approaches \cite{chenScalableGraphReinforcement2023, liNovelGraphReinforcement2022, zhaoGraphbasedDeepReinforcement2022} as also concluded in section \ref{sec:review-gcn}, with studies successfully ensuring adaptability of the \ac{GRL} models to variations in the scenario's topology \cite{chenScalableGraphReinforcement2023, zhaoGraphbasedDeepReinforcement2022}. However, only \cite{baiAdaptiveActivePower2023b} conducts tests in test cases of different sizes, which shows a gap for studies addressing the scalability limitations of the developed models.
 
-
-\begin{table}[H] 
-	\centering
-	\caption{Dynamic Economic Dispatch \acs{RL} Systems}
-	\begin{tabular}{|P{2cm}|P{4cm}|p{6cm}|  }
-		\hline
+		
+\begin{table}[H]
+		\centering
+		\rowcolors{2}{gray!15}{white}
+		\caption{Dynamic economic dispatch \ac{RL} literature.}
+		\begin{tabular}{P{2cm}P{4cm}p{6cm}}
+		\toprule
 		\textbf{Reference} & \textbf{Approach} & \textbf{Application} \\
-		\hline
+		\midrule
 		\cite{yangDynamicEnergyDispatch2021} & DDPG with Prioritized Experience Replay Mechanism and L2 Regularization& Integrated Energy Systems, Utility (Selling, Purchasing and Gas) and \acp{ESS} \\
-		\hline
 		\cite{leiDynamicEnergyDispatch2021} & DDPG & Thermal Power, Renewable Energy Sources and \acp{ESS} \\
-		\hline 
 		\cite{hanAutonomousControlTechnology2023} & SAC with Imitation learning & Thermal Power, Renewable Energy Sources and Voltage deviation\\
-		\hline
 		\cite{chenScalableGraphReinforcement2023} & GCN-SAC with Replay Buffer & Thermal Power, Renewable Energy Sources, \acp{ESS} and Voltage Deviation \\
-		\hline
 		\cite{liNovelGraphReinforcement2022} & GCN-SAC & Utility (Time-of-Use), Thermal Power, Renewable Energy Sources and \acp{ESS} \\
-		\hline
-		\cite{zhaoGraphbasedDeepReinforcement2022} & GraphSAGE-PPO & Thermal Power, Renewable Energy Sources, \acp{ESS} and Voltage Deviation \\ \hline
- 		\cite{liuDistributedEconomicDispatch2018} & Multi-Agent \ac{RL} with Function Approximation and Diffusion Mechanism & Utility (Time-of-Use), Thermal Power (Diesel) and \acp{ESS} (Considering degradation) \\ \hline
- 		\cite{baiAdaptiveActivePower2023b} & Multi-Agent GAT-DQN &Thermal Power, Renewable Energy Sources and \acp{ESS} \\ \hline
+		\cite{zhaoGraphbasedDeepReinforcement2022} & GraphSAGE-PPO & Thermal Power, Renewable Energy Sources, \acp{ESS} and Voltage Deviation \\ 
+		\cite{liuDistributedEconomicDispatch2018} & Multi-Agent \ac{RL} with Function Approximation and Diffusion Mechanism & Utility (Time-of-Use), Thermal Power (Diesel) and \acp{ESS} (Considering degradation) \\ 
+		\cite{baiAdaptiveActivePower2023b} & Multi-Agent GAT-DQN & Thermal Power, Renewable Energy Sources and \acp{ESS} \\ 
+		\bottomrule
 	\end{tabular}
 	\label{tab:ded-lit}
 \end{table}
 
-\begin{table}[H] 
-	\centering
-	\caption{Dynamic Economic Dispatch \acs{RL} Systems}
-	\begin{tabular}{|P{2cm}|P{4cm}|p{6cm}|  }
-		\hline
-		\textbf{Reference} & \textbf{Approach} & \textbf{Application} \\
-		\hline
-		\cite{yangDynamicEnergyDispatch2021} & DDPG with Prioritized Experience Replay Mechanism and L2 Regularization& Integrated Energy Systems, Utility (Selling, Purchasing and Gas) and \acp{ESS} \\
-		\hline
-		\cite{leiDynamicEnergyDispatch2021} & DDPG & Thermal Power, Renewable Energy Sources and \acp{ESS} \\
-		\hline 
-		\cite{hanAutonomousControlTechnology2023} & SAC with Imitation learning & Thermal Power, Renewable Energy Sources and Voltage deviation\\
-		\hline
-		\cite{chenScalableGraphReinforcement2023} & GCN-SAC with Replay Buffer & Thermal Power, Renewable Energy Sources, \acp{ESS} and Voltage Deviation \\
-		\hline
-		\cite{liNovelGraphReinforcement2022} & GCN-SAC & Utility (Time-of-Use), Thermal Power, Renewable Energy Sources and \acp{ESS} \\
-		\hline
-		\cite{zhaoGraphbasedDeepReinforcement2022} & GraphSAGE-PPO & Thermal Power, Renewable Energy Sources, \acp{ESS} and Voltage Deviation \\ \hline
-		\cite{liuDistributedEconomicDispatch2018} & Multi-Agent \ac{RL} with Function Approximation and Diffusion Mechanism & Utility (Time-of-Use), Thermal Power (Diesel) and \acp{ESS} (Considering degradation) \\ \hline
-		\cite{baiAdaptiveActivePower2023b} & Multi-Agent GAT-DQN &Thermal Power, Renewable Energy Sources and \acp{ESS} \\ \hline
-	\end{tabular}
-	\label{tab:ded-lit}
-\end{table}
+The main considerations regarding action space and observation space found in literature can be observed in tables \ref{tab:ded-action} and \ref{tab:ded-obs}, respectively. Regarding the first, literature doesn't deviate much from including dispatch actions on non-renewable generators under the form of increments or decrements of the power output. Those intervals are restricted by maximum ramp limits and maximum and minimum output limits \cite{liNovelGraphReinforcement2022, chenScalableGraphReinforcement2023}. In some works \cite{zhaoGraphbasedDeepReinforcement2022}, the problem is simplified by using discretization to reduce the complex dimensionality of \ac{DED}. These use output changes of fixed intervals, considering only actions that constitute a multiple of that interval.
+Furthermore, other already mentioned features can be included action space , such as \ac{ESS} power output setpoint \cite{zhaoGraphbasedDeepReinforcement2022, liNovelGraphReinforcement2022, chenScalableGraphReinforcement2023, liuDistributedEconomicDispatch2018, yangDynamicEnergyDispatch2021, xingRealtimeOptimalScheduling2023} \acf{RES} curtailment \cite{zhaoGraphbasedDeepReinforcement2022, liNovelGraphReinforcement2022, chenScalableGraphReinforcement2023, xingRealtimeOptimalScheduling2023}, and voltage control \cite{hanAutonomousControlTechnology2023, xingRealtimeOptimalScheduling2023}. The reviewed literature favoured the inclusion of \ac{ESS} storage setpoint in the action space, along with its respective output value in the observation space, with some recent works applying a specialized focus on this element, such as \cite{liuDistributedEconomicDispatch2018} which also accounts for battery health and its degradation.
 
-  \begin{table}[h!]
+  \begin{table}[H]
 	\centering
-	\caption{}
+	\rowcolors{2}{white}{gray!15}
+	\caption{Action space of \ac{DED} systems.}
 	\begin{tabular}{ccccccc}
 		\toprule
 		\multirow{2}{*}{\textbf{Reference}} & \multirow{2}{*}{\textbf{Model}} & \multicolumn{5}{c}{\textbf{Action Space}} \\ 
@@ -199,30 +184,18 @@ Some systems \cite{chenScalableGraphReinforcement2023, hanAutonomousControlTechn
 	\label{tab:ded-action}
 \end{table}
 
-  \begin{table}[h!]
-	\centering
-	\caption{}
-	\begin{tabular}{cccccc}
-		\toprule
-		\multirow{2}{*}{\textbf{Reference}} & \multirow{2}{*}{\textbf{Model}} & \multicolumn{4}{c}{\textbf{Action Space}} \\ 
-		\cmidrule(lr){3-6}
-		&  &  \textbf{Nodes} & \textbf{Edges} & \textbf{Weights} & \textbf{Pooling Function}\\ 
-		\midrule
-		\cite{zhaoGraphbasedDeepReinforcement2022} & SAGE-PPO & Buses & Powerlines & Active Flow & Max \\
-		\cite{liNovelGraphReinforcement2022, chenScalableGraphReinforcement2023} & GCN-SAC & Buses & Powerlines & - & Sum \\ 
-		\cite{xingRealtimeOptimalScheduling2023} & GAT-DDPG & Buses & Powerlies & - & Concat and Mean \\
-		% Add more rows as needed
-		\bottomrule
-	\end{tabular}
-	\label{tab:ded-action}
-\end{table}
+With respects to the observation space, the choices were sparser. The literature mainly encompasses the active power of both loads and generators, but there was a division in works that included reactive power and those who did not. Beyond that, \cite{hanAutonomousControlTechnology2023} is the only paper that considered voltage of generators and loads, which is sensible given that it also consider voltage control actions. \cite{zhaoGraphbasedDeepReinforcement2022} also considers voltage levels but only for buses and not for the individual elements, including their voltage angle as well. \par
+Lastly, \cite{hanAutonomousControlTechnology2023} opted to include immediate forecasts of active power demand of loads and renewable generator output before curtailment actions. In turn, \cite{liuDistributedEconomicDispatch2018, yangDynamicEnergyDispatch2021} used time-varying electricity prices from utility grids, with the former also accounting for gas prices. \par
 
-  \begin{sidewaystable}[h!]
+
+
+\begin{sidewaystable}[H]
 	\centering
-	\caption{}
-	\begin{tabular}{cccccccccc}
+	\rowcolors{2}{white}{gray!15}
+	\caption{Observation space of \ac{DED} systems.}
+	\begin{tabular}{cccccccccp{3cm}}
 		\toprule
-		\multirow{3}{*}{\textbf{Reference}} & \multirow{3}{*}{\textbf{Model}} & \multicolumn{8}{c}{\textbf{Observation Space}} \\ 
+		\multirow{2}{*}{\textbf{Reference}} & \multirow{2}{*}{\textbf{Model}} & \multicolumn{8}{c}{\textbf{Observation Space}} \\ 
 		\cmidrule(lr){3-10}
 		&  &  \textbf{Generators} & \textbf{Loads} & \textbf{ESS} & \textbf{Nodes} & \textbf{Lines} & \textbf{Topology} & \textbf{Timestep} & \textbf{Others}\\ 
 		\midrule
@@ -253,7 +226,7 @@ In this chapter, we reviewed relevant literature for this dissertation's main re
 	\end{itemize}
 	\item RQ2 - \textbf{How can \ac{GRL} algorithms improve smart grid services?}
 	\begin{itemize}
-		\item RQ2.1 - \textbf{How can \ac{GRL} algorithms improve \acf{DED} in power distribution grids?}  \ac{RL} algorithms are already regarded as a well established potential solution for solving economic dispath problems \cite{pereraApplicationsReinforcementLearning2021}. We were able to find evidence of \ac{GRL} being successfully implemented in \ac{DED} systems such as \cite{chenScalableGraphReinforcement2023} and \cite{liNovelGraphReinforcement2022} in a power grid simulation context, showing efficient performance and scalability in comparison with plain \ac{DRL} models in the same issue. However, as it was the case with \ac{GRL} algorithms, the sparseness of different considerations, constraints and formalizations of the \ac{DED} problem, highlighted in section \ref{sec:review-ded} bring added complexity when comparing different approaches, since models are build with different \ac{DED} requirements. 
+		\item RQ2.1 - \textbf{How can \ac{GRL} algorithms improve \acf{DED} in power distribution grids?}  \ac{RL} algorithms are already regarded as a well established potential solution for solving economic dispatch problems \cite{pereraApplicationsReinforcementLearning2021}. We were able to find evidence of \ac{GRL} being successfully implemented in \ac{DED} systems such as \cite{chenScalableGraphReinforcement2023} and \cite{liNovelGraphReinforcement2022} in a power grid simulation context, showing efficient performance and scalability in comparison with plain \ac{DRL} models in the same issue. However, as it was the case with \ac{GRL} algorithms, the sparseness of different considerations, constraints and formalizations of the \ac{DED} problem, highlighted in section \ref{sec:review-ded} bring added complexity when comparing different approaches, since models are build with different \ac{DED} requirements. 
 	\end{itemize}
 \end{itemize}
 

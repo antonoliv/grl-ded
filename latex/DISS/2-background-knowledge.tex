@@ -1,13 +1,13 @@
 \chapter{Background Knowledge} \label{chap:back}
 
 In this chapter, we will present the underlying concepts related to this dissertation. This knowledge consists in important context for the rest of this work by explaining the its background concepts. \par
-This chapter is divided into section \ref{sec:back-ann} addressing Artificial Neural Networks, section \ref{sec:back-rl} regarding Reinforcement Learning problem and algorithms, \ref{sec:back-grl} explaining Graph Representation Learning, \ref{sec:back-gnn} exposing the current \ac{GNN} approaches and \ref{sec:back-smart-grid} addressing Smart Grid Services..
+This chapter is divided into section \ref{sec:back-ann} addressing Artificial Neural Networks, section \ref{sec:back-rl} regarding the  \acf{RL} problem and its prominent algorithms, \ref{sec:back-grl} explaining Graph Representation Learning, \ref{sec:back-gnn} exposing the current \ac{GNN} approaches and \ref{sec:back-smart-grid} addressing Smart Grid Services.
 
 \section{Artificial Neural Networks} \label{sec:back-ann}
 
 For almost a century, academics ravelled around the concept of biological learning and how to replicate such behaviour with computational systems \cite{galuskinNeuralNetworksTheory2007, goodfellowDeepLearning2016} . As inspiration for the fundamental concepts that the field of \textbf{Deep Learning} bases itself upon, scientists turned to the structure responsible for this process on all living beings, the brain \cite{galuskinNeuralNetworksTheory2007, goodfellowDeepLearning2016}. As a consequence, some of the earlier learning algorithms were designed to model how learning happens in the brain. \par
 
-\textbf{\acp{ANN}} are a foundational and ubiquitous class of machine learning algorithms that are also based on the neural process of biological learning \cite{galuskinNeuralNetworksTheory2007, goodfellowDeepLearning2016}. These networks are composed of interconnected nodes known as \textit{neurons} and can be generally described as \textit{function approximators}. Given an unknown function $f^*$ that models a complex relationship between input data $x$ and ouput data $y$, the main goal of an \ac{ANN} is to approximate to the considered function knowing $x$ and $y$ \cite{charniakIntroductionDeepLearning2018, goodfellowDeepLearning2016}. The new model of the relation between both samples can be then be further applied to new input data $x'$  with the goal of predicting $y'$ . \par
+\textbf{\acp{ANN}} are a foundational and ubiquitous class of machine learning algorithms that are also based on the neural process of biological learning \cite{galuskinNeuralNetworksTheory2007, goodfellowDeepLearning2016}. These networks are composed of interconnected nodes known as \textit{neurons} and can be generally described as \textit{function approximators}. Given an unknown function $f^*$ that models a complex relationship between input data $x$ and output data $y$, the main goal of an \ac{ANN} is to approximate to the considered function knowing $x$ and $y$ \cite{charniakIntroductionDeepLearning2018, goodfellowDeepLearning2016}. The new model of the relation between both samples can be then be further applied to new input data $x'$  with the goal of predicting $y'$ . \par
 
 The simplest form of an \ac{ANN} is a \ac{MLP}, also called a \textbf{Feedforward Neural Network} and is further described in the next subsection. \par 
 
@@ -18,10 +18,10 @@ The simplest form of an \ac{ANN} is a \ac{MLP}, also called a \textbf{Feedforwar
 	* Explain gradient descent
 \end{comment}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.50\linewidth]{./figures/perceptron.png}
-	\caption{The Perceptron \cite{charniakIntroductionDeepLearning2018}}
+	\includegraphics[width=0.60\linewidth]{./figures/perceptron.png}
+	\caption{The perceptron \cite{charniakIntroductionDeepLearning2018}.}
 	\label{fig:perceptron}
 \end{figure}
 
@@ -39,15 +39,15 @@ The main building block of a \ac{MLP} is the \textbf{Perceptron}, pictured in fi
 Functions that compute $b + w \cdot x > 0$ are called \textit{linear units} and are identified with $\Sigma$ \cite{charniakIntroductionDeepLearning2018, goodfellowDeepLearning2016}. An activation function $g$ was introduced to enable the output of non-linear data. The default recommendation is the \textit{Rectified Linear Unit} (\textit{ReLU}), with the Logistic curve (sigmoid) also being very common \cite{goodfellowDeepLearning2016}.  \par
 Feedforward networks are composed of layers of \textit{neurons}, namely an input layer formed by the vector of input values, an arbitrary number of hidden layers and an output layer, which is the last layer of neurons that computes the final predicted output value $y'$ \cite{charniakIntroductionDeepLearning2018}. The dimensionality of the hidden layers determine the overall width of the model and the greater the amount of layers the higher the \textit{depth} of the network \cite{charniakIntroductionDeepLearning2018, goodfellowDeepLearning2016}. This last notion together with the process of how biological neurons interact also motivated the conceptualization of \textbf{Deep Neural Networks}, which consist in feedforward neural networks with a considerable amount of hidden layers. By increasing network depth, these models are able to learn highly complex patterns and abstractions in data which \textit{shallow} networks cannot capture \cite{goodfellowDeepLearning2016}. \par
 
-\begin{figure}[ht!]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.50\linewidth]{./figures/fnn.jpg}
-	\caption{Architecture of a Feedforward Neural Network \cite{FeedforwardNeuralNetwork}}
+	\includegraphics[width=0.70\linewidth]{./figures/fnn.jpg}
+	\caption{Architecture of a feedforward neural network \cite{FeedforwardNeuralNetwork}.}
 	\label{fig:fnn}
 \end{figure}
 
 These structures are called networks because they consist of a chain of different functions, which correspond to the various layers. Feedforward networks can also be described by a directed acyclic graph that defines how these functions interact with each other to compose the complete network \cite{ goodfellowDeepLearning2016}. 
-With real-world correspondence between input values and associated outputs, a feedforward network can be trained to approximate the unknown function of the environment. In more concrete terms, the training process encompasses an optimization problem,  which in turn involves minimizing or maximizing another function that consists in a \textit{objective function} $J(\theta)$. This function is also called the loss or cost function (when the objective is to minimize it) and, in the context of neural networks, indicates how distant the network model is to the real function \cite{goodfellowDeepLearning2016}. Typically used loss functions include the mean squared error or mean absolute error. The objective functions can then be minimized with techniques such as \textit{stochastic gradient descent} to optimize the neural network parameters \cite{charniakIntroductionDeepLearning2018, goodfellowDeepLearning2016}. 
+With real-world correspondence between input values and associated outputs, a feedforward network can be trained to approximate the unknown function of the environment. In more concrete terms, the training process encompasses an optimization problem,  which in turn involves minimizing or maximizing another function that consists in an \textit{objective function} $J(\theta)$. This function is also called the loss or cost function (when the objective is to minimize it) and, in the context of neural networks, indicates how distant the network model is to the real function \cite{goodfellowDeepLearning2016}. Typically, used loss functions include the mean squared error or mean absolute error. The objective functions can then be minimized with techniques such as \textit{stochastic gradient descent} to optimize the neural network parameters \cite{charniakIntroductionDeepLearning2018, goodfellowDeepLearning2016}. 
 
 
 \section{Reinforcement Learning} \label{sec:back-rl}
@@ -58,9 +58,9 @@ With real-world correspondence between input values and associated outputs, a fe
 	* DQN
 \end{comment}
 
-\textbf{\acf{RL}} consists of a field and a class of machine learning algorithms that study how to learn to take good sequences of actions to achieve a goal associated with a maximizing received numerical reward \cite{brunskillCS234ReinforcementLearning}. The main objective is to maximize the received cumulative reward by trying between the available actions and discovering which ones yield the most reward \cite{suttonReinforcementLearningIntroduction2014}. This sequential decision-making process becomes more complex when a delayed reward is considered, given that an action with immediate reward may not always reflect the delayed consequences of that decision \cite{suttonReinforcementLearningIntroduction2014}. It's also the learner's job to consider this during the learning process. These concepts of \textit{delayed reward} and \textit{trial-and-error search} make up the most important characteristics of Reinforcement Learning \cite{suttonReinforcementLearningIntroduction2014}. The classic formalisation of this problem is the \ac{MDP} through defining the agent-environment interaction process, explained in the following subsection \ref{sec:back-mpd}. \par 
+\textbf{\acf{RL}} consists of a field and a class of machine learning algorithms that study how to learn to take good sequences of actions to achieve a goal associated with a maximizing received numerical reward \cite{brunskillCS234ReinforcementLearning}. The main objective is to maximize the received cumulative reward by trying between the available actions and discovering which ones yield the most reward \cite{suttonReinforcementLearningIntroduction2014}. This sequential decision-making process becomes more complex when a delayed reward is considered, given that an action with immediate reward may not always reflect the delayed consequences of that decision \cite{suttonReinforcementLearningIntroduction2014}. It's also the learner's job to consider this during the learning process. These concepts of \textit{delayed reward} and \textit{trial-and-error search} make up the most important characteristics of Reinforcement Learning \cite{suttonReinforcementLearningIntroduction2014}. The classic formalization of this problem is the \ac{MDP} through defining the agent-environment interaction process, explained in the following subsection \ref{sec:back-mpd}. \par 
 
-A major challenge in this machine learning paradigm is the trade-off between \textit{exploring} new unknown actions and \textit{exploiting} the already known "good" actions \cite{suttonReinforcementLearningIntroduction2014}. To choose the sequence of actions that return the highest reward, the agent must choose actions it found effective in similar past situations or *exploit* what it learned from experience. Furthermore, given that the agent may not know the action-reward mappings initially, it has to \textit{explore} possible actions that were not selected previously or may initially seem to yield a low reward to compute accurate reward estimates. The main problem is that neither exploitation nor exploration can be favoured exclusively without failing at the task \cite{suttonReinforcementLearningIntroduction2014}. Additionally, an agent's environment is uncertain, and changes in the environment's dynamics may also involve re-estimating action rewards. \par
+A major challenge in this machine learning paradigm is the trade-off between \textit{exploring} new unknown actions and \textit{exploiting} the already known \textit{good} actions \cite{suttonReinforcementLearningIntroduction2014}. To choose the sequence of actions that return the highest reward, the agent must choose actions it found effective in similar past situations or *exploit* what it learned from experience. Furthermore, given that the agent may not know the action-reward mappings initially, it has to \textit{explore} possible actions that were not selected previously or may initially seem to yield a low reward to compute accurate reward estimates. The main problem is that neither exploitation nor exploration can be favoured exclusively without failing at the task \cite{suttonReinforcementLearningIntroduction2014}. Additionally, an agent's environment is uncertain, and changes in the environment's dynamics may also involve re-estimating action rewards. \par
 
 
 In conclusion, \ac{RL} techniques enable the implementation of sequential decision-making agents that seek to maximize a reward signal analogous to an explicit (complex) goal. The agents need to balance between actions that yield a reward on posterior time steps and actions that produce immediate rewards. In addition, these agents are also faced with the task of balancing the exploitation of information from past experiences and the exploration of new decision paths that could potentially return a higher reward down the road \cite{suttonReinforcementLearningIntroduction2014}.  \par
@@ -72,25 +72,25 @@ In conclusion, \ac{RL} techniques enable the implementation of sequential decisi
 
 The central component of \acp{MDP} is the agent, which acts as a decision-maker and learns from interactions with the environment it's inserted. In a continuous process, the agent takes actions that affect the environment's state, which in turn presents new situations \cite{suttonReinforcementLearningIntroduction2014}. The environment also responds with the reward signals which the agent aims to maximize over time through its decision process.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.75\linewidth]{./figures/mpd.png}
-	\caption{Agent-environment interaction in a \acs{MDP}  \cite{suttonReinforcementLearningIntroduction2014}}
+	\caption{Agent-environment interaction in a \acs{MDP}  \cite{suttonReinforcementLearningIntroduction2014}.}
 	\label{fig:mpd-interaction}
 \end{figure}
 
-Formally, the agent-environment interactions, as figure \ref{fig:mpd-interaction} entails, occur in a sequence of discrete time steps $t$, where at each step, the agent receives a representation of the state of the environment $S_t \in \mathcal{S}$ which is used to select an appropriate action $A_t \in \mathcal{A}(s)$, where $\mathcal{S}$ is the set of possible states called the \textit{state space} and $\mathcal{A}(s)$ is the set of available actions for state $s$ \cite{suttonReinforcementLearningIntroduction2014, moralesGrokkingDeepReinforcement2020}. In the next step, the agent receives, as a consequence of its decision, a numerical reward signal $R_{t+1} \in \mathcal{R} \subset \mathbb{R}$ and is faced with a new state $S_{t +1}$ \cite{suttonReinforcementLearningIntroduction2014}. Ultimately, the MDP agent follows a logical sequence that occurs as equation \ref{eq:mpd-sequence} states. The collection of a state $S_t$, action taken $A_{t+1}$, reward $R_{t+1}$ received and next state $S_{t+1}$ constitutes an \textit{experience tuple} \cite{moralesGrokkingDeepReinforcement2020}.
+Formally, the agent-environment interactions, as figure \ref{fig:mpd-interaction} entails, occur in a sequence of discrete time steps $t$, where at each step, the agent receives a representation of the state of the environment $S_t \in \mathcal{S}$ which is used to select an appropriate action $A_t \in \mathcal{A}(s)$, where $\mathcal{S}$ is the set of possible states called the \textit{state space} and $\mathcal{A}(s)$ is the set of available actions for state $s$ \cite{suttonReinforcementLearningIntroduction2014, moralesGrokkingDeepReinforcement2020}. In the next step, the agent receives, as a consequence of its decision, a numerical reward signal $R_{t+1} \in \mathcal{R} \subset \mathbb{R}$ and is faced with a new state $S_{t +1}$ \cite{suttonReinforcementLearningIntroduction2014}. Ultimately, the \ac{MDP} agent follows a logical sequence that occurs as equation \ref{eq:mpd-sequence} states. The collection of a state $S_t$, action taken $A_{t+1}$, reward $R_{t+1}$ received and next state $S_{t+1}$ constitutes an \textit{experience tuple} \cite{moralesGrokkingDeepReinforcement2020}.
 
 \begin{equation} \label{eq:mpd-sequence}
 	S_0, A_0, R_1, S_1, A_2, R_2, S_2, A_2, R_3, \dots
 \end{equation}
 
-In addition, when the set of possible actions, states and rewards ($\mathcal{A}$, $\mathcal{S}$ and $\mathcal{R}$) are finite, the \ac{MDP} is said to be \textit{finite} \cite{suttonReinforcementLearningIntroduction2014}. This results in $S_t$ and $R_t$ having well-defined discrete probability distributions in function of the preceding state and chosen action \cite{suttonReinforcementLearningIntroduction2014}. Therefore, the probability of receiving a particular reward and state given the previous state and selected action, which characterizes a finite MPD's dynamics, may be characterized by function $p$ defined in equation \ref{eq:mdp-dynamics}
+In addition, when the set of possible actions, states and rewards ($\mathcal{A}$, $\mathcal{S}$ and $\mathcal{R}$) are finite, the \ac{MDP} is said to be \textit{finite} \cite{suttonReinforcementLearningIntroduction2014}. This results in $S_t$ and $R_t$ having well-defined discrete probability distributions in function of the preceding state and chosen action \cite{suttonReinforcementLearningIntroduction2014}. Therefore, the probability of receiving a particular reward and state given the previous state and selected action, which characterizes a finite \acp{MPD} dynamics, may be characterized by function $p$ defined in equation \ref{eq:mdp-dynamics}
 \begin{equation} \label{eq:mdp-dynamics}
 	p(s',r|s,a) \doteq Pr\{S_t = s', R_t = r | S_{t-1} = s, A_{t-1} = a\}
 \end{equation}
 
-For all $s, s' \in \mathcal{S}$, $r \in \mathcal{R}$ and $a \in \mathcal{A}(s)$, where $\doteq$ denotes a mathematical formal defintion. This encompasses the assumption that the probability of each possible state, $S_t$, and reward, $R_t$, pair is only dependent on the preceding state, $S_{t-1}$, and action taken, $A_{t-1}$ \cite{suttonReinforcementLearningIntroduction2014}. Instead of observing this as a restriction on the decision process, it's more convenient to view it as a constraint on the state variable, considering that it must contain all the necessary information from experience to make a valuable decision in the immediate step. If this condition is satisfied, the state is declared to have the \textit{markov property} \cite{suttonReinforcementLearningIntroduction2014}. \par
+For all $s, s' \in \mathcal{S}$, $r \in \mathcal{R}$ and $a \in \mathcal{A}(s)$, where $\doteq$ denotes a mathematical formal definition. This encompasses the assumption that the probability of each possible state, $S_t$, and reward, $R_t$, pair is only dependent on the preceding state, $S_{t-1}$, and action taken, $A_{t-1}$ \cite{suttonReinforcementLearningIntroduction2014}. Instead of observing this as a restriction on the decision process, it's more convenient to view it as a constraint on the state variable, considering that it must contain all the necessary information from experience to make a valuable decision in the immediate step. If this condition is satisfied, the state is declared to have the \textit{markov property} \cite{suttonReinforcementLearningIntroduction2014}. \par
 From function $p$ in equation \ref{eq:mdp-dynamics}, the state-transtion probabilities, also called the \textit{transition function}, can be computed as described by equation \ref{eq:mpd-transition} \cite{suttonReinforcementLearningIntroduction2014, moralesGrokkingDeepReinforcement2020}.
 
 \begin{equation} \label{eq:mpd-transition}
@@ -152,7 +152,7 @@ In this manner, a \ac{MDP} can be defined by a tuple with a state space $\mathca
 	q_\pi(s,a) \doteq \mathbb{E}_\pi \left[ \sum^\infty_{k = 0} \gamma^k R_{t+k+1}\ \Bigg|\ S_t = s, A_t = a \right]    
 \end{equation}
 
-The utility of such functions rely on the possibility of estimating them with regard to past experience of the agent \cite{suttonReinforcementLearningIntroduction2014}. A fundamental property of value functions, in a similar method as the expected return (equation \ref{eq:expected-discounted-next}), is that it can, satisfy recursive relationships with the next immediate value as equations \ref{eq:bellman-equation-v}  and \ref{eq:bellman-equation-q} entail. \cite{suttonReinforcementLearningIntroduction2014}. These equations are called \textbf{Bellman equations}, and they characterize the relationship between the value of current state and state-action pairs and subsequent states. \par
+The utility of such functions rely on the possibility of estimating them with regard to past experience of the agent \cite{suttonReinforcementLearningIntroduction2014}. A fundamental property of value functions, in a similar method as the expected return (equation \ref{eq:expected-discounted-next}), is that it can, satisfy recursive relationships with the next immediate value as equations \ref{eq:bellman-equation-v}  and \ref{eq:bellman-equation-q} entail \cite{suttonReinforcementLearningIntroduction2014}. These equations are called \textbf{Bellman equations}, and they characterize the relationship between the value of current state or state-action pairs, and subsequent states. \par
 
 \begin{equation} \label{eq:bellman-equation-v}
 	v_\pi (s) \doteq \sum_{a \in \mathcal{A}(s)} \pi(a|s) \sum_{s' \in \mathcal{S}, r \in \mathcal{R}} p(s',r|s,a) (r + \gamma\ v_\pi (s'))
@@ -172,15 +172,16 @@ The two equations can be connected by equation \ref{eq:bellman-equation-vq}, whi
 
 \subsection{Types of \ac{RL}}
 
+Regarding \ac{RL} algorithms, they can be divided into \textbf{model-free} and \textbf{model-based} techniques \cite{openaiSpinningDocumentation}. These categories are distinguished by whether an agent uses a provided or learned \textit{model} of the set of transition and reward functions, another optional element of \ac{RL} techniques \cite{moralesGrokkingDeepReinforcement2020, openaiSpinningDocumentation}. In the positive case, the method is said to be model-based, otherwise, it's model-free. Having an accurate model of the environment allows the \ac{RL} agent to focus on planning ahead by calculating future scenarios and creating policies based on the results of the planning process. An example of a famous system of this kind is AlphaZero \cite{silverMasteringChessShogi2017}. However, in most cases, agents can't access a ground-truth model of the environment, leaving only the scenario where an agent learns a model purely from experience. This creates several challenges, the most prominent of which relies on the fact that the model, in most times, doesn't fully capture the environment's transition dynamics, equipping it with bias in relation to the actual dynamics. With this, learning how to generalize the model to real-world environments so that the bias is not over-exploited becomes a very complex task \cite{openaiSpinningDocumentation}.  Model-free algorithms can be also further divided into Q-learning and Policy Aproximmation techniques. \par
 
-\begin{figure}[ht]
+
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.75\linewidth]{./figures/rl_algorithms.png}
-	\caption{Taxonomy of algorithms in modern \ac{RL} \cite{openaiSpinningDocumentation}}
+	\includegraphics[width=0.95\textwidth]{./figures/rl_algorithms.png}
+	\caption{Taxonomy of algorithms in modern \ac{RL} \cite{openaiSpinningDocumentation}.}
 	\label{fig:rl-algorithms}
 \end{figure}
 
-Regarding \ac{RL} algorithms, they can be divided into \textbf{model-free} and \textbf{model-based} techniques \cite{openaiSpinningDocumentation}. These categories are distinguished by whether an agent uses a provided or learned \textit{model} of the set of transition and reward functions, another optional element of \ac{RL} techniques \cite{moralesGrokkingDeepReinforcement2020, openaiSpinningDocumentation}. In the positive case, the method is said to be model-based, otherwise, it's model-free. Having an accurate model of the environment allows the \ac{RL} agent to focus on planning ahead by calculating future scenarios and creating policies based on the results of the planning process. An example of a famous system of this kind is AlphaZero \cite{silverMasteringChessShogi2017}. However, in most cases, agents can't access a ground-truth model of the environment, leaving only the scenario where an agent learns a model purely from experience. This creates several challenges, the most prominent of which relies on the fact that the model, in most times, doesn't fully capture the environment's transition dynamics, equipping it with bias in relation to the actual dynamics. With this, learning how to generalise the model to real-world environments so that the bias is not over-exploited becomes a very complex task \cite{openaiSpinningDocumentation}.  Model-free algorithms can be also further divided into Q-learning and Policy Aproximmation techniques. \par
 Furthermore, algorithms can also be subdivided into \textbf{on-policy} and \textbf{off-policy} methods. \cite{moralesGrokkingDeepReinforcement2020} On-policy algorithms evaluate and improve a single policy used to determine the agent's behaviour \cite{moralesGrokkingDeepReinforcement2020}. The methods under the policy optimization category such as A2C and A3C \cite{mnihAsynchronousMethodsDeep2016} or the \ac{PPO} \cite{schulmanProximalPolicyOptimization2017} almost always fall into this label. In contrast, off-policy algorithms learn how to improve a different target policy based on the results that arise from the policy used to determine the system behaviour initially \cite{moralesGrokkingDeepReinforcement2020}. Such approaches include Q-Learning algorithms such as \acp{DQN} \cite{mnihHumanlevelControlDeep2015, openaiSpinningDocumentation}. \ac{DDPG} \cite{lillicrapContinuousControlDeep2019} combines policy optimization with q-learning, consisting of an off-policy method that learns both a q-function and a policy. \ac{DDPG} constitutes the adaption of q-learning methods to continuous action spaces \cite{openaiSpinningDocumentation}. Another example of an off-policy algorithm is the \ac{SAC} \cite{haarnojaSoftActorCriticOffPolicy2018} method, which bridges stochastic policy optimization with the \ac{DDPG} approach and has entropy regularization as one of its central features, which translates into training a policy that maximizes the expected return and entropy, a measure of randomness in the policy \cite{openaiSpinningDocumentation}. \par
 Lastly, with the advent of deep learning becoming one of the most ubiquitous techniques in machine learning, \ac{RL} algorithms have evolved beyond the traditional tabular methods \cite{moralesGrokkingDeepReinforcement2020}. Traditional \ac{RL} has evolved to \textbf{\acf{DRL}}, which studies how to use deep neural networks in \ac{RL} problems to leverage their generalization abilities for solving more complex problems.
 
@@ -224,7 +225,7 @@ To achieve its main goal, \ac{SAC} uses function approximators for the policy an
 V_\pi (s) = \mathbb{E}_{A_t \sim \pi} \left[ Q_\pi (S_t, A_t) - \alpha \log (\pi (A_t|S_t)) \ \Big|\ S_t = s \right] 
 \end{equation}
 
-Given that the state value function is related to the Q-function according to equation \ref{eq:sac-bellman-vq}, there is no need to incorporate an additional function approximator for it \cite{haarnojaSoftActorCriticOffPolicy2018}. However, including a separate approximator for the soft value can bring stability to the training process and additional convenience for training simultaneously with other networks \cite{haarnojaSoftActorCriticOffPolicy2018}. In this context, the soft value function can be trained to minimise the squared residual error, as depicted in equation \ref{eq:sac-v-loss} \cite{haarnojaSoftActorCriticOffPolicy2018}.
+Given that the state value function is related to the Q-function according to equation \ref{eq:sac-bellman-vq}, there is no need to incorporate an additional function approximator for it \cite{haarnojaSoftActorCriticOffPolicy2018}. However, including a separate approximator for the soft value can bring stability to the training process and additional convenience for training simultaneously with other networks \cite{haarnojaSoftActorCriticOffPolicy2018}. In this context, the soft value function can be trained to minimize the squared residual error, as depicted in equation \ref{eq:sac-v-loss} \cite{haarnojaSoftActorCriticOffPolicy2018}.
 
 \begin{equation} \label{eq:sac-v-loss}
 J_V(\psi) = \mathbb{E}_{S_t \sim \mathcal{D}} \left[ \frac{1}{2} \Big( V_\psi(S_t) - \mathbb{E}_{A_t \sim \pi_\phi} [Q_\theta (S_t, A_t) - \log \pi_\phi (A_t | S_t)] \Big)^2 \right]
@@ -236,7 +237,7 @@ Where $\mathcal{D}$ is a distribution, or a replay buffer, containing previously
 \hat{\nabla} J_V(\psi) = \nabla_\psi V_\psi (s) \Big( V_\psi(s) - Q_\theta (s, a) + \log \pi_\phi (a | s) \Big)
 \end{equation}
 
-The parameters of the soft Q-function are trained to minimize the soft bellman residual. The objective function can be illustrated by equation \ref{eq:sac-q-loss-grad}, and can be optimized with stochastic gradients through equation \ref{eq:sac-q-loss-grad}. \ac{SAC} makes use of two independently trained Q-functions to mitigate positive bias in the policy improvement step. The minimum Q-value is then taken between the two Q-function approximators, which was found to accelarate training in particularly complex tasks \cite{openaiSpinningDocumentation, haarnojaSoftActorCriticOffPolicy2018}.
+The parameters of the soft Q-function are trained to minimize the soft bellman residual. The objective function can be illustrated by equation \ref{eq:sac-q-loss-grad}, and can be optimized with stochastic gradients through equation \ref{eq:sac-q-loss-grad}. \ac{SAC} makes use of two independently trained Q-functions to mitigate positive bias in the policy improvement step. The minimum Q-value is then taken between the two Q-function approximators, which was found to accelerate training in particularly complex tasks \cite{openaiSpinningDocumentation, haarnojaSoftActorCriticOffPolicy2018}.
 
 \begin{equation} \label{eq:sac-q-loss}
 J_Q(\theta) = \mathbb{E}_{(S_t, A_t) \sim \mathcal{D}} \left[ \frac{1}{2} \Big( Q_\theta (S_t, A_t) - \hat{Q}(S_t, A_t) \Big)^2 \right]
@@ -266,7 +267,7 @@ Regarding the policy, a reparametrization trick is applied using a neural networ
 	\hat{\nabla}_\theta J_\pi (\phi) = \nabla_\phi \log \pi_\phi (a | s) + \Big( \nabla_{a}  \log \pi_\phi (a|s) - \nabla_{a} Q (s, a)) \nabla_\phi f_\phi (\epsilon_t; s)
 \end{equation}
 
-The complete model can be described by algorithm \ref{alg:sac}. The general method cycles between collecting experience from the environment with the current policy and updating the approximators using the stochastic gradients from the minibatches sampled from the replay buffer \cite{haarnojaSoftActorCriticOffPolicy2018}. \par
+The complete model can be described by algorithm \ref{alg:sac}. The general method cycles between collecting experience from the environment with the current policy and updating the approximators using the stochastic gradients from the mini-batches sampled from the replay buffer \cite{haarnojaSoftActorCriticOffPolicy2018}. \par
 
 \begin{algorithm}
 	\caption{Soft Actor-Critic}
@@ -336,7 +337,7 @@ A \textbf{\acf{GCN}} \cite{kipfSemiSupervisedClassificationGraph2017} is a popul
 	\item[$I \in \mathbb{R}^{N \times N}$] - Identity Matrix 
 	\item[$\tilde{D}$] - Diagonal Matrix,  with $\tilde{D}_{ii} = \sum_j Ã_{ij}$ 
 	\item[$\sigma$] - Activation Function 
-	\item[$W^k \in \mathbb{R}^{F \times F'}$] - Laywise linear transformation matrix 
+	\item[$W^k \in \mathbb{R}^{F \times F'}$] - Layerwise linear transformation matrix 
 	\item[$F$, $F'$] - Dimensions of node representations in the $k$-th and $(k + 1)$ layer, respectively
 \end{description}
 
@@ -352,7 +353,7 @@ In the second equation, the \textit{AGGREGATE} function can be observed as the w
 
 \subsection*{Spectral Graph Convolutions}
 
-Regarding the connection between GCNs an spectral filters defined on graphs, spectral convolutions can be defined as the multiplication of a node-wise signal $x \in \mathbb{R}^N$ with a convolutional filter $g_\theta = diag(\theta)$ in the \textit{Fourier domain} \cite{liuIntroductionGraphNeural2020, tangGraphNeuralNetworks2022}, formally:
+Regarding the connection between \ac{GCN} an spectral filters defined on graphs, spectral convolutions can be defined as the multiplication of a node-wise signal $x \in \mathbb{R}^N$ with a convolutional filter $g_\theta = diag(\theta)$ in the \textit{Fourier domain} \cite{liuIntroductionGraphNeural2020, tangGraphNeuralNetworks2022}, formally:
 
 \begin{equation}    
 	g_\theta \star \text{x} = U_{g_\theta} U^T \text{x}
@@ -390,9 +391,9 @@ By combining this with the previous equation, the first can be reformulated as:
 
 From this equation, it can be observed that each node depends only on the information inside the $K$-th order neighbourhood and with this reformulation, the computation of the equation is reduced to $O(|\xi|)$, linear to the number of edges $\xi$ in the original graph $G$. \par
 
-To build a neural network with graph convolutions, it's sufficient to stack multiple layers defined according to the previous equation, each followed by a nonlinear transformation. However, the authors of \ac{GCN} \cite{kipfSemiSupervisedClassificationGraph2017} proposed limiting the convolution number to $K = 1$ at each layer instead of limiting it to the explicit parametrization by the Chebyshev polynomials. This way, each level only defines a linear function over the Laplacian Matrix $L$, maintaining the possibility of handling complex convolution filter functions on graphs by stacking multiple layers \cite{kipfSemiSupervisedClassificationGraph2017, tangGraphNeuralNetworks2022}. This means the model can alleviate the overfitting of local neighbourhood structures for graphs whose node degree distribution has a high variance \cite{kipfSemiSupervisedClassificationGraph2017, tangGraphNeuralNetworks2022}.
+To build a neural network with graph convolutions, it's sufficient to stack multiple layers defined according to the previous equation, each followed by a nonlinear transformation. However, the authors of \ac{GCN} \cite{kipfSemiSupervisedClassificationGraph2017} proposed limiting the convolution number to $K = 1$ at each layer instead of limiting it to the explicit parametrization by the Chebyshev polynomials. This way, each level only defines a linear function over the Laplacian Matrix $L$, maintaining the possibility of handling complex convolution filter functions on graphs by stacking multiple layers \cite{kipfSemiSupervisedClassificationGraph2017, tangGraphNeuralNetworks2022}. This means the model can alleviate the over-fitting of local neighbourhood structures for graphs whose node degree distribution has a high variance \cite{kipfSemiSupervisedClassificationGraph2017, tangGraphNeuralNetworks2022}.
 
-At each layer, it can further considered $\lambda_\text{max} \approx 2$, which the neural network parameters could accommodate during training \cite{tangGraphNeuralNetworks2022}. With these simplifications, the equation is transformed into:
+At each layer, it can further be considered that $\lambda_\text{max} \approx 2$, which the neural network parameters could accommodate during training \cite{tangGraphNeuralNetworks2022}. With these simplifications, the equation is transformed into:
 \begin{equation}
 	g_{\theta'} \star \text{x} \approx \theta'_0 \text{x} + \theta'_1 \text{x} (L - I_N) \text{x} = \theta'_0 \text{x} - \theta'_1 D^{-\frac{1}{2}} AD^{-\frac{1}{2}}
 \end{equation}
@@ -403,7 +404,7 @@ At each layer, it can further considered $\lambda_\text{max} \approx 2$, which t
 	
 
 
-The number of parameters can, in practice, be further reduced, minimising overfitting and minimising the number of operations per layer as well \cite{tangGraphNeuralNetworks2022} as equation \ref{eq:gcn-reduced-param} entails.
+The number of parameters can, in practice, be further reduced, minimizing over-fitting and the number of operations per layer as well \cite{tangGraphNeuralNetworks2022}, as equation \ref{eq:gcn-reduced-param} entails.
 
 \begin{equation} \label{eq:gcn-reduced-param}
 	g_\theta \star \text{x} \approx \theta (I + D^{-\frac{1}{2}} AD^{-\frac{1}{2}}) \text{x}
@@ -414,7 +415,7 @@ The number of parameters can, in practice, be further reduced, minimising overfi
 \end{description}
 
 
-One potential problem is the $I_N + D^{-\frac{1}{2}} AD^{-\frac{1}{2}}$ matrix whose eigenvalues fall in the $[0,2]$ interval. In a deep GCN, the repeated utilization of the above function often leads to an exploding or vanishing gradient, translating into numerical instabilities \cite{liuIntroductionGraphNeural2020, tangGraphNeuralNetworks2022}. In this context, the matrix can be further renormalized by converting $I + D^{-\frac{1}{2}} AD^{-\frac{1}{2}}$ into $\tilde{D}^{-\frac{1}{2}} \tilde{A}\tilde{D}^{-\frac{1}{2}}$ \cite{liuIntroductionGraphNeural2020, tangGraphNeuralNetworks2022}. 
+One potential problem is the $I_N + D^{-\frac{1}{2}} AD^{-\frac{1}{2}}$ matrix whose eigenvalues fall in the $[0,2]$ interval. In a deep \ac{GCN}, the repeated utilization of the above function often leads to an exploding or vanishing gradient, translating into numerical instabilities \cite{liuIntroductionGraphNeural2020, tangGraphNeuralNetworks2022}. In this context, the matrix can be further re-normalized by converting $I + D^{-\frac{1}{2}} AD^{-\frac{1}{2}}$ into $\tilde{D}^{-\frac{1}{2}} \tilde{A}\tilde{D}^{-\frac{1}{2}}$ \cite{liuIntroductionGraphNeural2020, tangGraphNeuralNetworks2022}. 
 In this case, only the scenario where there is one feature channel and one filter is considered which can be then generalized to an input signal with $C$ channels $X \in \mathbb{R}^{N \times C}$ and $F$ filters (or hidden units) \cite{liuIntroductionGraphNeural2020, tangGraphNeuralNetworks2022}:
 \begin{equation}
 	H = \tilde{D}^{-\frac{1}{2}} \tilde{A}\tilde{D}^{-\frac{1}{2}}XW    
@@ -484,12 +485,12 @@ Lastly, the author also mentions that other pooling techniques can be used in th
 Given the global ecological emergency and the increasing energetic crisis, there is a necessity for advancements in energy distribution and transmission systems now more than ever. To fulfil the need for energy sustainability, traditional centralized distribution grids must be adapted to, on the one hand, accommodate the rise of distributed renewable energy sources in corporate and domestic consumers and, on the other, to make more efficient and reliable distribution of energy resources \cite{farhangiPathSmartGrid2010, vijayapriyaSmartGridOverview2011}. \par
 
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.74\linewidth]{./figures/smart_grid.png}
-	\caption{Smart Grid Capabilities Pyramid \cite{farhangiPathSmartGrid2010}}
+	\includegraphics[width=0.90\linewidth]{./figures/smart_grid.png}
+	\caption{Smart grid capabilities pyramid \cite{farhangiPathSmartGrid2010}.}
 	\label{fig:smart-grid}
 \end{figure}
 
 
-The \textit{Smart Grid} or the \textit{Smart Power Grid} conceptualizes this modernization of the electricity network by leveraging the technological advancements in information technology and communication science to create intelligent systems that manage and monitor the distributed generation of energy \cite{bayindirSmartGridTechnologies2016, farhangiPathSmartGrid2010}. Figure \ref{fig:smart-grid} describes the smart grid pyramid, which has asset management at its base. On this foundation, the foundation of the smart grid is laid out by the circuit topology, \acs{IT} systems and telecommunications infrastructure, the basic ingredients for the emergence of fundamental applications such as smart meters and distribution automation \cite{farhangiPathSmartGrid2010}. In turn, these serve as building blocks for creating more intelligent systems that leverage upper-layer applications, enabling the true smart grid capabilities \cite{farhangiPathSmartGrid2010}.
+The \textit{Smart Grid} or the \textit{Smart Power Grid} conceptualizes this modernization of the electricity network by leveraging the technological advancements in information technology and communication science to create intelligent systems that manage and monitor the distributed generation of energy \cite{bayindirSmartGridTechnologies2016, farhangiPathSmartGrid2010}. Figure \ref{fig:smart-grid} describes the smart grid pyramid, which has asset management at its base. As observed, the foundation of the smart grid is laid out by the circuit topology, \acs{IT} systems and telecommunications infrastructure, the basic ingredients for the emergence of fundamental applications such as smart meters and distribution automation \cite{farhangiPathSmartGrid2010}. In turn, these serve as building blocks for creating more intelligent systems that leverage upper-layer applications, enabling the true smart grid capabilities \cite{farhangiPathSmartGrid2010}.
